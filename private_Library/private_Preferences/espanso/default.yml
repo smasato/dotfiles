@@ -1,0 +1,10 @@
+# espanso configuration file
+
+matches:
+  - trigger: ":n"
+    replace: "{{mytime}}"
+    vars:
+      - name: mytime
+        type: date
+        params:
+          format: "%H:%M"
