@@ -136,25 +136,11 @@ alias ls='ls --color=auto' # gnu ls
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:/usr/local/sbin"
 
-if [ -d /usr/local/opt/llvm/ ]; then
-  export PATH="$PATH:/usr/local/opt/llvm/bin"
-fi
-
-if [ -d /usr/local/opt/curl ]; then
-  export PATH="$PATH:/usr/local/opt/curl/bin"
-fi
-
-if [ -d /usr/local/opt/openssl ]; then
-  export PATH="$PATH:/usr/local/opt/openssl/bin"
-fi
-
-if [ -d $HOME/.cargo ]; then
-  export PATH="$PATH:$HOME/.cargo/bin"
-fi
-
-if [ -d /usr/local/opt/coreutils/ ]; then
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-fi
+[ -d /usr/local/opt/llvm/ ] && export PATH="$PATH:/usr/local/opt/llvm/bin"
+[ -d /usr/local/opt/curl ] && export PATH="$PATH:/usr/local/opt/curl/bin"
+[ -d /usr/local/opt/openssl ] && export PATH="$PATH:/usr/local/opt/openssl/bin"
+[ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
+[ -d /usr/local/opt/coreutils/ ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
 
