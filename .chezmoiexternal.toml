@@ -6,3 +6,7 @@
     type = "file"
     url = "https://ke-complex-modifications.pqrs.org/json/japanese.json"
     refreshPeriod = "168h"
+["antigen.zsh"]
+    type = "file"
+    url = "https://git.io/antigen"
+    refreshPeriod = "168h"
