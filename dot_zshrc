@@ -46,7 +46,6 @@ setopt append_history
 setopt inc_append_history
 setopt hist_reduce_blanks
 
-
 # nnn
 export NNN_OPTS="CdeHU"
 n ()
@@ -135,7 +134,6 @@ alias ls='ls --color=auto' # gnu ls
 # Path
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:/usr/local/sbin"
-
 [ -d /usr/local/opt/llvm/ ] && export PATH="$PATH:/usr/local/opt/llvm/bin"
 [ -d /usr/local/opt/curl ] && export PATH="$PATH:/usr/local/opt/curl/bin"
 [ -d /usr/local/opt/openssl ] && export PATH="$PATH:/usr/local/opt/openssl/bin"
