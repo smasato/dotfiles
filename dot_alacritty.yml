@@ -1,6 +1,12 @@
 env:
   TERM: xterm-256color
 
+shell:
+  program: /usr/local/bin/zsh
+  args:
+    -  -c
+    -  if tmux list-sessions; then tmux attach-session -t main; else tmux; fi
+
 window:
   dimensions:
     columns: 0
