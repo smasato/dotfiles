@@ -13,9 +13,9 @@ antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle wfxr/forgit
 antigen bundle MichaelAquilina/zsh-you-should-use
 antigen bundle mollifier/anyframe
-antigen apply
-
 antigen theme romkatv/powerlevel10k
+
+antigen apply
 
 # General
 autoload -Uz compinit
@@ -138,8 +138,6 @@ export PATH="$PATH:/usr/local/sbin"
 [ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
 [ -d /usr/local/opt/coreutils/ ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
-source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
-
 # google-cloud-sdk
 if [ -d /usr/local/Caskroom/google-cloud-sdk ]; then
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
@@ -147,7 +145,7 @@ if [ -d /usr/local/Caskroom/google-cloud-sdk ]; then
 fi
 
 # alias
-alias reload="source $HOME/.zshrc && echo '~/.zshrc reloaded!'"
+alias reload="exec zsh && echo '~/.zshrc reloaded!'"
 alias gs='git status'
 alias c='cd ~'
 alias el='exa'
