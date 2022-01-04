@@ -7,7 +7,6 @@ source ~/antigen.zsh
 
 antigen bundle b4b4r07/enhancd
 export ENHANCD_FILTER=peco
-export ENHANCD_DISABLE_HOME=1
 
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
@@ -15,6 +14,8 @@ antigen bundle wfxr/forgit
 antigen bundle MichaelAquilina/zsh-you-should-use
 antigen bundle mollifier/anyframe
 antigen apply
+
+antigen theme romkatv/powerlevel10k
 
 # General
 autoload -Uz compinit
@@ -32,6 +33,11 @@ setopt auto_pushd
 setopt pushd_ignore_dups
 setopt auto_param_slash
 setopt mark_dirs
+
+bindkey -e
+
+autoload predict-on
+zstyle ':predict' verbose true
 
 # History
 export HISTFILE=${HOME}/.zsh_history
@@ -75,12 +81,15 @@ n ()
     fi
 }
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+
 # anyframe
 # https://qiita.com/mollifier/items/81b18c012d7841ab33c3
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
 
-zstyle ":anyframe:selector:" use peco # brew install peco
+zstyle ":anyframe:selector:" use fzf-tmux
 bindkey '^xb' anyframe-widget-cdr # 過去に移動したことのあるディレクトリに移動する
 bindkey '^x^b' anyframe-widget-checkout-git-branch
 bindkey '^xr' anyframe-widget-execute-history # コマンドライン履歴から選んで実行する
@@ -96,18 +105,6 @@ bindkey '^x^i' anyframe-widget-insert-git-branch # Gitブランチ名をコマ�
 bindkey '^xf' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
 bindkey '^x^f' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
 
-if [ -d /Applications/Tailscale.app ]; then
-  function tailscale-ip-list () {
-    /Applications/Tailscale.app/Contents/MacOS/Tailscale status \
-      | awk 'BEGIN{OFS="\t"}{print $1,$2}' \
-      | anyframe-selector-auto \
-      | awk '{print $1}' \
-      | anyframe-action-insert
-  }
-  zle -N tailscale-ip-list
-  bindkey '^xt' tailscale-ip-list
-fi
-
 # Completion
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
@@ -122,16 +119,17 @@ setopt auto_param_keys
 setopt list_types
 setopt magic_equal_subst
 setopt always_last_prompt
-zstyle ':completion::complete:*' use-cache true
-zstyle ':completion:*:default' menu select=1
-autoload colors
-zstyle ':completion:*' list-colors "${LS_COLORS}"
-zstyle ':completion:*' insert-tab false
 
+autoload colors
 test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
 alias ls='ls --color=auto' # gnu ls
 
-# Path
+zstyle ':completion::complete:*' use-cache true
+zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*' list-colors "${LS_COLORS}"
+zstyle ':completion:*' insert-tab false
+
+# PATH
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:/usr/local/sbin"
 [ -d /usr/local/opt/llvm/ ] && export PATH="$PATH:/usr/local/opt/llvm/bin"
@@ -151,19 +149,11 @@ fi
 # alias
 alias reload="source $HOME/.zshrc && echo '~/.zshrc reloaded!'"
 alias gs='git status'
-alias c='clear'
+alias c='cd ~'
 alias el='exa'
 
-if [ -e /usr/local/bin/jump ]; then
-  eval "$(jump shell)"
-fi
-
-if [ -d /usr/local/opt/asdf/ ]; then
-  . $(brew --prefix asdf)/libexec/asdf.sh
-fi
-
-if [ -e /usr/local/bin/op ]; then
-  eval "$(op completion zsh)"; compdef _op op
-fi
+[ -e /usr/local/bin/jump ] && eval "$(jump shell)"
+[ -d /usr/local/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
+[ -e /usr/local/bin/op ] && eval "$(op completion zsh)"; compdef _op op
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
