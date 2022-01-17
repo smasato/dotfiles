@@ -41,9 +41,12 @@ yabai -m config debug_output on
 
 # manage=off
 yabai -m rule --add app="^Karabiner" manage=off
+
 yabai -m rule --add app=PyCharm manage=off
 yabai -m rule --add app=RubyMine manage=off
+yabai -m rule --add app=GoLand manage=off
 yabai -m rule --add app="JetBrains Toolbox" manage=off
+
 yabai -m rule --add label="アクティビティモニタ" app="^アクティビティモニタ$" manage=off
 yabai -m rule --add label="キーチェーンアクセス" app="^キーチェーンアクセス$" manage=off
 yabai -m rule --add label="Finder" app="^Finder$" manage=off
