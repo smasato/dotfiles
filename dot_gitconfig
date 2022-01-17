@@ -34,3 +34,7 @@
 
 [init]
 	defaultBranch = main
+
+[ghq]
+    root = ~/dev/go/src
+    root = ~/dev/src
