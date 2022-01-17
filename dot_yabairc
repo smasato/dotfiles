@@ -61,7 +61,7 @@ yabai -m space 1 --layout stack
 
 # space 2
 yabai -m rule --add app="^Google Chrome$" space=2 manage=on
-yabai -m space 2 --layout bps
+yabai -m space 2 --layout bsp
 
 # space 4
 yabai -m rule --add app="^Fantastical$" space=4 manage=on
