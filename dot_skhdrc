@@ -129,3 +129,5 @@ shift + alt - n : yabai -m window --swap north
 
 # move managed window
 shift + cmd - h : yabai -m window --warp east
+
+ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
