@@ -138,7 +138,7 @@ fi
 alias reload="exec zsh && echo '~/.zshrc reloaded!'"
 alias gs='git status'
 alias c='cd ~'
-alias el='exa'
+alias el='exa --header --icons --time-style=long-iso'
 
 [ -e /usr/local/bin/jump ] && eval "$(jump shell)"
 [ -d /usr/local/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
