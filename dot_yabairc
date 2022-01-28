@@ -51,11 +51,12 @@ yabai -m rule --add label="アクティビティモニタ" app="^アクティビ
 yabai -m rule --add label="キーチェーンアクセス" app="^キーチェーンアクセス$" manage=off
 yabai -m rule --add label="Finder" app="^Finder$" manage=off
 yabai -m rule --add label="システム環境設定" app="^システム環境設定$" manage=off
+yabai -m rule --add app="^システム情報$" manage=off
 yabai -m rule --add label="Alfred" app="^Alfred Preferences$" manage=off
 yabai -m rule --add app="^Cold Turkey Blocker" manage=off
 
 # space 1
-yabai -m rule --add app="^Alacritty$" space=1 manage=on
+yabai -m rule --add app="^kitty$" space=1 manage=on
 yabai -m rule --add app="^Code$" space=1 manage=on
 yabai -m space 1 --layout stack
 
@@ -72,11 +73,17 @@ yabai -m space 4 --layout stack
 yabai -m rule --add app="^Toggl Track$" space=5 manage=on
 yabai -m rule --add app="^Cron$" space=5 manage=on
 yabai -m rule --add app="^Habitify$" space=5 manage=on
+yabai -m rule --add app="^Tot$" space=5 manage=on
 yabai -m space 5 --layout bsp --balance
 
 # space 6
 yabai -m rule --add app="^Spotify$" space=6 manage=on
-yabai -m rule --add app="^システム環境設定$" space=6 manage=on
 yabai -m space 6 --layout bsp --balance
+
+# space 7
+yabai -m rule --add app="Slack" space=7 manage=on
+yabai -m rule --add app="Discord" space=7 manage=on
+yabai -m rule --add app="Mimestream" space=7 manage=on
+yabai -m space 7 --layout stack
 
 echo "yabai configuration loaded.."
