@@ -54,6 +54,7 @@ yabai -m rule --add label="システム環境設定" app="^システム環境設
 yabai -m rule --add app="^システム情報$" manage=off
 yabai -m rule --add label="Alfred" app="^Alfred Preferences$" manage=off
 yabai -m rule --add app="^Cold Turkey Blocker" manage=off
+yabai -m rule --add app="^DeepL" manage=off
 
 # space 1
 yabai -m rule --add app="^kitty$" space=1 manage=on
