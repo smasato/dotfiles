@@ -137,7 +137,7 @@ alias gs='git status'
 alias c='cd ~'
 alias el='exa --header --icons --time-style=long-iso'
 
-[ -e /usr/local/bin/jump ] && eval "$(jump shell)"
+[ -e /usr/local/bin/zoxide ] && eval "$(zoxide init zsh)"
 [ -d /usr/local/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
 [ -e /usr/local/bin/op ] && eval "$(op completion zsh)"; compdef _op op
 
