@@ -1,7 +1,7 @@
 #!/usr/local/bin/zsh
 
 installed_plugins=(`asdf plugin-list`)
-plugins=(nodejs ruby python)
+plugins=(nodejs ruby python php)
 
 for i in $plugins; do
     if (( ${installed_plugins[(I)$i]} )); then
