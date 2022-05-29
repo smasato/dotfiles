@@ -4,8 +4,8 @@
 set -eufo pipefail
 
 {{ $taps := list
+    "aws/tap"
     "claui/whence"
-    "federico-terzi/espanso"
     "gromgit/fuse"
     "heroku/brew"
     "homebrew/bundle"
@@ -14,6 +14,8 @@ set -eufo pipefail
     "homebrew/cask-versions"
     "homebrew/core"
     "homebrew/services"
+    "koekeishiya/formulae"
+    "sidneys/homebrew"
     "koekeishiya/formulae" -}}
 {{ $brews := list
     "openjdk"
