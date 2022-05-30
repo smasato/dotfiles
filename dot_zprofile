@@ -10,4 +10,9 @@ export PATH="$PATH:/usr/local/sbin"
 [ -d /usr/local/opt/coreutils/ ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 export PATH=$PATH:$HOME/dev/bin:$(go env GOROOT)/bin
+
+if [ `uname -m` = 'arm64' ]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
 export GOPATH=$HOME/dev
