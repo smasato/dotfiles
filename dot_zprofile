@@ -9,10 +9,10 @@ export PATH="$PATH:/usr/local/sbin"
 [ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
 [ -d /usr/local/opt/coreutils/ ] && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
-export PATH=$PATH:$HOME/dev/bin:$(go env GOROOT)/bin
-
 if [ `uname -m` = 'arm64' ]; then
     export PATH="/opt/homebrew/bin:$PATH"
 fi
+
+export PATH=$PATH:$HOME/dev/bin:$(go env GOROOT)/bin
 
 export GOPATH=$HOME/dev
