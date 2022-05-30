@@ -33,3 +33,5 @@ defaults write com.apple.screencapture "show-thumbnail" -bool "false"
 
 # startup chime
 sudo nvram StartupMute=%01
+
+open -a "Google Chrome" --args --make-default-browser
