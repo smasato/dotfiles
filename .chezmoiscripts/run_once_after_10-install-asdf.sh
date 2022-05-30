@@ -1,4 +1,4 @@
-#!/usr/local/bin/zsh
+#!/bin/bash
 
 installed_plugins=(`asdf plugin-list`)
 plugins=(nodejs ruby python php)
