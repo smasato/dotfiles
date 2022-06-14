@@ -126,9 +126,9 @@ zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion:*' insert-tab false
 
 # google-cloud-sdk
-if [ -d /usr/local/Caskroom/google-cloud-sdk ]; then
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+if [ -d $(brew --prefix)/Caskroom/google-cloud-sdk ]; then
+  source $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+  source $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 fi
 
 # alias
@@ -137,8 +137,8 @@ alias gs='git status'
 alias c='cd ~'
 alias el='exa --header --icons --time-style=long-iso'
 
-[ -e /usr/local/bin/zoxide ] && eval "$(zoxide init zsh)"
-[ -d /usr/local/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
-[ -e /usr/local/bin/op ] && eval "$(op completion zsh)"; compdef _op op
+[ -e $(brew --prefix)/bin/zoxide ] && eval "$(zoxide init zsh)"
+[ -d $(brew --prefix)/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
+[ -e $(brew --prefix)/bin/op ] && eval "$(op completion zsh)"; compdef _op op
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
