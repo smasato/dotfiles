@@ -1,4 +1,4 @@
-# espanso configuration file
+# espanso match file
 
 matches:
   - trigger: ":n"
