@@ -39,14 +39,16 @@ yabai -m config window_gap                   5
 yabai -m space --layout bsp
 yabai -m config debug_output on
 
+
+# AS TimerPro
+yabai -m rule --add label="AS TimerPro" app="^AS TimerPRO$" sticky=on topmost=on
+
 # manage=off
 yabai -m rule --add app="^Karabiner" manage=off
-
 yabai -m rule --add app=PyCharm manage=off
 yabai -m rule --add app=RubyMine manage=off
 yabai -m rule --add app=GoLand manage=off
 yabai -m rule --add app="JetBrains Toolbox" manage=off
-
 yabai -m rule --add label="アクティビティモニタ" app="^アクティビティモニタ$" manage=off
 yabai -m rule --add label="キーチェーンアクセス" app="^キーチェーンアクセス$" manage=off
 yabai -m rule --add label="Finder" app="^Finder$" manage=off
