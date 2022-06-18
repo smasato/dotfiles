@@ -75,7 +75,6 @@ yabai -m space 4 --layout stack
 # space 5
 yabai -m rule --add app="^Toggl Track$" space=5 manage=on
 yabai -m rule --add app="^Cron$" space=5 manage=on
-yabai -m rule --add app="^Habitify$" space=5 manage=on
 yabai -m rule --add app="^Tot$" space=5 manage=on
 yabai -m space 5 --layout bsp --balance
 
