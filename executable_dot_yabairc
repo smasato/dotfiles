@@ -41,7 +41,7 @@ yabai -m config debug_output on
 
 
 # AS TimerPro
-yabai -m rule --add label="AS TimerPro" app="^AS TimerPRO$" sticky=on layer=above
+yabai -m rule --add label="AS TimerPro" app="^AS TimerPRO" sticky=on layer=above
 
 # manage=off
 yabai -m rule --add app="^Karabiner" manage=off
