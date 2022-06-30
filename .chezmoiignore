@@ -1,2 +1,10 @@
 scripts
 README.md
+.keep
+{{- if and (ne .chezmoi.hostname "smasato-14") (ne .chezmoi.hostname "smasato-17") }}
+.yabairc
+.skhdrc
+.hgignore
+.hgrc
+Library/Preferences/espanso
+{{- end }}
