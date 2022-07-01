@@ -8,6 +8,7 @@ export PATH=$PATH:$(brew --prefix)/sbin
 [ -d $(brew --prefix)/opt/curl ] && export PATH=$PATH:$(brew --prefix)opt/curl/bin
 [ -d $(brew --prefix)/opt/openssl ] && export PATH=$PATH:$(brew --prefix)/opt/openssl/bin
 [ -d $(brew --prefix)/opt/coreutils ] && export PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
+[ -d $(brew --prefix)/opt/libpq ] && export PATH=$(brew --prefix)/opt/libpq/bin:$PATH
 [ -d $(brew --prefix)/opt/go ] && export PATH=$PATH:$(go env GOROOT)/bin
 [ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
 

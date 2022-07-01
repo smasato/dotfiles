@@ -2,31 +2,29 @@
 #!/bin/bash
 
 set -eufo pipefail
-
+brew bundle --no-lock --file=/dev/stdin <<EOF
 {{ $taps := list
     "aws/tap"
     "claui/whence"
-    "gromgit/fuse"
     "heroku/brew"
     "homebrew/bundle"
     "homebrew/cask"
     "homebrew/cask-fonts"
     "homebrew/cask-versions"
     "homebrew/core"
-    "homebrew/services"
-    "koekeishiya/formulae"
-    "minacle/chntpw"
-    "koekeishiya/formulae" -}}
-{{ $brews := list
+    "homebrew/services" -}}
+{{- $brews := list
     "openjdk"
     "jpeg"
     "libtiff"
     "webp"
     "aom"
+    "openssl@1.1"
     "readline"
     "aria2"
     "autoconf"
     "automake"
+    "gmp"
     "coreutils"
     "libyaml"
     "asdf"
@@ -34,7 +32,7 @@ set -eufo pipefail
     "awscli"
     "bash"
     "bdw-gc"
-    "bison"
+    "bmon"
     "brew-cask-completion"
     "bzip2"
     "cabextract"
@@ -50,6 +48,7 @@ set -eufo pipefail
     "curl"
     "deno"
     "exa"
+    "libsodium"
     "fribidi"
     "guile"
     "gnutls"
@@ -68,14 +67,16 @@ set -eufo pipefail
     "freeglut"
     "fzf"
     "gawk"
+    "gd"
     "geos"
     "krb5"
+    "libxml2"
     "proj"
+    "libpq"
     "nss"
     "numpy"
     "poppler-qt5"
     "gdal"
-    "gdb"
     "ghostscript"
     "ghq"
     "git"
@@ -90,12 +91,12 @@ set -eufo pipefail
     "imagemagick"
     "iperf"
     "jq"
+    "libiconv"
     "unibilium"
     "libuv"
     "llvm"
     "m-cli"
     "mercurial"
-    "mit-scheme"
     "msgpack"
     "navi"
     "nco"
@@ -110,14 +111,11 @@ set -eufo pipefail
     "procs"
     "protobuf"
     "rclone"
-    "rcm"
+    "re2c"
     "reattach-to-user-namespace"
     "ripgrep"
     "ruby-build"
     "rust"
-    "scheme48"
-    "swi-prolog"
-    "switchaudio-osx"
     "tig"
     "utf8proc"
     "tmux"
@@ -127,70 +125,80 @@ set -eufo pipefail
     "wget"
     "wimlib"
     "xsv"
-    "youtube-dl"
     "zlib"
     "zoxide"
     "zsh"
     "zsh-completions"
     "aws/tap/aws-sam-cli"
-    "gromgit/fuse/sshfs-mac"
-    "heroku/brew/heroku"
-    "koekeishiya/formulae/skhd"
-    "minacle/chntpw/chntpw" -}}
+    "heroku/brew/heroku" -}}
 {{ $casks := list
     "1password"
     "1password-cli"
-    "adobe-creative-cloud"
-    "alfred"
-    "alt-tab"
     "bartender"
-    "cold-turkey-blocker"
     "cyberduck"
-    "deepl"
-    "discord"
-    "docker"
-    "espanso"
-    "fantastical"
     "font-sauce-code-pro-nerd-font"
     "fork"
-    "fuse"
     "google-chrome"
-    "google-chrome-canary"
-    "google-drive"
     "jetbrains-toolbox"
     "karabiner-elements"
     "keka"
     "kitty"
-    "macfuse"
-    "mactex-no-gui"
     "notion"
-    "obsidian"
     "raycast"
     "slack"
-    "spotify"
-    "spotmenu"
-    "sunsama"
-    "thor"
-    "todoist"
-    "typora"
-    "visual-studio-code"
-    "vlc"
-    "workflowy"
-    "zoom" -}}
+    "visual-studio-code" -}}
 
-brew bundle --no-lock --file=/dev/stdin <<EOF
+{{- if or (eq .chezmoi.hostname "smasato-14") (eq .chezmoi.hostname "smasato-17") -}}
+    {{- $taps = concat $taps (list
+        "gromgit/fuse"
+        "minacle/chntpw"
+        "koekeishiya/formulae") -}}
+    {{- $brews = concat $brews (list
+        "youtube-dl"
+        "gromgit/fuse/sshfs-mac"
+        "minacle/chntpw/chntpw") -}}
+    {{- $casks = concat $casks (list
+        "adobe-creative-cloud"
+        "alfred"
+        "alt-tab"
+        "atok"
+        "cold-turkey-blocker"
+        "deepl"
+        "discord"
+        "docker"
+        "espanso"
+        "fantastical"
+        "fuse"
+        "google-chrome-canary"
+        "google-drive"
+        "macfuse"
+        "mactex-no-gui"
+        "obsidian"
+        "spotify"
+        "spotmenu"
+        "sunsama"
+        "thor"
+        "todoist"
+        "typora"
+        "vlc"
+        "workflowy"
+        "zoom") }}
+{{- end -}}
 {{ range $taps -}}
-tap "{{ . }}"
+    tap "{{ . }}"
 {{ end -}}
-{{ range $brews -}}
-brew "{{ . }}"
+{{- range $brews -}}
+    brew "{{ . }}"
 {{ end -}}
+{{- if or (eq .chezmoi.hostname "smasato-14") (eq .chezmoi.hostname "smasato-17") -}}
 brew "unbound", restart_service: true
 brew "pueue", restart_service: true
 brew "postgresql", restart_service: true
-brew "koekeishiya/formulae/yabai", args: ['HEAD']
+brew "koekeishiya/formulae/skhd", args: ["HEAD", "with-logging"]
+brew "koekeishiya/formulae/yabai", args: ["HEAD"]
+{{- end }}
 {{ range $casks -}}
-cask "{{ . }}"
+    cask "{{ . }}"
 {{ end -}}
 EOF
-{{ end -}}
+{{- end -}}
