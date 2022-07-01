@@ -5,7 +5,6 @@ set -eufo pipefail
 brew bundle --no-lock --file=/dev/stdin <<EOF
 {{ $taps := list
     "aws/tap"
-    "claui/whence"
     "heroku/brew"
     "homebrew/bundle"
     "homebrew/cask"
@@ -32,6 +31,7 @@ brew bundle --no-lock --file=/dev/stdin <<EOF
     "awscli"
     "bash"
     "bdw-gc"
+    "bison"
     "bmon"
     "brew-cask-completion"
     "bzip2"
@@ -177,7 +177,6 @@ brew bundle --no-lock --file=/dev/stdin <<EOF
         "spotify"
         "spotmenu"
         "sunsama"
-        "thor"
         "todoist"
         "typora"
         "vlc"
