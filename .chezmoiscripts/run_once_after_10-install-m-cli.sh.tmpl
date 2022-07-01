@@ -1,3 +1,4 @@
+{{- if or (eq .chezmoi.hostname "smasato-14") (eq .chezmoi.hostname "smasato-17") -}}
 #!/bin/bash
 
 # dock
@@ -11,3 +12,4 @@ m finder showpath YES
 
 # timezone
 m timezone set Asia/Tokyo
+{{- end }}
