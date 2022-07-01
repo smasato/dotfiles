@@ -2,7 +2,6 @@
 
 brew install zsh zsh-completions
 
-
 if [ `uname -m` = 'arm64' ]; then
     sudo sh -c 'echo /opt/homebrew/bin/zsh >> /etc/shells'
     echo "chsh -s /opt/homebrew/bin/zsh" ; chsh -s /opt/homebrew/bin/zsh

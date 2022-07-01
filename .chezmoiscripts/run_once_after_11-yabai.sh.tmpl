@@ -1,3 +1,4 @@
+{{- if or (eq .chezmoi.hostname "smasato-14") (eq .chezmoi.hostname "smasato-17") -}}
 #!/bin/bash
-
 sudo sh -c 'echo "$(echo $SUDO_USER) ALL = (root) NOPASSWD: $(which yabai) --load-sa" > /private/etc/sudoers.d/yabai'
+{{- end }}
