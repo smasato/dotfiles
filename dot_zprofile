@@ -1,19 +1,1 @@
 export LANG=ja_JP.UTF-8
-
-export PATH="$PATH:$HOME/.local/bin"
-export PATH=$PATH:$HOME/dev/bin
-export PATH=$PATH:$(brew --prefix)/sbin
-
-[ -d $(brew --prefix)/opt/llvm/ ] && export PATH=$PATH:$(brew --prefix)/opt/llvm/bin
-[ -d $(brew --prefix)/opt/curl ] && export PATH=$PATH:$(brew --prefix)opt/curl/bin
-[ -d $(brew --prefix)/opt/openssl ] && export PATH=$PATH:$(brew --prefix)/opt/openssl/bin
-[ -d $(brew --prefix)/opt/coreutils ] && export PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
-[ -d $(brew --prefix)/opt/libpq ] && export PATH=$(brew --prefix)/opt/libpq/bin:$PATH
-[ -d $(brew --prefix)/opt/go ] && export PATH=$PATH:$(go env GOROOT)/bin
-[ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
-
-if [ `uname -m` = 'arm64' ]; then
-    export PATH="/opt/homebrew/bin:$PATH"
-fi
-
-export GOPATH=$HOME/dev
