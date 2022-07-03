@@ -2,6 +2,21 @@ if [ `uname -m` = 'arm64' ]; then
     export PATH="/opt/homebrew/bin:$PATH"
 fi
 
+if [ `uname -m` = 'x86_64' ]; then
+    export PATH="/usr/local/bin:$PATH"
+fi
+
+if [ -e /etc/ssl/certs/netskope-cert-bundle.pem ]; then
+# Netskope Certificate for Cloud
+    export REQUESTS_CA_BUNDLE=/etc/ssl/certs/netskope-cert-bundle.pem
+
+    # Netskope Certificate for nodejs
+    export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/netskope-cert-bundle.pem
+
+    # Netskope Certificate for curl
+    export CURL_CA_BUNDLE=/etc/ssl/certs/netskope-cert-bundle.pem
+fi 
+
 export PATH="$PATH:$HOME/.local/bin"
 export PATH=$PATH:$HOME/dev/bin
 export PATH=$PATH:$(brew --prefix)/sbin
