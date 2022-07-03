@@ -1,10 +1,16 @@
 scripts
 README.md
 .keep
-{{- if and (ne .chezmoi.hostname "smasato-14") (ne .chezmoi.hostname "smasato-17") }}
+{{- if not .yabai }}
 .yabairc
+{{- end }}
+{{- if not .skhd }}
 .skhdrc
+{{- end }}
+{{- if not .hg }}
 .hgignore
 .hgrc
+{{- end}}
+{{- if not .espanso }}
 Library/Preferences/espanso
 {{- end }}

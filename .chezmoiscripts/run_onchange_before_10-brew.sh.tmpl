@@ -12,6 +12,9 @@ brew bundle --no-lock --file=/dev/stdin <<EOF
     "homebrew/cask-versions"
     "homebrew/core"
     "homebrew/services" -}}
+{{- if or .yabai .skhd -}}
+    {{- $taps = concat $taps (list "koekeishiya/formulae") }}
+{{- end -}}
 {{- $brews := list
     "openjdk"
     "jpeg"
@@ -147,12 +150,13 @@ brew bundle --no-lock --file=/dev/stdin <<EOF
     "raycast"
     "slack"
     "visual-studio-code" -}}
-
+{{- if .espanso -}}
+    {{- $casks = concat $casks (list "espanso") }}
+{{- end -}}
 {{- if or (eq .chezmoi.hostname "smasato-14") (eq .chezmoi.hostname "smasato-17") -}}
     {{- $taps = concat $taps (list
         "gromgit/fuse"
-        "minacle/chntpw"
-        "koekeishiya/formulae") -}}
+        "minacle/chntpw") -}}
     {{- $brews = concat $brews (list
         "youtube-dl"
         "gromgit/fuse/sshfs-mac"
@@ -166,7 +170,6 @@ brew bundle --no-lock --file=/dev/stdin <<EOF
         "deepl"
         "discord"
         "docker"
-        "espanso"
         "fantastical"
         "fuse"
         "google-chrome-canary"
@@ -193,7 +196,11 @@ brew bundle --no-lock --file=/dev/stdin <<EOF
 brew "unbound", restart_service: true
 brew "pueue", restart_service: true
 brew "postgresql", restart_service: true
+{{- end -}}
+{{- if .skhd }}
 brew "koekeishiya/formulae/skhd", args: ["HEAD", "with-logging"]
+{{- end -}}
+{{- if .yabai }}
 brew "koekeishiya/formulae/yabai", args: ["HEAD"]
 {{- end }}
 {{ range $casks -}}
