@@ -2,6 +2,9 @@
 	name = Masato Sugiyama
 	email = {{ .email | quote }}
 
+[includeIf "gitdir:~/.local/share/chezmoi/"]
+	path = ~/.gitconfig_private
+
 [color]
 	ui = true
 
