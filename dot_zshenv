@@ -1,11 +1,3 @@
-if [ `uname -m` = 'arm64' ]; then
-    export PATH="/opt/homebrew/bin:$PATH"
-fi
-
-if [ `uname -m` = 'x86_64' ]; then
-    export PATH="/usr/local/bin:$PATH"
-fi
-
 if [ -e /etc/ssl/certs/netskope-cert-bundle.pem ]; then
 # Netskope Certificate for Cloud
     export REQUESTS_CA_BUNDLE=/etc/ssl/certs/netskope-cert-bundle.pem
@@ -16,17 +8,3 @@ if [ -e /etc/ssl/certs/netskope-cert-bundle.pem ]; then
     # Netskope Certificate for curl
     export CURL_CA_BUNDLE=/etc/ssl/certs/netskope-cert-bundle.pem
 fi 
-
-export PATH="$PATH:$HOME/.local/bin"
-export PATH=$PATH:$HOME/dev/bin
-export PATH=$PATH:$(brew --prefix)/sbin
-
-[ -d $(brew --prefix)/opt/llvm/ ] && export PATH=$PATH:$(brew --prefix)/opt/llvm/bin
-[ -d $(brew --prefix)/opt/curl ] && export PATH=$PATH:$(brew --prefix)opt/curl/bin
-[ -d $(brew --prefix)/opt/openssl ] && export PATH=$PATH:$(brew --prefix)/opt/openssl/bin
-[ -d $(brew --prefix)/opt/coreutils ] && export PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
-[ -d $(brew --prefix)/opt/libpq ] && export PATH=$(brew --prefix)/opt/libpq/bin:$PATH
-[ -d $(brew --prefix)/opt/go ] && export PATH=$PATH:$(go env GOROOT)/bin
-[ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
-
-export GOPATH=$HOME/dev
