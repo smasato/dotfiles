@@ -60,6 +60,10 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH=$PATH:$HOME/dev/bin
 export PATH=$PATH:$(brew --prefix)/sbin
 
+{{ if .work -}}
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+{{- end }}
+
 [ -d $(brew --prefix)/opt/llvm/ ] && export PATH=$PATH:$(brew --prefix)/opt/llvm/bin
 [ -d $(brew --prefix)/opt/curl ] && export PATH=$PATH:$(brew --prefix)opt/curl/bin
 [ -d $(brew --prefix)/opt/openssl ] && export PATH=$PATH:$(brew --prefix)/opt/openssl/bin
