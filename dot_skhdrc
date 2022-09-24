@@ -1,23 +1,22 @@
 # space
 ctrl + cmd - c : yabai -m space --layout bsp
 ctrl + cmd - x : yabai -m space --layout stack
-ctrl + cmd - b : yabai -m space --balance # balance size of windows
+ctrl + cmd - z : yabai -m space --layout float
+ctrl + cmd - b : yabai -m space --balance
 
 # fast focus desktop
-ctrl + alt - x : yabai -m space --focus recent
-ctrl + alt - h : yabai -m space --focus prev
-ctrl + alt - l : yabai -m space --focus next
+cmd + alt - x : yabai -m space --focus recent
+cmd + alt - h : yabai -m space --focus prev
+cmd + alt - l : yabai -m space --focus next
+
+cmd + alt - 1 : yabai -m space --focus 1
 
 # window
 alt - n : yabai -m window --toggle native-fullscreen
 alt - r : yabai -m window --toggle zoom-fullscreen
 alt - t : yabai -m window --toggle topmost
 alt - s : yabai -m window --toggle sticky
-
-# swap managed window
-shift + alt - n : yabai -m window --swap north
-
-# move managed window
-shift + cmd - h : yabai -m window --warp east
+alt - t : yabai -m window --toggle float
+alt - p : yabai -m window --toggle sticky --toggle topmost --toggle pip
 
 ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
