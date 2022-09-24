@@ -1,92 +1,81 @@
 #!/usr/bin/env sh
 
-# the scripting-addition must be loaded manually if
-# you are running yabai on macOS Big Sur. Uncomment
-# the following line to have the injection performed
-# when the config is executed during startup.
-#
-# for this to work you must configure sudo such that
-# it will be able to run the command without password
-#
-# see this wiki page for information:
-#  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
-#
-sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
 
 # global settings
-yabai -m config window_placement             second_child
-yabai -m config window_topmost               off
-yabai -m config window_shadow                off
-yabai -m config window_opacity               off
-yabai -m config active_window_opacity        1.0
-yabai -m config normal_window_opacity        1.0
-yabai -m config window_border                off
-yabai -m config split_ratio                  0.50
-yabai -m config auto_balance                 off
-yabai -m config mouse_modifier               fn
-yabai -m config mouse_action1                move
-yabai -m config mouse_action2                resize
-yabai -m config mouse_drop_action            swap
+yabai -m config                                 \
+    mouse_follows_focus          off            \
+    focus_follows_mouse          off            \
+    window_origin_display        default        \
+    window_placement             second_child   \
+    window_topmost               off            \
+    window_shadow                off            \
+    window_animation_duration    0.0            \
+    window_opacity_duration      0.0            \
+    active_window_opacity        1.0            \
+    normal_window_opacity        0.90           \
+    window_opacity               off            \
+    insert_feedback_color        0xffd75f5f     \
+    active_window_border_color   0xff775759     \
+    normal_window_border_color   0xff555555     \
+    window_border_width          4              \
+    window_border_radius         12             \
+    window_border_blur           off            \
+    window_border_hidpi          on             \
+    window_border                off            \
+    split_ratio                  0.50           \
+    split_type                   auto           \
+    auto_balance                 off            \
+    top_padding                  5              \
+    bottom_padding               5              \
+    left_padding                 5              \
+    right_padding                5              \
+    window_gap                   05             \
+    layout                       stack          \
+    mouse_modifier               fn             \
+    mouse_action1                move           \
+    mouse_action2                resize         \
+    mouse_drop_action            swap
 
-# general space settings
-yabai -m config layout                       stack
-yabai -m config top_padding                  5
-yabai -m config bottom_padding               5
-yabai -m config left_padding                 5
-yabai -m config right_padding                5
-yabai -m config window_gap                   5
 yabai -m space --layout bsp
 yabai -m config debug_output on
 
-yabai -m rule --add label="AS TimerPro" app="^AS TimerPRO" sticky=on layer=above
+yabai -m rule --add app="^AS TimerPRO" sticky=on layer=above
 yabai -m rule --add app="1Password" sticky=on layer=above
 
-
 # manage=off
-yabai -m rule --add app="^Karabiner" manage=off
-yabai -m rule --add app=PyCharm manage=off
-yabai -m rule --add app=RubyMine manage=off
-yabai -m rule --add app=GoLand manage=off
-yabai -m rule --add app="JetBrains Toolbox" manage=off
-yabai -m rule --add label="アクティビティモニタ" app="^アクティビティモニタ$" manage=off
-yabai -m rule --add label="キーチェーンアクセス" app="^キーチェーンアクセス$" manage=off
-yabai -m rule --add label="Finder" app="^Finder$" manage=off
-yabai -m rule --add label="システム環境設定" app="^システム環境設定$" manage=off
-yabai -m rule --add app="^システム情報$" manage=off
-yabai -m rule --add label="Alfred" app="^Alfred Preferences$" manage=off
-yabai -m rule --add app="^Cold Turkey Blocker" manage=off
-yabai -m rule --add app="^DeepL" manage=off
-yabai -m rule --add app="Contexts" manage=off
+yabai -m rule --add app="(Karabiner-Elements|Karabiner-EventViewer)" manage=off
+yabai -m rule --add app="(JetBrains Toolbox|GoLand|RubyMine|PyCharm)" manage=off
+yabai -m rule --add app="(Cold Turkey Blocker|Contexts|DeepL|Finder|CotEditor)" manage=off
+yabai -m rule --add app="(システム環境設定|システム情報|アクティビティモニタ|キーチェーンアクセス)" manage=off
 
 # space 1
-yabai -m rule --add app="^kitty$" space=1 manage=on
-yabai -m rule --add app="^Code$" space=1 manage=on
+yabai -m rule --add app="(kitty|Code)" space=^1
 yabai -m space 1 --layout stack
 
 # space 2
-yabai -m rule --add app="^Google Chrome$" space=2 manage=on
+yabai -m rule --add app="(Google Chrome)" space=^2
 yabai -m space 2 --layout bsp
 
 # space 4
-yabai -m rule --add app="^Fantastical$" space=4 manage=on
-yabai -m rule --add app="^Craft$" space=4 manage=on
+yabai -m rule --add app="(Fantastical)" space=^4
 yabai -m space 4 --layout stack
 
 # space 5
-yabai -m rule --add app="^Toggl Track$" space=5 manage=on
-yabai -m rule --add app="^Cron$" space=5 manage=on
-yabai -m rule --add app="^Tot$" space=5 manage=on
-yabai -m space 5 --layout bsp --balance
-
+yabai -m rule --add app="(Sunsama|Toggl Track)" space=^5
+yabai -m rule --add app="Sunsama" grid=1:8:2:0:6:1 # 1x8 grid (right 6 columns)
+yabai -m rule --add app="Toggl Track" grid=1:8:0:0:2:1 # 1x8 grid (left 2 columns)
+yabai -m space 5 --layout float
 # space 6
-yabai -m rule --add app="^Spotify$" space=6 manage=on
-yabai -m space 6 --layout bsp --balance
+yabai -m rule --add app="(Spotify)" space=^6
+yabai -m space 6 --layout float
 
 # space 7
-yabai -m rule --add app="Slack" space=7 manage=on
-yabai -m rule --add app="Discord" space=7 manage=on
-yabai -m rule --add app="Mimestream" space=7 manage=on
-yabai -m space 7 --layout stack
+yabai -m rule --add app="(Slack|Discord|Mimestream)" space=^7
+yabai -m space 7 --layout stack 
+
+yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
 
 echo "yabai configuration loaded.."

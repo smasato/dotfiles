@@ -1,0 +1,6 @@
+{{- if .yabai -}}
+#!/bin/bash
+
+# executable_dot_yabairc hash: {{ include "executable_dot_yabairc" | sha256sum }}
+brew services restart yabai
+{{- end }}
