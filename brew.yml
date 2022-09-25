@@ -13,7 +13,6 @@ taps:
 - minacle/chntpw
 brews:
   aom:
-  aria2:
   asdf:
   autoconf:
   automake:
@@ -21,7 +20,6 @@ brews:
   awscli:
   bash:
   bdw-gc:
-  bison:
   bmon:
   brew-cask-completion:
   bzip2:
@@ -34,12 +32,10 @@ brews:
   coreutils:
   csvq:
   curl:
-  deno:
   docker:
     link: false
   exa:
   ffmpeg:
-  fish:
   fontforge:
   freeglut:
   freetype:
@@ -48,7 +44,6 @@ brews:
   gawk:
   gcc:
   gd:
-  gdal:
   geos:
   gettext:
   ghostscript:
@@ -72,7 +67,6 @@ brews:
   htop:
   icu4c:
   imagemagick:
-  iperf:
   jpeg:
   jq:
   koekeishiya/formulae/skhd:
@@ -117,7 +111,6 @@ brews:
   peco:
   pipx:
   pkg-config:
-  poppler-qt5:
   postgresql@14:
     restart_service: true
   procs:
@@ -125,7 +118,6 @@ brews:
   protobuf:
   pueue:
     restart_service: true
-  qt@5:
   rclone:
   re2c:
   readline:
@@ -163,6 +155,7 @@ casks:
 - atok
 - bartender
 - cold-turkey-blocker
+- contexts
 - cyberduck
 - deepl
 - discord
