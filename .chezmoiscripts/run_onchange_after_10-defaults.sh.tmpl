@@ -1,39 +1,96 @@
 {{- if or (eq .chezmoi.hostname "smasato-14") (eq .chezmoi.hostname "smasato-17") -}}
 #!/bin/bash
 
-# desktopservices
+set -eufo pipefail
+
+osascript -e 'tell application "System Preferences" to quit'
+
+# Set timezone
+# sudo systemsetup -settimezone Asia/Tokyo
+
+# Desktop Services
+## Dont write .DS_Store on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+## Dont write .DS_Store on USB volumes
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-# finder
-defaults write com.apple.finder ShowTabView -bool true
+# Finder
+## Show all filename extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+## Dont save to iCloud by default
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false 
+## Show all files
+defaults write com.apple.finder AppleShowAllFiles -bool true
+## Show path bar
 defaults write com.apple.finder ShowPathbar -bool true
+## Show tab bar
+defaults write com.apple.finder ShowTabView -bool true
+## Show status bar
 defaults write com.apple.finder ShowStatusBar -bool true
-defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false" && killall Finder
-defaults write NSGlobalDomain "NSDocumentSaveNewDocumentsToCloud" -bool "false" 
+## Set default view to list
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+## Dont display warning when changing a file extension
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+## Show absolute path in title bar
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+## Show folder on top
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+## Dont show desktop icons
+defaults write com.apple.finder CreateDesktop -bool false
+killall Finder
 
-# keyboard
-defaults write NSGlobalDomain KeyRepeat -int 2
+# Keyboard
+## Set key repeat
+defaults write NSGlobalDomain KeyRepeat -int 0
+## Set delay until repeat
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
+## Disable automatic capitalization
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+## Disable press-and-hold for keys in favor of key repeat
 defaults write -g ApplePressAndHoldEnabled -bool false
 
-# dock
-defaults write com.apple.systempreferences AttentionPrefBundleIDs 0
-defaults write com.apple.dock "orientation" -string "right"
-defaults write com.apple.dock "tilesize" -int "36"
-defaults write com.apple.dock "autohide" -bool "true"
-defaults write com.apple.dock "autohide-time-modifier" -float "0"
-defaults write com.apple.dock "autohide-delay" -float "0"
-defaults write com.apple.dock "show-recents" -bool "false"
+# Dock
+##
+defaults write com.apple.dock orientation -string right
+##
+defaults write com.apple.dock launchanim -bool false
+##
+defaults write com.apple.dock tilesize -int 36
+##
+defaults write com.apple.dock autohide -bool true
+##
+defaults write com.apple.dock autohide-time-modifier -float 0
+##
+defaults write com.apple.dock autohide-delay -float 0
+##
+defaults write com.apple.dock show-recents -bool false
+## remove all icons
+defaults write com.apple.dock persistent-apps '()'
 killall Dock
 
-# screenshots
-defaults write com.apple.screencapture "disable-shadow" -bool "true" 
-defaults write com.apple.screencapture "location" -string "~/Pictures" && killall SystemUIServer
+# Screenshots
+## 
+defaults write com.apple.screencapture "disable-shadow" -bool "true"
+## 
+mkdir -p ~/Pictures/Screenshots && defaults write com.apple.screencapture "location" -string "~/Pictures/Screenshots"
+killall SystemUIServer
+## 
 defaults write com.apple.screencapture "show-thumbnail" -bool "false" 
 
-# startup chime
+# Disable chime on boot
 sudo nvram StartupMute=%01
+
+#
+defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
+
+# Disable the crash reporter
+defaults write com.apple.CrashReporter DialogType none
+#
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+#
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+#
+defaults write -g AppleShowScrollBars -string Always
 
 open -a "Google Chrome" --args --make-default-browser
 {{- end }}

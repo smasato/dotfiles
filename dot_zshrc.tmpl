@@ -144,7 +144,6 @@ setopt always_last_prompt
 
 autoload colors
 test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
-alias ls='ls --color=auto' # gnu ls
 
 zstyle ':completion::complete:*' use-cache true
 zstyle ':completion:*:default' menu select=1
@@ -161,7 +160,10 @@ fi
 alias reload="exec zsh && echo '~/.zshrc reloaded!'"
 alias gs='git status'
 alias c='cd ~'
+{{- if lookPath "exa" }}
+alias ls=exa
 alias el='exa --header --icons --time-style=long-iso'
+{{- end }}
 
 [ -e $(brew --prefix)/bin/zoxide ] && eval "$(zoxide init zsh)"
 [ -d $(brew --prefix)/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
