@@ -1,4 +1,3 @@
-scripts
 README.md
 .keep
 {{- if not .yabai }}

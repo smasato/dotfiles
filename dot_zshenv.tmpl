@@ -1,3 +1,4 @@
+{{ if .work -}}
 if [ -e /etc/ssl/certs/netskope-cert-bundle.pem ]; then
 # Netskope Certificate for Cloud
     export REQUESTS_CA_BUNDLE=/etc/ssl/certs/netskope-cert-bundle.pem
@@ -8,3 +9,4 @@ if [ -e /etc/ssl/certs/netskope-cert-bundle.pem ]; then
     # Netskope Certificate for curl
     export CURL_CA_BUNDLE=/etc/ssl/certs/netskope-cert-bundle.pem
 fi 
+{{- end }}
