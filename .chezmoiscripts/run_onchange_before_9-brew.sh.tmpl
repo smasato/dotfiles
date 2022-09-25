@@ -20,7 +20,7 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- if not .espanso -}}
     {{- $brews = unset $casks "espanso" -}}
 {{- end -}}
-{{- if not .work }}
+{{- if .work }}
     {{- $taps = without $taps "gromgit/fuse" "heroku/brew" "minacle/chntpw" -}}
     {{- $brews = omit $brews "minacle/chntpw/chntpw" "heroku/brew/heroku" "gromgit/fuse/sshfs-mac"
     "unbound" "pueue" "postgresql" "youtube-dl" -}}
