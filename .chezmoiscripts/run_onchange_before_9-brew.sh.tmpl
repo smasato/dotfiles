@@ -22,8 +22,8 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- end -}}
 {{- if .work }}
     {{- $taps = without $taps "gromgit/fuse" "heroku/brew" "minacle/chntpw" -}}
-    {{- $brews = omit $brews "minacle/chntpw/chntpw" "heroku/brew/heroku" "gromgit/fuse/sshfs-mac"
-    "unbound" "pueue" "postgresql" "youtube-dl" -}}
+    {{- $brews = omit $brews "gettext" "minacle/chntpw/chntpw" "heroku/brew/heroku" "gromgit/fuse/sshfs-mac"
+    "unbound" "pueue" "postgresql" "youtube-dl" "icu4c" "libedit" "libpng" "libpqxx" "openssl@1.1" "postgresql@14" -}}
     {{- $casks = without $casks "adobe-creative-cloud"
         "bartender"
         "atok"
