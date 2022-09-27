@@ -2,12 +2,17 @@
 #!/bin/bash
 
 set -eufo pipefail
-# brew.yml hash: {{ include "brew.yml" | sha256sum }}
+# brew_base.yml hash: {{ include "brew_base.yml" | sha256sum }}
+{{- if .work }}
+# brew_work.yml hash: {{ include "brew_work.yml" | sha256sum }}
+{{- else }}
+# brew_personal.yml hash: {{ include "brew_personal.yml" | sha256sum }}
+{{- end }}
 brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
-{{ $brewfile := include (joinPath .chezmoi.sourceDir "brew.yml") | fromYaml }}
-{{- $taps := $brewfile.taps }}
-{{- $brews := $brewfile.brews }}
-{{-  $casks := $brewfile.casks }}
+{{ $brew_base := include (joinPath .chezmoi.sourceDir "brew_base.yml") | fromYaml }}
+{{- $taps := $brew_base.taps }}
+{{- $brews := $brew_base.brews }}
+{{-  $casks := $brew_base.casks }}
 {{- if not (or .yabai .skhd) -}}
     {{- $taps = without $taps "koekeishiya/formulae" -}}
 {{- end }}
@@ -20,35 +25,19 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- if not .espanso -}}
     {{- $brews = unset $casks "espanso" -}}
 {{- end -}}
-{{- if .work }}
-    {{- $taps = without $taps "gromgit/fuse" "heroku/brew" "minacle/chntpw" -}}
-    {{- $brews = omit $brews "gettext" "minacle/chntpw/chntpw" "heroku/brew/heroku" "gromgit/fuse/sshfs-mac"
-    "unbound" "pueue" "postgresql" "youtube-dl" "icu4c" "libedit" "libpng" "libpqxx" "openssl@1.1" "postgresql@14" -}}
-    {{- $casks = without $casks "adobe-creative-cloud"
-        "bartender"
-        "atok"
-        "cold-turkey-blocker"
-        "cyberduck"
-        "deepl"
-        "discord"
-        "fuse"
-        "google-cloud-sdk"
-        "google-drive"
-        "macfuse"
-        "mactex-no-gui"
-        "mimestream"
-        "notion"
-        "obsidian"
-        "papers"
-        "roam-research"
-        "spotify"
-        "spotmenu"
-        "sunsama"
-        "typora"
-        "vlc"
-        "workflowy" -}}
+{{- if not .hg -}}
+    {{- $brews = unset $brews "mercurial" -}}
 {{- end -}}
-
+{{- if .work }}
+    {{- $brew_work := include (joinPath .chezmoi.sourceDir "brew_work.yml") | fromYaml }}
+    {{- $brews = merge $brews $brew_work.brews -}}
+    {{- $casks = concat $casks $brew_work.casks -}}
+{{ else }}
+    {{- $brew_personal := include (joinPath .chezmoi.sourceDir "brew_personal.yml") | fromYaml }}
+    {{- $taps = concat $taps $brew_personal.taps -}}
+    {{- $brews = merge $brews $brew_personal.brews -}}
+    {{- $casks = concat $casks $brew_personal.casks -}}
+{{- end -}}
 {{- range $taps -}}
     tap "{{ . }}"
 {{ end -}}

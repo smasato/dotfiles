@@ -1,0 +1,48 @@
+---
+taps:
+- gromgit/fuse
+- heroku/brew
+- minacle/chntpw
+brews:
+  gettext:
+  gromgit/fuse/sshfs-mac:
+  heroku/brew/heroku:
+  icu4c:
+  libedit:
+  libpng:
+  libpqxx:
+  minacle/chntpw/chntpw:
+  openssl@1.1:
+  postgresql@14:
+    restart_service: true
+  pueue:
+    restart_service: true
+  rclone:
+  unbound:
+    restart_service: true
+  youtube-dl:
+casks:
+- adobe-creative-cloud
+- atok
+- bartender
+- cold-turkey-blocker
+- contexts
+- cyberduck
+- deepl
+- discord
+- fuse
+- google-cloud-sdk
+- google-drive
+- macfuse
+- mactex-no-gui
+- mimestream
+- notion
+- obsidian
+- papers
+- roam-research
+- spotify
+- spotmenu
+- sunsama
+- typora
+- vlc
+- workflowy

@@ -31,6 +31,6 @@ output = {
   'casks' => casks
 }
 
-YAML.dump(output, File.open('brew.yml', 'w'))
+YAML.dump(output, File.open('brew_local.yml', 'w'))
 
 system('rm Brewfile')
