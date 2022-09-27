@@ -33,6 +33,7 @@ brews:
     link: false
   exa:
   ffmpeg:
+  ffmpeg@4:
   fontforge:
   freetype:
   fribidi:
@@ -127,6 +128,8 @@ brews:
   zoxide:
   zsh:
   zsh-completions:
+  libavif:
+  libheif:
 casks:
 - 1password
 - 1password-cli

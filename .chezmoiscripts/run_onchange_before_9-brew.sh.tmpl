@@ -30,12 +30,12 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- end -}}
 {{- if .work }}
     {{- $brew_work := include (joinPath .chezmoi.sourceDir "brew_work.yml") | fromYaml }}
-    {{- $brews = merge $brews $brew_work.brews -}}
+    {{- $brews = mergeOverwrite $brews $brew_work.brews -}}
     {{- $casks = concat $casks $brew_work.casks -}}
 {{ else }}
     {{- $brew_personal := include (joinPath .chezmoi.sourceDir "brew_personal.yml") | fromYaml }}
     {{- $taps = concat $taps $brew_personal.taps -}}
-    {{- $brews = merge $brews $brew_personal.brews -}}
+    {{- $brews = mergeOverwrite $brew_personal.brews $brews -}}
     {{- $casks = concat $casks $brew_personal.casks -}}
 {{- end -}}
 {{- range $taps -}}
@@ -57,4 +57,33 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
     cask "{{ . }}"
 {{ end -}}
 EOF
+ruby {{ joinPath .chezmoi.sourceDir "brew.rb" }}
+# brew_local.yml hash: {{ include "brew_local.yml" | sha256sum }}
+{{ $local := include (joinPath .chezmoi.sourceDir "brew_local.yml") | fromYaml -}}
+{{- $taps_local_only := list -}}
+{{- range $local.taps -}}
+    {{- if not (has . $taps) -}}
+        {{- $taps_local_only = append $taps_local_only . -}}
+    {{- end -}}
 {{- end -}}
+
+{{- $brew_local_only := list -}}
+{{- range $local.brews | keys -}}
+    {{- if not (has . ($brews | keys)) -}}
+        {{- $brew_local_only = append $brew_local_only . -}}
+    {{- end -}}
+{{- end -}}
+
+{{- $casks_local_only := list }}
+{{- range $local.casks -}}
+    {{- if not (has . $casks) -}}
+        {{- $casks_local_only = append $casks_local_only . -}}
+    {{- end -}}
+{{ end -}}
+{{- if or (gt (len $taps_local_only) 0) (gt (len $brew_local_only) 0) (gt (len $casks_local_only) 0) -}}
+# brew_local_diff.yml hash: {{ include "brew_local_diff.yml" | sha256sum }}
+echo "Create brew_local_diff.yml" && cat << EOS > {{ joinPath .chezmoi.sourceDir "brew_local_diff.yml" }}
+{{ dict "taps" $taps_local_only "brews" $brew_local_only "casks" $casks_local_only | toYaml -}}
+EOS
+{{- end }}
+{{ end -}}

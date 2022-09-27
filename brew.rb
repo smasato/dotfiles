@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'pathname'
 
-system('brew bundle dump -f')
+system('brew bundle dump --global --force')
 
-brewfile = File.read('Brewfile')
+brewfile = File.read(File.expand_path('~/.Brewfile'))
 
 taps = brewfile.scan(/^tap.*$/)
 taps.map { |tap| tap.gsub!(/^tap\s+|"/, '') }.sort!
@@ -31,6 +32,6 @@ output = {
   'casks' => casks
 }
 
-YAML.dump(output, File.open('brew_local.yml', 'w'))
+YAML.dump(output, File.open(File.join(__dir__, 'brew_local.yml'), 'w'))
 
-system('rm Brewfile')
+system('rm ~/.Brewfile')
