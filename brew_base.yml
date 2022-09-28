@@ -133,17 +133,19 @@ brews:
 casks:
 - 1password
 - 1password-cli
+- bartender
+- contexts
 - docker
 - espanso
 - fantastical
 - font-sauce-code-pro-nerd-font
 - fork
-- fuse
 - google-chrome
 - jetbrains-toolbox
 - karabiner-elements
 - keka
 - kitty
+- notion
 - meetingbar
 - raycast
 - slack

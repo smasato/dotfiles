@@ -24,7 +24,6 @@ brews:
 casks:
 - adobe-creative-cloud
 - atok
-- bartender
 - cold-turkey-blocker
 - contexts
 - cyberduck
@@ -36,7 +35,6 @@ casks:
 - macfuse
 - mactex-no-gui
 - mimestream
-- notion
 - obsidian
 - papers
 - roam-research
