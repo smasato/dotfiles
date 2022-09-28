@@ -70,6 +70,8 @@ brews:
     args:
     - HEAD
   krb5:
+  libavif:
+  libheif:
   libiconv:
   libpq:
   libsndfile:
@@ -128,8 +130,6 @@ brews:
   zoxide:
   zsh:
   zsh-completions:
-  libavif:
-  libheif:
 casks:
 - 1password
 - 1password-cli
@@ -145,8 +145,8 @@ casks:
 - karabiner-elements
 - keka
 - kitty
-- notion
 - meetingbar
+- notion
 - raycast
 - slack
 - visual-studio-code
