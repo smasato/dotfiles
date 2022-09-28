@@ -1,7 +1,7 @@
 README.md
 .keep
 brew_*.yml
-brew.rb
+scripts
 {{- if not .yabai }}
 .yabairc
 {{- end }}
