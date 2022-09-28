@@ -57,7 +57,7 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
     cask "{{ . }}"
 {{ end -}}
 EOF
-ruby {{ joinPath .chezmoi.sourceDir "brew.rb" }}
+ruby {{ joinPath .chezmoi.sourceDir "scripts" "brew.rb" }}
 # brew_local.yml hash: {{ include "brew_local.yml" | sha256sum }}
 {{ $local := include (joinPath .chezmoi.sourceDir "brew_local.yml") | fromYaml -}}
 {{- $taps_local_only := list -}}
