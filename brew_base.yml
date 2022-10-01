@@ -17,7 +17,6 @@ brews:
   awscli:
   bash:
   bdw-gc:
-  bmon:
   brew-cask-completion:
   bzip2:
   cabextract:
