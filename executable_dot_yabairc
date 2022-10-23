@@ -64,8 +64,8 @@ yabai -m space 4 --layout stack
 
 # space 5
 yabai -m rule --add app="(Sunsama|Toggl Track)" space=^5
-yabai -m rule --add app="Sunsama" grid=1:8:2:0:6:1 # 1x8 grid (right 6 columns)
-yabai -m rule --add app="Toggl Track" grid=1:8:0:0:2:1 # 1x8 grid (left 2 columns)
+yabai -m rule --add app="Sunsama" grid=1:9:3:0:6:1 # 1x8 grid (right 6 columns)
+yabai -m rule --add app="Toggl Track" grid=1:9:0:0:3:1 # 1x8 grid (left 3 columns)
 yabai -m space 5 --layout float
 # space 6
 yabai -m rule --add app="(Spotify)" space=^6
