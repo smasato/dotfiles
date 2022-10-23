@@ -41,7 +41,7 @@ yabai -m config                                 \
 yabai -m space --layout bsp
 yabai -m config debug_output on
 
-yabai -m rule --add app="^AS TimerPRO" sticky=on layer=above
+yabai -m rule --add app="AS TimerPRO" sticky=on layer=above
 yabai -m rule --add app="1Password" sticky=on layer=above
 
 # manage=off
@@ -67,6 +67,7 @@ yabai -m rule --add app="(Sunsama|Toggl Track)" space=^5
 yabai -m rule --add app="Sunsama" grid=1:9:3:0:6:1 # 1x8 grid (right 6 columns)
 yabai -m rule --add app="Toggl Track" grid=1:9:0:0:3:1 # 1x8 grid (left 3 columns)
 yabai -m space 5 --layout float
+
 # space 6
 yabai -m rule --add app="(Spotify)" space=^6
 yabai -m space 6 --layout float
@@ -74,8 +75,5 @@ yabai -m space 6 --layout float
 # space 7
 yabai -m rule --add app="(Slack|Discord|Mimestream)" space=^7
 yabai -m space 7 --layout stack 
-
-yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
-yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
 
 echo "yabai configuration loaded.."
