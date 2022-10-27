@@ -17,6 +17,7 @@ brews:
     restart_service: true
   pueue:
     restart_service: true
+  r:
   rclone:
   unbound:
     restart_service: true
@@ -35,9 +36,14 @@ casks:
 - macfuse
 - mactex-no-gui
 - mimestream
+- mem
+- clay
+- logseq
+- notion
 - obsidian
 - papers
 - roam-research
+- reflect
 - spotify
 - spotmenu
 - sunsama

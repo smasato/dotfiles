@@ -17,7 +17,7 @@ brews:
   awscli:
   bash:
   bdw-gc:
-  bmon:
+  boost:
   brew-cask-completion:
   bzip2:
   cabextract:
@@ -32,8 +32,12 @@ brews:
   docker:
     link: false
   exa:
+  fb303:
+  fbthrift:
   ffmpeg:
   ffmpeg@4:
+  fizz:
+  folly:
   fontforge:
   freetype:
   fribidi:
@@ -71,6 +75,7 @@ brews:
     - HEAD
   krb5:
   libavif:
+  libffi:
   libheif:
   libiconv:
   libpq:
@@ -86,7 +91,6 @@ brews:
   mercurial:
   msgpack:
   navi:
-  nco:
   ncurses:
   neovim:
   nnn:
@@ -104,6 +108,7 @@ brews:
   procs:
   proj:
   protobuf:
+  python@3.10:
   re2c:
   readline:
   reattach-to-user-namespace:
@@ -133,8 +138,7 @@ brews:
 casks:
 - 1password
 - 1password-cli
-- bartender
-- contexts
+- clickup
 - docker
 - espanso
 - fantastical
@@ -145,8 +149,6 @@ casks:
 - karabiner-elements
 - keka
 - kitty
-- meetingbar
-- notion
 - raycast
 - slack
 - visual-studio-code

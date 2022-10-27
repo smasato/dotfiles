@@ -32,6 +32,8 @@ setopt mark_dirs
 
 bindkey -e
 
+disable r
+
 autoload predict-on
 zstyle ':predict' verbose true
 
@@ -161,15 +163,11 @@ alias reload="exec zsh && echo '~/.zshrc reloaded!'"
 alias gs='git status'
 alias c='cd ~'
 {{- if lookPath "exa" }}
-alias ls=exa
-alias el='exa --header --icons --time-style=long-iso'
+alias ls='exa --icons --time-style=long-iso'
 {{- end }}
 
 [ -e $(brew --prefix)/bin/zoxide ] && eval "$(zoxide init zsh)"
 [ -d $(brew --prefix)/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
-
-{{- if or (eq .chezmoi.hostname "smasato-14") (eq .chezmoi.hostname "smasato-17") }}
 [ -e $(brew --prefix)/bin/op ] && eval "$(op completion zsh)"; compdef _op op
-{{- end }}
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
