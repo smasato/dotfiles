@@ -6,6 +6,6 @@ brews:
   redis:
     restart_service: true
 casks:
+- meetingbar
 - rectangle
 - tableplus
-- meetingbar
