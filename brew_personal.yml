@@ -25,6 +25,8 @@ brews:
 casks:
 - adobe-creative-cloud
 - atok
+- bartender
+- clay
 - cold-turkey-blocker
 - contexts
 - cyberduck
@@ -33,17 +35,16 @@ casks:
 - fuse
 - google-cloud-sdk
 - google-drive
+- logseq
 - macfuse
 - mactex-no-gui
-- mimestream
 - mem
-- clay
-- logseq
+- mimestream
 - notion
 - obsidian
 - papers
-- roam-research
 - reflect
+- roam-research
 - spotify
 - spotmenu
 - sunsama
