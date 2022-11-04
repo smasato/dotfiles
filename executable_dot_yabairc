@@ -5,8 +5,8 @@ sudo yabai --load-sa
 
 # global settings
 yabai -m config                                 \
-    mouse_follows_focus          on             \
-    focus_follows_mouse          autofocus      \
+    mouse_follows_focus          off            \
+    focus_follows_mouse          off            \
     window_origin_display        focused        \
     window_placement             second_child   \
     window_topmost               off            \

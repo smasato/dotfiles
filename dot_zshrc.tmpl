@@ -6,6 +6,7 @@ fi
 source ~/antigen.zsh
 
 antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle wfxr/forgit
 antigen bundle MichaelAquilina/zsh-you-should-use
@@ -18,12 +19,12 @@ antigen apply
 autoload -Uz compinit
 compinit
 
-setopt AUTO_CD
-setopt AUTO_LIST
-setopt AUTO_PARAM_KEYS
-setopt RM_STAR_WAIT
-setopt CORRECT
-setopt INTERACTIVE_COMMENTS
+setopt auto_cd
+setopt auto_list
+setopt auto_param_keys
+setopt rm_star_wait
+setopt correct
+setopt interactive_comments
 setopt print_eight_bit
 setopt auto_pushd
 setopt pushd_ignore_dups
@@ -41,11 +42,15 @@ zstyle ':predict' verbose true
 export HISTFILE=${HOME}/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=530000
+export HISTORY_IGNORE="(cd|pwd|ls|rm|mv|shutdown|exit|rmdir)"
+
 setopt extended_history
 setopt share_history
+
 setopt hist_ignore_dups
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
+
 setopt append_history
 setopt inc_append_history
 setopt hist_reduce_blanks
@@ -113,7 +118,7 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
 
-zstyle ":anyframe:selector:" use fzf-tmux
+zstyle ":anyframe:selector:" use fzf
 bindkey '^xb' anyframe-widget-cdr # 過去に移動したことのあるディレクトリに移動する
 bindkey '^x^b' anyframe-widget-checkout-git-branch
 bindkey '^xr' anyframe-widget-execute-history # コマンドライン履歴から選んで実行する
@@ -128,6 +133,9 @@ bindkey '^xi' anyframe-widget-insert-git-branch # Gitブランチ名をコマン
 bindkey '^x^i' anyframe-widget-insert-git-branch # Gitブランチ名をコマンドラインに挿入する
 bindkey '^xf' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
 bindkey '^x^f' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
+
+bindkey -M emacs '^P' history-substring-search-up
+bindkey -M emacs '^N' history-substring-search-down
 
 # Completion
 if type brew &>/dev/null; then
@@ -144,7 +152,7 @@ setopt list_types
 setopt magic_equal_subst
 setopt always_last_prompt
 
-autoload colors
+autoload -U colors
 test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
 
 zstyle ':completion::complete:*' use-cache true
@@ -162,9 +170,7 @@ fi
 alias reload="exec zsh && echo '~/.zshrc reloaded!'"
 alias gs='git status'
 alias c='cd ~'
-{{- if lookPath "exa" }}
-alias ls='exa --icons --time-style=long-iso'
-{{- end }}
+[ -e $(brew --prefix)/bin/exa ] && alias ls='exa --icons --time-style=long-iso'
 
 [ -e $(brew --prefix)/bin/zoxide ] && eval "$(zoxide init zsh)"
 [ -d $(brew --prefix)/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
