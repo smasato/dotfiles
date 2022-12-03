@@ -4,10 +4,13 @@ taps:
 - heroku/brew
 - minacle/chntpw
 brews:
+  aria2:
+  bison:
   gettext:
   gromgit/fuse/sshfs-mac:
   heroku/brew/heroku:
   icu4c:
+  lftp:
   libedit:
   libpng:
   libpqxx:
@@ -24,9 +27,10 @@ brews:
   youtube-dl:
 casks:
 - adobe-creative-cloud
+- akiflow
+- asana
 - atok
 - bartender
-- clay
 - cold-turkey-blocker
 - contexts
 - cyberduck
@@ -44,9 +48,10 @@ casks:
 - obsidian
 - papers
 - roam-research
+- sound-siphon
 - spotify
 - spotmenu
-- sunsama
+- transmit
 - typora
 - vlc
 - workflowy

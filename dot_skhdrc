@@ -6,8 +6,8 @@ ctrl + cmd - b : yabai -m space --balance
 
 # fast focus desktop
 cmd + alt - x : yabai -m space --focus recent
-cmd + alt - h : yabai -m space --focus prev
-cmd + alt - l : yabai -m space --focus next
+# cmd + alt - h : yabai -m space --focus prev
+# cmd + alt - l : yabai -m space --focus next
 
 cmd + alt - 1 : yabai -m space --focus 1
 
