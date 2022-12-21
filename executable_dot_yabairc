@@ -46,12 +46,12 @@ yabai -m rule --add app="(AS TimerPRO|1Password|そら案内)" sticky=on layer=a
 
 # manage=off
 yabai -m rule --add app="^Karabiner.*" manage=off
-yabai -m rule --add app="(JetBrains Toolbox|GoLand|RubyMine|PyCharm)" manage=off
-yabai -m rule --add app="(Cold Turkey Blocker|Contexts|DeepL|Finder|CotEditor)" manage=off
+yabai -m rule --add app="(JetBrains Toolbox|GoLand|RubyMine|PyCharm|WebStorm)" manage=off
+yabai -m rule --add app="(Cold Turkey Blocker|Contexts|DeepL|Finder|CotEditor|Rewind)" manage=off
 yabai -m rule --add app="(Avid Link|Creative Cloud)" manage=off
-yabai -m rule --add app="(辞書 by 物書堂|そら案内)" manage=off
+yabai -m rule --add app="(Dictionaries|そら案内)" manage=off
 yabai -m rule --add app="(LINE)" manage=off
-yabai -m rule --add app="(システム環境設定|システム情報|アクティビティモニタ|キーチェーンアクセス)" manage=off
+yabai -m rule --add app="(System Preferences|System Information|Activity Monitor|Keychain Access)" manage=off
 
 # space 1
 yabai -m rule --add app="(kitty|Code)" space=^1
@@ -62,15 +62,15 @@ yabai -m rule --add app="(Google Chrome)" space=^2
 yabai -m space 2 --layout bsp
 
 # space 3
-yabai -m rule --add app="(Roam Research|辞書 by 物書堂|Papers)" space=^3
+yabai -m rule --add app="(Roam Research|Dictionaries|Papers)" space=^3
 
 # space 4
 yabai -m rule --add app="(Fantastical)" space=^4
 yabai -m space 4 --layout stack
 
 # space 5
-yabai -m rule --add app="(Akiflow|Toggl Track)" space=^5
-yabai -m rule --add app="Akiflow" grid=1:9:3:0:6:1 # 1x8 grid (right 6 columns)
+yabai -m rule --add app="(Sunsama|Toggl Track)" space=^5
+yabai -m rule --add app="Sunsama" grid=1:9:3:0:6:1 # 1x8 grid (right 6 columns)
 yabai -m rule --add app="Toggl Track" grid=1:9:0:0:3:1 # 1x8 grid (left 3 columns)
 yabai -m space 5 --layout float
 
@@ -83,7 +83,7 @@ yabai -m rule --add app="(Slack|Discord|Mimestream|LINE)" space=^7
 yabai -m space 7 --layout stack 
 
 # space 8
-yabai -m rule --add app="(ClickUp|Reflect|Mem|Obsidian)" space=^8
+yabai -m rule --add app="(ClickUp|Mem|Obsidian)" space=^8
 yabai -m space 8 --layout stack
 
 echo "yabai configuration loaded.."

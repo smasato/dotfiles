@@ -27,8 +27,6 @@ brews:
   youtube-dl:
 casks:
 - adobe-creative-cloud
-- akiflow
-- asana
 - atok
 - bartender
 - cold-turkey-blocker
@@ -51,6 +49,7 @@ casks:
 - sound-siphon
 - spotify
 - spotmenu
+- sunsama
 - transmit
 - typora
 - vlc

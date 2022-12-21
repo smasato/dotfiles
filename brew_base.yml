@@ -46,6 +46,7 @@ brews:
   gcc:
   gd:
   geos:
+  gh:
   ghostscript:
   ghq:
   git:
@@ -142,6 +143,7 @@ casks:
 - docker
 - espanso
 - fantastical
+- firefox-developer-edition
 - font-sauce-code-pro-nerd-font
 - fork
 - google-chrome
