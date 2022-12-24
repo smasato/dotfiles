@@ -75,10 +75,12 @@ brews:
     args:
     - HEAD
   krb5:
+  libass:
   libavif:
   libffi:
   libheif:
   libiconv:
+  libidn2:
   libpq:
   libsndfile:
   libsodium:
@@ -101,6 +103,7 @@ brews:
   opencv@3:
   openjdk:
   openssh:
+  openssl@3:
   pandoc:
   pango:
   peco:
@@ -110,6 +113,7 @@ brews:
   proj:
   protobuf:
   python@3.10:
+  python@3.8:
   re2c:
   readline:
   reattach-to-user-namespace:
@@ -118,12 +122,14 @@ brews:
   ruby-build:
   rust:
   srt:
+  tcl-tk:
   tig:
   tmux:
   topgrade:
   tree:
   unibilium:
   utf8proc:
+  wangle:
   watchman:
   webp:
   wget:
