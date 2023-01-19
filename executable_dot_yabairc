@@ -58,7 +58,6 @@ yabai -m rule --add app="(kitty|Code)" space=^1
 yabai -m space 1 --layout stack --padding abs:0:0:0:0 --gap abs:0
 
 # space 2
-yabai -m rule --add app="(Google Chrome)" space=^2
 yabai -m space 2 --layout bsp
 
 # space 3
