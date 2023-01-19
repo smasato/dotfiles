@@ -67,6 +67,8 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH=$PATH:$HOME/dev/bin
 export PATH=$PATH:$(brew --prefix)/sbin
 
+export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value -}}
+
 {{ if .work -}}
 export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
 {{- end }}
@@ -174,6 +176,7 @@ alias c='cd ~'
 
 [ -e $(brew --prefix)/bin/zoxide ] && eval "$(zoxide init zsh)"
 [ -d $(brew --prefix)/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
-[ -e $(brew --prefix)/bin/op ] && eval "$(op completion zsh)"; compdef _op op
+[ -e /usr/local/bin/op ] && eval "$(op completion zsh)"; compdef _op op
+source ~/.config/op/plugins.sh
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
