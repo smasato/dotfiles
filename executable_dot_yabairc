@@ -12,6 +12,7 @@ yabai -m config                                 \
     window_topmost               off            \
     window_shadow                off            \
     window_animation_duration    0.0            \
+    window_animation_frame_rate  120            \
     window_opacity_duration      0.0            \
     active_window_opacity        1.0            \
     normal_window_opacity        0.90           \
@@ -46,12 +47,14 @@ yabai -m rule --add app="(AS TimerPRO|1Password|そら案内)" sticky=on layer=a
 
 # manage=off
 yabai -m rule --add app="^Karabiner.*" manage=off
+yabai -m rule --add app="Lasso" manage=off
+yabai -m rule --add app="BetterDisplay" manage=off
 yabai -m rule --add app="(JetBrains Toolbox|GoLand|RubyMine|PyCharm|WebStorm)" manage=off
 yabai -m rule --add app="(Cold Turkey Blocker|Contexts|DeepL|Finder|CotEditor|Rewind)" manage=off
 yabai -m rule --add app="(Avid Link|Creative Cloud)" manage=off
 yabai -m rule --add app="(Dictionaries|そら案内)" manage=off
 yabai -m rule --add app="(LINE)" manage=off
-yabai -m rule --add app="(System Preferences|System Information|Activity Monitor|Keychain Access)" manage=off
+yabai -m rule --add app="(System Settings|System Information|Activity Monitor|Keychain Access)" manage=off
 
 # space 1
 yabai -m rule --add app="(kitty|Code)" space=^1
