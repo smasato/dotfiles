@@ -1,4 +1,4 @@
-{{- if or (eq .chezmoi.hostname "smasato-14") (eq .chezmoi.hostname "smasato-17") -}}
+{{- if not .work -}}
 #!/bin/bash
 
 set -eufo pipefail
