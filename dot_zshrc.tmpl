@@ -179,4 +179,8 @@ alias c='cd ~'
 [ -e /usr/local/bin/op ] && eval "$(op completion zsh)"; compdef _op op
 source ~/.config/op/plugins.sh
 
+if type github-copilot-cli > /dev/null 2>&1; then
+  eval "$(github-copilot-cli alias -- "$0")"
+fi
+
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
