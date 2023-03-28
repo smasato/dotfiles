@@ -13,5 +13,4 @@ if [ `uname -m` = 'x86_64' ]; then
 fi
 
 brew install peco
-brew install asdf
 brew install exa

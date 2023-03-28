@@ -10,7 +10,6 @@ taps:
 - koekeishiya/formulae
 brews:
   aom:
-  asdf:
   autoconf:
   automake:
   aws/tap/aws-sam-cli:
@@ -120,6 +119,7 @@ brews:
   readline:
   reattach-to-user-namespace:
   ripgrep:
+  rtx:
   ruby:
   ruby-build:
   rust:

@@ -175,7 +175,7 @@ alias c='cd ~'
 [ -e $(brew --prefix)/bin/exa ] && alias ls='exa --icons --time-style=long-iso'
 
 [ -e $(brew --prefix)/bin/zoxide ] && eval "$(zoxide init zsh)"
-[ -d $(brew --prefix)/opt/asdf/ ] && . $(brew --prefix asdf)/libexec/asdf.sh
+[ -e $(brew --prefix)/bin/rtx ] && eval "$(rtx activate zsh)"
 [ -e /usr/local/bin/op ] && eval "$(op completion zsh)"; compdef _op op
 source ~/.config/op/plugins.sh
 
