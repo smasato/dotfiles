@@ -15,6 +15,7 @@ brews:
   libpng:
   libpqxx:
   minacle/chntpw/chntpw:
+  mysql:
   openssl@1.1:
   postgresql@14:
     restart_service: true
@@ -30,7 +31,6 @@ casks:
 - atok
 - bartender
 - cold-turkey-blocker
-- contexts
 - cyberduck
 - deepl
 - discord
@@ -45,6 +45,7 @@ casks:
 - notion
 - obsidian
 - papers
+- protonvpn
 - roam-research
 - sound-siphon
 - spotify
