@@ -39,14 +39,10 @@ casks:
 - google-drive
 - logseq
 - macfuse
-- mactex-no-gui
 - mem
 - mimestream
 - notion
 - obsidian
-- papers
-- protonvpn
-- roam-research
 - sound-siphon
 - spotify
 - spotmenu
@@ -54,4 +50,3 @@ casks:
 - transmit
 - typora
 - vlc
-- workflowy
