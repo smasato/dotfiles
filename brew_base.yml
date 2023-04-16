@@ -67,6 +67,7 @@ brews:
   imagemagick:
   jpeg:
   jq:
+  just:
   koekeishiya/formulae/skhd:
     args:
     - HEAD
@@ -163,6 +164,7 @@ casks:
 - kitty
 - pushplaylabs-sidekick
 - raycast
+- setapp
 - slack
 - visual-studio-code
 - zoom
