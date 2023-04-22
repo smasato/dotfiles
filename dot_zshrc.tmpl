@@ -125,20 +125,11 @@ zstyle ":anyframe:selector:" use fzf
 bindkey '^xb' anyframe-widget-cdr # 過去に移動したことのあるディレクトリに移動する
 bindkey '^x^b' anyframe-widget-checkout-git-branch
 bindkey '^xr' anyframe-widget-execute-history # コマンドライン履歴から選んで実行する
-bindkey '^x^r' anyframe-widget-execute-history # コマンドライン履歴から選んで実行する
 bindkey '^xp' anyframe-widget-put-history # コマンドライン履歴から選んでコマンドラインに挿入する
-bindkey '^x^p' anyframe-widget-put-history # コマンドライン履歴から選んでコマンドラインに挿入する
 bindkey '^xg' anyframe-widget-cd-ghq-repository # ghqコマンドで管理しているリポジトリに移動する
-bindkey '^x^g' anyframe-widget-cd-ghq-repository # ghqコマンドで管理しているリポジトリに移動する
 bindkey '^xk' anyframe-widget-kill # プロセスをkillする
-bindkey '^x^k' anyframe-widget-kill # プロセスをkillする
 bindkey '^xi' anyframe-widget-insert-git-branch # Gitブランチ名をコマンドラインに挿入する
-bindkey '^x^i' anyframe-widget-insert-git-branch # Gitブランチ名をコマンドラインに挿入する
 bindkey '^xf' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
-bindkey '^x^f' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
-
-bindkey -M emacs '^P' history-substring-search-up
-bindkey -M emacs '^N' history-substring-search-down
 
 # Completion
 if type brew &>/dev/null; then
@@ -172,11 +163,12 @@ fi
 # alias
 alias reload="exec zsh && echo '~/.zshrc reloaded!'"
 alias gs='git status'
-alias c='cd ~'
+
 [ -e $(brew --prefix)/bin/exa ] && alias ls='exa --icons --time-style=long-iso'
 
 [ -e $(brew --prefix)/bin/zoxide ] && eval "$(zoxide init zsh)"
 [ -e $(brew --prefix)/bin/rtx ] && eval "$(rtx activate zsh)"
+
 [ -e /usr/local/bin/op ] && eval "$(op completion zsh)"; compdef _op op
 source ~/.config/op/plugins.sh
 
