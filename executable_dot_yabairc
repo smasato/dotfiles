@@ -47,7 +47,7 @@ yabai -m rule --add app="(AS TimerPRO|1Password|そら案内)" sticky=on layer=a
 
 # manage=off
 yabai -m rule --add app="^Karabiner.*" manage=off
-yabai -m rule --add app="Lasso" manage=off
+yabai -m rule --add app="(App Store|Bartender.*)" manage=off
 yabai -m rule --add app="BetterDisplay" manage=off
 yabai -m rule --add app="(JetBrains Toolbox|GoLand|RubyMine|PyCharm|WebStorm)" manage=off
 yabai -m rule --add app="(Cold Turkey Blocker|Contexts|DeepL|Finder|CotEditor|Rewind)" manage=off
