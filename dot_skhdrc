@@ -19,4 +19,4 @@ alt - s : yabai -m window --toggle sticky
 alt - t : yabai -m window --toggle float
 alt - p : yabai -m window --toggle sticky --toggle topmost --toggle pip
 
-ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
+ctrl + alt + cmd - r : yabai --restart-service
