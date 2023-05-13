@@ -70,7 +70,7 @@ export PATH=$PATH:$(brew --prefix)/sbin
 export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value -}}
 
 {{ if .work -}}
-export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+export PATH="$(brew --prefix)mysql@5.7/bin:$PATH"
 {{- end }}
 
 [ -d $(brew --prefix)/opt/llvm/ ] && export PATH=$PATH:$(brew --prefix)/opt/llvm/bin
