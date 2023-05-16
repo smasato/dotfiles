@@ -21,7 +21,6 @@ brews:
     restart_service: true
   pueue:
     restart_service: true
-  r:
   rclone:
   unbound:
     restart_service: true

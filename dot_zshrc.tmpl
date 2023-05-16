@@ -33,8 +33,6 @@ setopt mark_dirs
 
 bindkey -e
 
-disable r
-
 autoload predict-on
 zstyle ':predict' verbose true
 
@@ -55,17 +53,10 @@ setopt append_history
 setopt inc_append_history
 setopt hist_reduce_blanks
 
-if [ `uname -m` = 'arm64' ]; then
-    export PATH="/opt/homebrew/bin:$PATH"
-fi
-
-if [ `uname -m` = 'x86_64' ]; then
-    export PATH="/usr/local/bin:$PATH"
-fi
-
+export PATH="$(brew --prefix)/bin:$PATH"
+export PATH="$PATH:$(brew --prefix)/sbin"
 export PATH="$PATH:$HOME/.local/bin"
-export PATH=$PATH:$HOME/dev/bin
-export PATH=$PATH:$(brew --prefix)/sbin
+export PATH="$PATH:$HOME/dev/bin"
 
 export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value -}}
 
@@ -82,35 +73,6 @@ export PATH="$(brew --prefix)mysql@5.7/bin:$PATH"
 [ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
 
 export GOPATH=$HOME/dev
-
-# nnn
-export NNN_OPTS="CdeHU"
-n ()
-{
-    # Block nesting of nnn in subshells
-    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
-        echo "nnn is already running"
-        return
-    fi
-
-    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
-    # To cd on quit only on ^G, remove the "export" as in:
-    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-
-    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
-    # stty start undef
-    # stty stop undef
-    # stty lwrap undef
-    # stty lnext undef
-
-    nnn "$@"
-
-    if [ -f "$NNN_TMPFILE" ]; then
-            . "$NNN_TMPFILE"
-            rm -f "$NNN_TMPFILE" > /dev/null
-    fi
-}
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
