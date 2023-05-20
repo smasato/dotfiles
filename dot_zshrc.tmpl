@@ -53,7 +53,14 @@ setopt append_history
 setopt inc_append_history
 setopt hist_reduce_blanks
 
-export PATH="$(brew --prefix)/bin:$PATH"
+if [ `uname -m` = 'arm64' ]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
+if [ `uname -m` = 'x86_64' ]; then
+    export PATH="/usr/local/bin:$PATH"
+fi
+
 export PATH="$PATH:$(brew --prefix)/sbin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/dev/bin"
