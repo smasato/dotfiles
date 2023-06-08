@@ -121,7 +121,6 @@ brews:
   ripgrep:
   rtx:
   ruby:
-  ruby-build:
   rust:
   srt:
   suite-sparse:
