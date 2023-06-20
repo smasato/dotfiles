@@ -23,7 +23,7 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
     {{- $brews = unset $brews "koekeishiya/formulae/skhd" -}}
 {{- end -}}
 {{- if not .espanso -}}
-    {{- $brews = unset $casks "espanso" -}}
+    {{- $casks = without $casks "espanso" -}}
 {{- end -}}
 {{- if not .hg -}}
     {{- $brews = unset $brews "mercurial" -}}
