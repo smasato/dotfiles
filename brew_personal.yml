@@ -27,6 +27,7 @@ brews:
   youtube-dl:
 casks:
 - adobe-creative-cloud
+- airfoil
 - atok
 - deepl
 - discord
@@ -38,7 +39,9 @@ casks:
 - mem
 - notion
 - obsidian
+- protonvpn
 - sound-siphon
+- soundsource
 - spotify
 - sunsama
 - transmit

@@ -15,6 +15,7 @@ brews:
   aws/tap/aws-sam-cli:
   awscli:
   bash:
+  bat:
   bdw-gc:
   boost:
   brew-cask-completion:
