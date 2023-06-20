@@ -10,6 +10,10 @@
     type = "file"
     url = "https://ke-complex-modifications.pqrs.org/json/japanese.json"
     refreshPeriod = "168h"
+[".config/gitalias/gitalias.txt"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/GitAlias/gitalias/main/gitalias.txt"
+    refreshPeriod = "168h"
 ["antigen.zsh"]
     type = "file"
     url = "https://git.io/antigen"
