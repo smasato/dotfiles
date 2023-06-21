@@ -67,8 +67,7 @@ export PATH="$PATH:$(brew --prefix)/sbin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/dev/bin"
 
-export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value -}}
-
+export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value }}
 {{ if .work -}}
 export PATH="$(brew --prefix)mysql@5.7/bin:$PATH"
 {{- end }}
