@@ -68,6 +68,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/dev/bin"
 
 export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value }}
+export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordDetailsFields "4mxd7ty3trq2tpkywnhanb7dre").v5cuef6kinshofbtpby6ht4gzm.value }}
 {{ if .work -}}
 export PATH="$(brew --prefix)/opt/mysql@5.7/bin:$PATH"
 {{- end }}
