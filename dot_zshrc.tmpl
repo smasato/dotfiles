@@ -131,7 +131,10 @@ fi
 
 # alias
 alias reload="exec zsh && echo '~/.zshrc reloaded!'"
+
 alias gs='git status'
+alias gprune='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | awk "{print \$1}" | xargs -IXXX git branch -D XXX'
+alias gprune-dry='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | awk "{print \$1}"'
 
 [ -e $(brew --prefix)/bin/exa ] && alias ls='exa --icons --time-style=long-iso'
 
