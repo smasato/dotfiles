@@ -4,36 +4,35 @@ taps:
 - heroku/brew
 - minacle/chntpw
 brews:
-  aria2:
-  bison:
-  gettext:
-  gromgit/fuse/sshfs-mac:
-  heroku/brew/heroku:
-  icu4c:
-  lftp:
-  libedit:
-  libpng:
-  libpqxx:
-  minacle/chntpw/chntpw:
-  mysql:
-  openssl@1.1:
+  aria2: 
+  bison: 
+  gettext: 
+  gromgit/fuse/sshfs-mac: 
+  heroku/brew/heroku: 
+  icu4c: 
+  lftp: 
+  libedit: 
+  libpng: 
+  libpqxx: 
+  minacle/chntpw/chntpw: 
+  mysql: 
+  openssl@1.1: 
   postgresql@14:
     restart_service: true
   pueue:
     restart_service: true
-  rclone:
+  rclone: 
   unbound:
     restart_service: true
-  youtube-dl:
+  youtube-dl: 
 casks:
 - adobe-creative-cloud
 - airfoil
-- atok
 - deepl
 - discord
+- docker
 - fuse
 - google-cloud-sdk
-- google-drive
 - logseq
 - macfuse
 - mem

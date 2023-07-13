@@ -1,9 +1,11 @@
 ---
-taps:
+taps: 
 brews:
   mysql@5.7:
     restart_service: true
   redis:
     restart_service: true
 casks:
+- aws-vault
+- orbstack
 - rectangle
