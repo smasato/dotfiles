@@ -1,6 +1,6 @@
 [user]
 	name = Masato Sugiyama
-	email = {{ .email | quote }}
+	email = {{ .email }}
 
 [includeIf "gitdir:{{ .chezmoi.sourceDir }}/"]
 	path = ~/.gitconfig_private
