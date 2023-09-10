@@ -32,7 +32,7 @@ brews:
   curl:
   docker:
     link: false
-  exa:
+  eza:
   fb303:
   fbthrift:
   ffmpeg:
