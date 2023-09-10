@@ -53,3 +53,6 @@
 [http]
 	sslVerify = false
 {{- end }}
+
+[alias]
+	fu = "!git log -n 16 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"

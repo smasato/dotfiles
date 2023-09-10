@@ -55,35 +55,39 @@ setopt append_history
 setopt inc_append_history
 setopt hist_reduce_blanks
 
-if [ `uname -m` = 'arm64' ]; then
-    export PATH="/opt/homebrew/bin:$PATH"
-fi
-
-if [ `uname -m` = 'x86_64' ]; then
-    export PATH="/usr/local/bin:$PATH"
-fi
-
-export PATH="$PATH:$(brew --prefix)/sbin"
+{{ if (eq .chezmoi.arch "arm64") -}}
+export PATH="/opt/homebrew/bin:$PATH"
+{{- end }}
+{{ if (eq .chezmoi.arch "x86_64") -}}
+export PATH="/usr/local/bin:$PATH"
+{{- end }}
+export PATH="$PATH:{{ output "brew" "--prefix" | trim }}/sbin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/dev/bin"
 
 export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value }}
 export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordDetailsFields "4mxd7ty3trq2tpkywnhanb7dre").v5cuef6kinshofbtpby6ht4gzm.value }}
 {{ if .work -}}
-export PATH="$(brew --prefix)/opt/mysql@5.7/bin:$PATH"
+export PATH="{{ output "brew" "--prefix" | trim }}/opt/mysql@5.7/bin:$PATH"
 {{- end }}
 
-[ -d $(brew --prefix)/opt/llvm/ ] && export PATH=$PATH:$(brew --prefix)/opt/llvm/bin
-[ -d $(brew --prefix)/opt/curl ] && export PATH=$PATH:$(brew --prefix)opt/curl/bin
-[ -d $(brew --prefix)/opt/openssl ] && export PATH=$PATH:$(brew --prefix)/opt/openssl/bin
-[ -d $(brew --prefix)/opt/coreutils ] && export PATH=$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH
-[ -d $(brew --prefix)/opt/libpq ] && export PATH=$(brew --prefix)/opt/libpq/bin:$PATH
-[ -d $(brew --prefix)/opt/go ] && export PATH=$PATH:$(go env GOROOT)/bin
+[ -d {{ output "brew" "--prefix" | trim }}/opt/llvm/ ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/llvm/bin
+[ -d {{ output "brew" "--prefix" | trim }}/opt/curl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}opt/curl/bin
+[ -d {{ output "brew" "--prefix" | trim }}/opt/openssl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/openssl/bin
+[ -d {{ output "brew" "--prefix" | trim }}/opt/coreutils ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/coreutils/libexec/gnubin:$PATH
+[ -d {{ output "brew" "--prefix" | trim }}/opt/libpq ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/libpq/bin:$PATH
+
+{{- if lookPath "go" }}
+export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
+{{- end }}
+
 [ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
 
 export GOPATH=$HOME/dev
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+{{ if stat (joinPath .chezmoi.homeDir ".fzf.zsh") }}
+source ~/.fzf.zsh
+{{ end }}
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
 # anyframe
@@ -102,12 +106,12 @@ bindkey '^xi' anyframe-widget-insert-git-branch # Gitブランチ名をコマン
 bindkey '^xf' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
 
 # Completion
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+{{- if lookPath "brew" }}
+FPATH={{ output "brew" "--prefix" | trim }}/share/zsh/site-functions:$FPATH
 
-  autoload -Uz compinit
-  compinit
-fi
+autoload -Uz compinit
+compinit
+{{- end }}
 
 setopt complete_in_word
 setopt auto_menu
@@ -117,7 +121,9 @@ setopt magic_equal_subst
 setopt always_last_prompt
 
 autoload -U colors
-test -r "~/.dir_colors" && eval $(dircolors ~/.dir_colors)
+{{ if stat (joinPath .chezmoi.homeDir ".dir_colors") }}
+{{ output "dircolors" (joinPath .chezmoi.homeDir ".dir_colors") | trim }}
+{{ end }}
 
 zstyle ':completion::complete:*' use-cache true
 zstyle ':completion:*:default' menu select=1
@@ -125,9 +131,9 @@ zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion:*' insert-tab false
 
 # google-cloud-sdk
-if [ -d $(brew --prefix)/Caskroom/google-cloud-sdk ]; then
-  source $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-  source $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+if [ -d {{ output "brew" "--prefix" | trim }}/Caskroom/google-cloud-sdk ]; then
+  source {{ output "brew" "--prefix" | trim }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+  source {{ output "brew" "--prefix" | trim }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 fi
 
 # alias
@@ -141,15 +147,25 @@ alias gprune-dry='git branch --format "%(refname:short) %(upstream:track)" | gre
 alias ls='eza --icons --time-style=long-iso'
 {{- end }}
 
-[ -e $(brew --prefix)/bin/zoxide ] && eval "$(zoxide init zsh)"
-[ -e $(brew --prefix)/bin/rtx ] && eval "$(rtx activate zsh)"
+{{- if lookPath "zoxide" }}
+{{ output "zoxide" "init" "zsh" | trim }}
+{{- end }}
 
-[ -e /usr/local/bin/op ] && eval "$(op completion zsh)"; compdef _op op
+{{- if lookPath "rtx" }}
+{{ output "rtx" "activate" "zsh" | trim }}
+{{- end }}
+
+{{- if lookPath "op" }}
+{{ output "op" "completion" "zsh" | trim }}
+compdef _op op
+{{ if stat (joinPath .chezmoi.homeDir ".config/op/plugins.sh") }}
 source ~/.config/op/plugins.sh
+{{ end }}
+{{- end }}
 
-if type github-copilot-cli > /dev/null 2>&1; then
-  eval "$(github-copilot-cli alias -- "$0")"
-fi
+{{- if lookPath "github-copilot-cli" }}
+eval "$(github-copilot-cli alias -- "$0")"
+{{- end }}
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
