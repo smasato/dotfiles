@@ -8,10 +8,6 @@ scripts
 {{- if not .skhd }}
 .skhdrc
 {{- end }}
-{{- if not .hg }}
-.hgignore
-.hgrc
-{{- end}}
 {{- if not .espanso }}
 Library/Preferences/espanso
 {{- end }}

@@ -25,9 +25,6 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- if not .espanso -}}
     {{- $casks = without $casks "espanso" -}}
 {{- end -}}
-{{- if not .hg -}}
-    {{- $brews = unset $brews "mercurial" -}}
-{{- end -}}
 {{- if .work }}
     {{- $brew_work := include (joinPath .chezmoi.sourceDir "brew_work.yml") | fromYaml }}
     {{- $brews = mergeOverwrite $brews $brew_work.brews -}}
