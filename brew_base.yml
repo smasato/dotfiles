@@ -148,6 +148,7 @@ brews:
 casks:
 - 1password
 - 1password-cli
+- arc
 - atok
 - betterdisplay
 - espanso
@@ -162,10 +163,9 @@ casks:
 - jetbrains-toolbox
 - karabiner-elements
 - keka
-- kitty
-- pushplaylabs-sidekick
 - raycast
 - setapp
 - slack
 - visual-studio-code
+- wezterm
 - zoom
