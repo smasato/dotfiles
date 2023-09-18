@@ -30,7 +30,6 @@ casks:
 - airfoil
 - deepl
 - discord
-- docker
 - fuse
 - google-cloud-sdk
 - logseq

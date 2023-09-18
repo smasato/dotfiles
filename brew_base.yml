@@ -28,8 +28,6 @@ brews:
   coreutils:
   csvq:
   curl:
-  docker:
-    link: false
   eza:
   fb303:
   fbthrift:
