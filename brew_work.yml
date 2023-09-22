@@ -8,6 +8,5 @@ brews:
 casks:
 - aws-vault
 - gitkraken
-- orbstack
 - rectangle
 - termius
