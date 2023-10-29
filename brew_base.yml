@@ -10,7 +10,7 @@ brews:
   aom:
   autoconf:
   automake:
-  aws/tap/aws-sam-cli:
+  aws-sam-cli:
   awscli:
   bash:
   bat:
