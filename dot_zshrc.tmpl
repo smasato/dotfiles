@@ -66,7 +66,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/dev/bin"
 
 export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value }}
-export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordDetailsFields "4mxd7ty3trq2tpkywnhanb7dre").v5cuef6kinshofbtpby6ht4gzm.value }}
+export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordItemFields "4bji3bh7itygdk4grlid7u7t7y").token.value }}
 {{ if .work -}}
 export PATH="{{ output "brew" "--prefix" | trim }}/opt/mysql@5.7/bin:$PATH"
 {{- end }}
@@ -84,6 +84,8 @@ export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
 [ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
 
 export GOPATH=$HOME/dev
+
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 {{ if stat (joinPath .chezmoi.homeDir ".fzf.zsh") }}
 source ~/.fzf.zsh
