@@ -1,7 +1,4 @@
 [settings]
-# whether to prompt to install plugins and runtimes if they're not already installed
-missing_runtime_behavior = 'prompt' # other options: 'ignore', 'warn', 'prompt', 'autoinstall'
-
 # plugins can read the versions files used by other version managers (if enabled by the plugin)
 # for example, .nvmrc in the case of nodejs's nvm
 legacy_version_file = true         # enabled by default (different than asdf)
@@ -23,4 +20,3 @@ jobs = 4            # number of plugins or runtimes to install in parallel. The 
 raw = false         # set to true to directly pipe plugins to stdin/stdout/stderr
 
 experimental = true
-log_level = 'debug' # log verbosity, see `RTX_LOG_LEVEL`
