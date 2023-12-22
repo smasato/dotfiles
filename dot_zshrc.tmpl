@@ -17,6 +17,10 @@ antigen theme romkatv/powerlevel10k
 
 antigen apply
 
+# Config for zsh-history-substring-search
+bindkey -M emacs '^P' history-substring-search-up
+bindkey -M emacs '^N' history-substring-search-down
+
 # General
 autoload -Uz compinit
 compinit
@@ -92,7 +96,7 @@ source ~/.fzf.zsh
 {{ end }}
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
-# anyframe
+# Config for anyframe
 # https://qiita.com/mollifier/items/81b18c012d7841ab33c3
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
@@ -184,10 +188,6 @@ compdef _op op
 {{ if stat (joinPath .chezmoi.homeDir ".config/op/plugins.sh") }}
 source ~/.config/op/plugins.sh
 {{ end }}
-{{- end }}
-
-{{- if lookPath "github-copilot-cli" }}
-eval "$(github-copilot-cli alias -- "$0")"
 {{- end }}
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
