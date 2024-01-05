@@ -89,6 +89,7 @@ brews:
   libzip:
   little-cms2:
   llvm:
+  mise:
   msgpack:
   navi:
   ncurses:
@@ -115,7 +116,6 @@ brews:
   readline:
   reattach-to-user-namespace:
   ripgrep:
-  rtx:
   ruby:
   rust:
   srt:

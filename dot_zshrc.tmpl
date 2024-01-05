@@ -179,8 +179,8 @@ alias xdump='ugrep -X ""' # hexdump files without searching
 {{ output "zoxide" "init" "zsh" | trim }}
 {{- end }}
 
-{{- if lookPath "rtx" }}
-{{ output "rtx" "activate" "zsh" | trim }}
+{{- if lookPath "mise" }}
+{{ output "mise" "activate" "zsh" | trim }}
 {{- end }}
 
 {{- if lookPath "op" }}
