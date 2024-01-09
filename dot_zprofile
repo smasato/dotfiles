@@ -2,7 +2,7 @@
 [[ -f "$HOME/.fig/shell/zprofile.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zprofile.pre.zsh"
 
 export LANG=ja_JP.UTF-8
-export PATH="$HOME/.local/share/rtx/shims:$PATH"
+export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # Added by Toolbox App
 export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
