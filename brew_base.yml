@@ -5,7 +5,6 @@ taps:
 - homebrew/cask-fonts
 - homebrew/cask-versions
 - homebrew/services
-- koekeishiya/formulae
 brews:
   aom:
   autoconf:
@@ -65,10 +64,6 @@ brews:
   jpeg:
   jq:
   just:
-  koekeishiya/formulae/skhd:
-    args:
-    - HEAD
-    - with-logging
   krb5:
   libass:
   libavif:

@@ -1,6 +1,0 @@
-{{- if .skhd -}}
-#!/bin/bash
-
-# dot_skhdrc hash: {{ include "dot_skhdrc" | sha256sum }}
-brew services restart skhd
-{{- end }}

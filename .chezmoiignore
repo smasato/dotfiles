@@ -2,9 +2,6 @@ README.md
 .keep
 brew_*.yml
 scripts
-{{- if not .skhd }}
-.skhdrc
-{{- end }}
 {{- if not .espanso }}
 Library/Preferences/espanso
 {{- end }}

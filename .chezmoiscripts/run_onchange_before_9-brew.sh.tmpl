@@ -13,12 +13,6 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- $taps := $brew_base.taps }}
 {{- $brews := $brew_base.brews }}
 {{-  $casks := $brew_base.casks }}
-{{- if not (or .skhd) -}}
-    {{- $taps = without $taps "koekeishiya/formulae" -}}
-{{- end }}
-{{- if not .skhd -}}
-    {{- $brews = unset $brews "koekeishiya/formulae/skhd" -}}
-{{- end -}}
 {{- if not .espanso -}}
     {{- $casks = without $casks "espanso" -}}
 {{- end -}}
