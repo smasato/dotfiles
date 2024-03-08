@@ -1,5 +1,0 @@
-{{- if .yabai -}}
-#!/bin/bash
-# yabai binary hash: {{ output "sh" "-c" "shasum -a 256 $(which yabai) | awk '{print $1}'" }}
-sudo sh -c 'echo "$(echo $SUDO_USER) ALL = (root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai) | awk "{ print \$1 }") $(which yabai) --load-sa" > /private/etc/sudoers.d/yabai'
-{{- end }}

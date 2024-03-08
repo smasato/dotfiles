@@ -69,9 +69,6 @@ brews:
     args:
     - HEAD
     - with-logging
-  koekeishiya/formulae/yabai:
-    args:
-    - HEAD
   krb5:
   libass:
   libavif:

@@ -2,9 +2,6 @@ README.md
 .keep
 brew_*.yml
 scripts
-{{- if not .yabai }}
-.yabairc
-{{- end }}
 {{- if not .skhd }}
 .skhdrc
 {{- end }}

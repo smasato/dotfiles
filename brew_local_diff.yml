@@ -1,0 +1,21 @@
+brews:
+    - cfn-lint
+    - gpgme
+    - ruby-build
+    - python@3.12
+    - python-cryptography
+    - python@3.11
+    - cffi
+    - libmicrohttpd
+    - cookiecutter
+    - docker
+    - edencommon
+    - libfido2
+    - docutils
+    - pycparser
+casks:
+    - audio-hijack
+    - cyberduck
+    - docker
+    - obs
+taps: []
