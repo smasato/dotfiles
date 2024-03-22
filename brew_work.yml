@@ -13,6 +13,3 @@ brews:
 casks:
 - aws-vault
 - docker
-- gitkraken
-- rectangle
-- termius
