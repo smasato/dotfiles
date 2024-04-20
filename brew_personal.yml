@@ -28,19 +28,13 @@ brews:
 casks:
 - adobe-creative-cloud
 - airfoil
-- deepl
 - discord
 - fuse
 - google-cloud-sdk
 - logseq
 - macfuse
-- mem
-- notion
 - obsidian
-- protonvpn
 - sound-siphon
 - soundsource
 - spotify
-- transmit
 - typora
-- vlc
