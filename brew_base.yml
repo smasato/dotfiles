@@ -140,7 +140,7 @@ casks:
 - betterdisplay
 - espanso
 - fantastical
-- firefox-developer-edition
+- firefox@developer-edition
 - font-cica
 - font-hackgen
 - font-hackgen-nerd
@@ -152,7 +152,6 @@ casks:
 - karabiner-elements
 - keka
 - raycast
-- rewind
 - setapp
 - slack
 - sunsama
