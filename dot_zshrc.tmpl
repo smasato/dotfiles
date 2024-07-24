@@ -9,7 +9,6 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle wfxr/forgit
-antigen bundle MichaelAquilina/zsh-you-should-use
 antigen bundle mollifier/anyframe
 antigen theme romkatv/powerlevel10k
 
@@ -136,9 +135,9 @@ zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion:*' insert-tab false
 
 # google-cloud-sdk
-if [ -d {{ output "brew" "--prefix" | trim }}/Caskroom/google-cloud-sdk ]; then
-  source {{ output "brew" "--prefix" | trim }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-  source {{ output "brew" "--prefix" | trim }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+if [ -d {{ output "brew" "--prefix" | trim }}/share/google-cloud-sdk ]; then
+  source {{ output "brew" "--prefix" | trim }}/share/google-cloud-sdk/path.zsh.inc
+  source {{ output "brew" "--prefix" | trim }}/share/google-cloud-sdk/completion.zsh.inc
 fi
 
 # alias
