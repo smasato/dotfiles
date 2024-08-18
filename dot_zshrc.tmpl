@@ -82,7 +82,7 @@ export PATH="{{ output "brew" "--prefix" | trim }}/opt/mysql@5.7/bin:$PATH"
 export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
 {{- end }}
 
-[ -d $HOME/.cargo ] && export PATH="$PATH:$HOME/.cargo/bin"
+[ -d $HOME/.cargo ] && . "$HOME/.cargo/env"
 
 export GOPATH=$HOME/dev
 

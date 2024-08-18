@@ -109,7 +109,7 @@ brews:
   reattach-to-user-namespace:
   ripgrep:
   ruby:
-  rust:
+  rustup:
   srt:
   suite-sparse:
   tcl-tk:
