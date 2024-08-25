@@ -24,7 +24,6 @@ brews:
   rclone:
   unbound:
     restart_service: true
-  youtube-dl:
 casks:
 - adobe-creative-cloud
 - airfoil
@@ -34,6 +33,7 @@ casks:
 - logseq
 - macfuse
 - obsidian
+- rewind
 - sound-siphon
 - soundsource
 - spotify

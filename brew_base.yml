@@ -138,14 +138,11 @@ casks:
 - arc
 - atok
 - betterdisplay
+- cursor
 - espanso
 - fantastical
 - firefox@developer-edition
-- font-cica
-- font-hackgen
-- font-hackgen-nerd
-- font-mplus-nerd-font
-- font-sauce-code-pro-nerd-font
+- font-m+-nerd-font
 - fork
 - google-drive
 - jetbrains-toolbox
