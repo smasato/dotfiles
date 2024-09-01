@@ -21,7 +21,6 @@ brews:
   cabextract:
   cairo:
   cdrtools:
-  ceres-solver:
   chezmoi:
   cmake:
   colordiff:
@@ -32,7 +31,6 @@ brews:
   fb303:
   fbthrift:
   ffmpeg:
-  ffmpeg@4:
   fizz:
   folly:
   fontforge:
@@ -56,7 +54,6 @@ brews:
   gnutls:
   go:
   gobject-introspection:
-  gotop:
   gsl:
   guile:
   harfbuzz:
@@ -84,7 +81,6 @@ brews:
   llvm:
   mise:
   msgpack:
-  navi:
   ncurses:
   neovim:
   node:
@@ -94,7 +90,6 @@ brews:
   openjdk:
   openssh:
   openssl@3:
-  pandoc:
   pango:
   peco:
   pipx:
@@ -104,7 +99,6 @@ brews:
   proj:
   protobuf:
   python@3.10:
-  python@3.8:
   re2c:
   readline:
   reattach-to-user-namespace:
@@ -112,7 +106,6 @@ brews:
   ruby:
   rustup:
   srt:
-  suite-sparse:
   tcl-tk:
   tesseract:
   tig:
