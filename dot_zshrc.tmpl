@@ -10,6 +10,7 @@ antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle wfxr/forgit
 antigen bundle mollifier/anyframe
+antigen bundle atuinsh/atuin@main
 antigen theme romkatv/powerlevel10k
 
 antigen apply
@@ -102,8 +103,6 @@ add-zsh-hook chpwd chpwd_recent_dirs
 zstyle ":anyframe:selector:" use fzf
 bindkey '^xb' anyframe-widget-cdr # 過去に移動したことのあるディレクトリに移動する
 bindkey '^x^b' anyframe-widget-checkout-git-branch
-bindkey '^xr' anyframe-widget-execute-history # コマンドライン履歴から選んで実行する
-bindkey '^xp' anyframe-widget-put-history # コマンドライン履歴から選んでコマンドラインに挿入する
 bindkey '^xg' anyframe-widget-cd-ghq-repository # ghqコマンドで管理しているリポジトリに移動する
 bindkey '^xk' anyframe-widget-kill # プロセスをkillする
 bindkey '^xi' anyframe-widget-insert-git-branch # Gitブランチ名をコマンドラインに挿入する
