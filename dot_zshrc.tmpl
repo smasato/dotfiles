@@ -77,7 +77,6 @@ export PATH="{{ output "brew" "--prefix" | trim }}/opt/mysql@5.7/bin:$PATH"
 [ -d {{ output "brew" "--prefix" | trim }}/opt/curl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}opt/curl/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/openssl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/openssl/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/coreutils ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/coreutils/libexec/gnubin:$PATH
-[ -d {{ output "brew" "--prefix" | trim }}/opt/libpq ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/libpq/bin:$PATH
 
 {{- if lookPath "go" }}
 export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin

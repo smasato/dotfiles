@@ -23,7 +23,6 @@ brews:
   cdrtools:
   chezmoi:
   cmake:
-  colordiff:
   coreutils:
   csvq:
   curl:
@@ -47,7 +46,6 @@ brews:
   git:
   git-delta:
   git-lfs:
-  glances:
   glib:
   gmp:
   gnupg:
@@ -61,20 +59,16 @@ brews:
   imagemagick:
   jpeg:
   jq:
-  just:
-  krb5:
   libass:
   libavif:
   libffi:
   libheif:
   libiconv:
   libidn2:
-  libpq:
   libsndfile:
   libsodium:
   libtiff:
   libuv:
-  libxml2:
   libyaml:
   libzip:
   little-cms2:
@@ -86,7 +80,6 @@ brews:
   node:
   nss:
   numpy:
-  opencv@3:
   openjdk:
   openssh:
   openssl@3:
@@ -97,8 +90,6 @@ brews:
   poppler:
   procs:
   proj:
-  protobuf:
-  python@3.10:
   re2c:
   readline:
   reattach-to-user-namespace:
@@ -122,7 +113,6 @@ brews:
   x265:
   xsv:
   xz:
-  zlib:
   zoxide:
   zsh:
   zsh-completions:

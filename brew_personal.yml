@@ -5,7 +5,6 @@ taps:
 - minacle/chntpw
 brews:
   aria2:
-  bison:
   gettext:
   gromgit/fuse/sshfs-mac:
   heroku/brew/heroku:
@@ -13,14 +12,8 @@ brews:
   lftp:
   libedit:
   libpng:
-  libpqxx:
   minacle/chntpw/chntpw:
-  mysql:
   openssl@1.1:
-  postgresql@14:
-    restart_service: true
-  pueue:
-    restart_service: true
   rclone:
   unbound:
     restart_service: true
