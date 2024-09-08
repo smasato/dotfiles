@@ -2,13 +2,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# antigen
+# Antigen
 source ~/antigen.zsh
 
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle wfxr/forgit
 antigen bundle mollifier/anyframe
 antigen bundle atuinsh/atuin@main
 antigen theme romkatv/powerlevel10k
@@ -132,15 +131,8 @@ zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion:*' insert-tab false
 
-# google-cloud-sdk
-if [ -d {{ output "brew" "--prefix" | trim }}/share/google-cloud-sdk ]; then
-  source {{ output "brew" "--prefix" | trim }}/share/google-cloud-sdk/path.zsh.inc
-  source {{ output "brew" "--prefix" | trim }}/share/google-cloud-sdk/completion.zsh.inc
-fi
-
-# alias
+# Alias
 alias reload="exec zsh && echo '~/.zshrc reloaded!'"
-
 alias gs='git status'
 alias gprune='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | awk "{print \$1}" | xargs -IXXX git branch -D XXX'
 alias gprune-dry='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | awk "{print \$1}"'
