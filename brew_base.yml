@@ -32,7 +32,6 @@ brews:
   ffmpeg:
   fizz:
   folly:
-  fontforge:
   freetype:
   fribidi:
   fzf:
@@ -55,7 +54,6 @@ brews:
   gsl:
   guile:
   harfbuzz:
-  htop:
   imagemagick:
   jpeg:
   jq:
@@ -76,7 +74,6 @@ brews:
   mise:
   msgpack:
   ncurses:
-  neovim:
   node:
   nss:
   numpy:
@@ -84,7 +81,6 @@ brews:
   openssh:
   openssl@3:
   pango:
-  peco:
   pipx:
   pkg-config:
   poppler:
@@ -99,7 +95,6 @@ brews:
   srt:
   tcl-tk:
   tesseract:
-  tig:
   tmux:
   topgrade:
   tree:
@@ -107,7 +102,6 @@ brews:
   utf8proc:
   wangle:
   webp:
-  wget:
   wimlib:
   x264:
   x265:
