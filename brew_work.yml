@@ -1,15 +1,7 @@
 ---
 taps:
 brews:
-  bison:
   docker-completion:
-  libmemcached:
-  mkcert:
-  mysql@5.7:
-    restart_service: true
-  oniguruma:
-  redis:
-    restart_service: true
 casks:
 - aws-vault
 - docker
