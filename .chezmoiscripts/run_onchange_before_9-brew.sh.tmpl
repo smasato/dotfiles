@@ -18,8 +18,12 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- end -}}
 {{- if .work }}
     {{- $brew_work := include (joinPath .chezmoi.sourceDir "brew_work.yml") | fromYaml }}
-    {{- $brews = mergeOverwrite $brews $brew_work.brews -}}
-    {{- $casks = concat $casks $brew_work.casks -}}
+    {{- if $brew_work.brews }}
+        {{- $brews = mergeOverwrite $brews $brew_work.brews -}}
+    {{- end }}
+    {{- if $brew_work.casks }}
+        {{- $casks = concat $casks $brew_work.casks -}}
+    {{- end }}
 {{ else }}
     {{- $brew_personal := include (joinPath .chezmoi.sourceDir "brew_personal.yml") | fromYaml }}
     {{- $taps = concat $taps $brew_personal.taps -}}

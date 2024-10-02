@@ -1,7 +1,6 @@
 ---
 taps:
 brews:
-  docker-completion:
 casks:
 - aws-vault
 - docker
