@@ -78,6 +78,10 @@ export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordItemFields "4bji3bh7ity
 export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
 {{- end }}
 
+[ -d {{ output "brew" "--prefix" | trim }}/opt/libpq/lib/pkgconfig ] && export PKG_CONFIG_PATH={{ output "brew" "--prefix" | trim }}/opt/libpq/lib/pkgconfig:$PKG_CONFIG_PATH
+
+export CPPFLAGS="-Wno-enum-constexpr-conversion"
+
 [ -d $HOME/.cargo ] && . "$HOME/.cargo/env"
 
 export GOPATH=$HOME/dev
@@ -165,6 +169,10 @@ alias xdump='ugrep -X ""' # hexdump files without searching
 
 {{- if lookPath "mise" }}
 {{ output "mise" "activate" "zsh" | trim }}
+{{- end }}
+
+{{- if lookPath "aqua" }}
+export PATH="$(aqua root-dir)/bin:$PATH"
 {{- end }}
 
 {{- if lookPath "op" }}
