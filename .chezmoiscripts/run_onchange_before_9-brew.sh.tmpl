@@ -18,6 +18,9 @@ brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- end -}}
 {{- if .work }}
     {{- $brew_work := include (joinPath .chezmoi.sourceDir "brew_work.yml") | fromYaml }}
+    {{- if $brew_work.taps }}
+        {{- $taps = concat $taps $brew_work.taps -}}
+    {{- end }}
     {{- if $brew_work.brews }}
         {{- $brews = mergeOverwrite $brews $brew_work.brews -}}
     {{- end }}
