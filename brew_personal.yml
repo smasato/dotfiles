@@ -11,7 +11,6 @@ brews:
   lftp:
   libedit:
   libpng:
-  openssl@1.1:
   rclone:
   unbound:
     restart_service: true
