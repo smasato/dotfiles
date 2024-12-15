@@ -1,12 +1,10 @@
 ---
 taps:
 - gromgit/fuse
-- heroku/brew
 brews:
   aria2:
   gettext:
   gromgit/fuse/sshfs-mac:
-  heroku/brew/heroku:
   icu4c:
   lftp:
   libedit:
