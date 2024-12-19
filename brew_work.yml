@@ -1,10 +1,8 @@
 ---
 taps:
 - aquaproj/aqua
-- cybozu/assam
 brews:
   aquaproj/aqua/aqua:
-  cybozu/assam/assam:
   k9s:
   kubectx:
 casks:
