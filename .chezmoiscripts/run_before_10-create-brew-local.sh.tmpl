@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ! -f "{{ .chezmoi.sourceDir }}/brew_local.yml" ]; then
+  cat > "{{ .chezmoi.sourceDir }}/brew_local.yml" << 'EOL'
+---
+taps:
+brews:
+casks:
+EOL
+fi
+
+if [ ! -f "{{ .chezmoi.sourceDir }}/brew_local_diff.yml" ]; then
+  cat > "{{ .chezmoi.sourceDir }}/brew_local_diff.yml" << 'EOL'
+brews:
+casks:
+EOL
+fi
