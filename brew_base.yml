@@ -121,11 +121,13 @@ casks:
 - fork
 - google-drive
 - jetbrains-toolbox
+- jordanbaird-ice
 - karabiner-elements
 - keka
 - raycast
 - setapp
 - slack
+- spotify
 - sunsama
 - wezterm
 - zoom
