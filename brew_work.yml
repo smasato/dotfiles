@@ -5,6 +5,8 @@ brews:
   aquaproj/aqua/aqua:
   k9s:
   kubectx:
+  libpq:
+  mysql-client:
 casks:
 - aws-vault
 - aws-vpn-client
