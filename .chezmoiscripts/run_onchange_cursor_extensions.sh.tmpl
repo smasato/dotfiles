@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# hash {{ include "cursor_extensions.txt" | sha256sum }}
+
+if ! command -v cursor >/dev/null; then
+    echo "Cursor is not installed. Skipping extension installation."
+    exit 0
+fi
+
+EXTENSIONS_FILE="{{ .chezmoi.sourceDir }}/cursor_extensions.txt"
+if [ ! -f "$EXTENSIONS_FILE" ]; then
+    echo "Extensions file not found: $EXTENSIONS_FILE"
+    exit 1
+fi
+
+INSTALLED_EXTENSIONS=$(cursor --list-extensions)
+
+while IFS= read -r extension; do
+    if ! echo "$INSTALLED_EXTENSIONS" | grep -q "^$extension$"; then
+        echo "Installing extension: $extension"
+        cursor --install-extension "$extension"
+    fi
+done < "$EXTENSIONS_FILE"
