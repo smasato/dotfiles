@@ -14,10 +14,7 @@ brews:
     restart_service: true
 casks:
 - adobe-creative-cloud
-- airfoil
 - discord
 - obsidian
 - rewind
-- sound-siphon
-- soundsource
 - typora
