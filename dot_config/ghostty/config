@@ -1,0 +1,8 @@
+font-family = "M+1Code Nerd Font"
+theme = "catppuccin-mocha"
+background-opacity = 0.8
+background-blur-radius = 10
+
+macos-titlebar-style = hidden
+window-padding-y = 10
+window-padding-x = 10

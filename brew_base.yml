@@ -119,6 +119,7 @@ casks:
 - firefox@developer-edition
 - font-m+-nerd-font
 - fork
+- ghostty
 - google-drive
 - jetbrains-toolbox
 - jordanbaird-ice
@@ -129,5 +130,4 @@ casks:
 - slack
 - spotify
 - sunsama
-- wezterm
 - zoom
