@@ -10,7 +10,6 @@ lokalise.i18n-ally
 miguelsolorio.fluent-icons
 ms-azuretools.vscode-docker
 ms-ceintl.vscode-language-pack-ja
-ms-vscode-remote.remote-containers
 shopify.ruby-lsp
 streetsidesoftware.code-spell-checker
 tamasfe.even-better-toml
