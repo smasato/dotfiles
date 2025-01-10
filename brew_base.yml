@@ -42,6 +42,7 @@ brews:
   ghq:
   git:
   git-delta:
+  git-extras:
   git-lfs:
   glib:
   gmp:
