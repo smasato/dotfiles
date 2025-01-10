@@ -73,6 +73,7 @@ export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordItemFields "4bji3bh7ity
 [ -d {{ output "brew" "--prefix" | trim }}/opt/curl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}opt/curl/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/openssl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/openssl/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/coreutils ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/coreutils/libexec/gnubin:$PATH
+[ -d {{ output "brew" "--prefix" | trim }}/opt/mysql-client ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/mysql-client/bin:$PATH
 
 {{- if lookPath "go" }}
 export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
@@ -81,6 +82,7 @@ export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/libpq/lib/pkgconfig ] && export PKG_CONFIG_PATH={{ output "brew" "--prefix" | trim }}/opt/libpq/lib/pkgconfig:$PKG_CONFIG_PATH
 
 export CPPFLAGS="-Wno-enum-constexpr-conversion"
+[ -d {{ output "brew" "--prefix" | trim }}/opt/zstd/lib ] && export LIBRARY_PATH={{ output "brew" "--prefix" | trim }}/opt/zstd/lib:$LIBRARY_PATH
 
 [ -d $HOME/.cargo ] && . "$HOME/.cargo/env"
 
