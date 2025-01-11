@@ -19,9 +19,6 @@ bindkey -M emacs '^P' history-substring-search-up
 bindkey -M emacs '^N' history-substring-search-down
 
 # General
-autoload -Uz compinit
-compinit
-
 setopt auto_cd
 setopt auto_list
 setopt auto_param_keys
@@ -35,9 +32,6 @@ setopt auto_param_slash
 setopt mark_dirs
 
 bindkey -e
-
-autoload predict-on
-zstyle ':predict' verbose true
 
 # History
 export HISTFILE=${HOME}/.zsh_history
@@ -53,14 +47,10 @@ setopt hist_ignore_space
 setopt hist_ignore_all_dups
 
 setopt append_history
-setopt inc_append_history
 setopt hist_reduce_blanks
 
 {{ if (eq .chezmoi.arch "arm64") -}}
 export PATH="/opt/homebrew/bin:$PATH"
-{{- end }}
-{{ if (eq .chezmoi.arch "x86_64") -}}
-export PATH="/usr/local/bin:$PATH"
 {{- end }}
 export PATH="$PATH:{{ output "brew" "--prefix" | trim }}/sbin"
 export PATH="$PATH:$HOME/.local/bin"
@@ -70,7 +60,7 @@ export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlr
 export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordItemFields "4bji3bh7itygdk4grlid7u7t7y").token.value }}
 
 [ -d {{ output "brew" "--prefix" | trim }}/opt/llvm/ ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/llvm/bin
-[ -d {{ output "brew" "--prefix" | trim }}/opt/curl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}opt/curl/bin
+[ -d {{ output "brew" "--prefix" | trim }}/opt/curl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/curl/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/openssl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/openssl/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/coreutils ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/coreutils/libexec/gnubin:$PATH
 [ -d {{ output "brew" "--prefix" | trim }}/opt/mysql-client ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/mysql-client/bin:$PATH
@@ -134,11 +124,9 @@ zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion:*' insert-tab false
 
-# Alias
+# Aliases
 alias reload="exec zsh && echo '~/.zshrc reloaded!'"
 alias gs='git status'
-alias gprune='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | awk "{print \$1}" | xargs -IXXX git branch -D XXX'
-alias gprune-dry='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | awk "{print \$1}"'
 
 {{- if lookPath "eza" }}
 alias ls='eza --icons --time-style=long-iso'
