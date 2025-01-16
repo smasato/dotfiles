@@ -11,7 +11,7 @@ casks:
 - aws-vault
 - aws-vpn-client
 - betterdisplay
-- docker
 - font-noto-sans-jp
 - google-chrome@canary
 - keyboard-maestro
+- orbstack
