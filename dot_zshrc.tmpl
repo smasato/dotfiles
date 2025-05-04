@@ -173,4 +173,8 @@ source ~/.config/op/plugins.sh
 {{ end }}
 {{- end }}
 
+{{- if stat (joinPath .chezmoi.homeDir ".codeium/windsurf/bin") }}
+export PATH="{{ joinPath .chezmoi.homeDir ".codeium/windsurf/bin" }}:$PATH"
+{{- end }}
+
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
