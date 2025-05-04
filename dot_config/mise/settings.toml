@@ -1,24 +1,3 @@
-legacy_version_file = true
-
-always_keep_download = false
-always_keep_install = false
-
-plugin_autoupdate_last_check_duration = '1 week'
-
-trusted_config_paths = []
-
-verbose = false
-asdf_compat = false
-jobs = 4
-raw = false
-yes = false
-
-not_found_auto_install = true
 task_output = "prefix"
-paranoid = false
-
-disable_default_shorthands = false
-
 env_file = '.env'
-
 experimental = true
