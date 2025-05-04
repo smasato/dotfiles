@@ -2,10 +2,6 @@
     type = "file"
     url = "https://raw.githubusercontent.com/arcticicestudio/nord-dircolors/develop/src/dir_colors"
     refreshPeriod = "168h"
-[".config/kitty/nord.conf"]
-    type = "file"
-    url = "https://raw.githubusercontent.com/connorholyday/nord-kitty/master/nord.conf"
-    refreshPeriod = "168h"
 [".config/karabiner/assets/complex_modifications/japanese.json"]
     type = "file"
     url = "https://ke-complex-modifications.pqrs.org/json/japanese.json"
