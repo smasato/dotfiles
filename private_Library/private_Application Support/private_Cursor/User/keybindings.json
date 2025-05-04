@@ -1,16 +1,11 @@
 [
   {
-    "key": "cmd+r shift+alt+cmd+c",
-    "command": "-copyRelativeFilePath",
-    "when": "editorFocus"
-  },
-  {
     "key": "shift+alt+cmd+c",
     "command": "copyRelativeFilePath"
   },
   {
-    "key": "shift+alt+cmd+c",
-    "command": "-copyRelativeFilePath",
-    "when": "!editorFocus"
+    "key": "ctrl+l",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus"
   }
 ]
