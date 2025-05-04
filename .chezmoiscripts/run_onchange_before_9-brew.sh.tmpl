@@ -8,7 +8,7 @@ set -eufo pipefail
 {{- else }}
 # brew_personal.yml hash: {{ include "brew_personal.yml" | sha256sum }}
 {{- end }}
-brew bundle --no-lock --no-upgrade --file=/dev/stdin --verbose <<EOF
+brew bundle --no-upgrade --no-restart --file=/dev/stdin --verbose <<EOF
 {{ $brew_base := include (joinPath .chezmoi.sourceDir "brew_base.yml") | fromYaml }}
 {{- $taps := $brew_base.taps }}
 {{- $brews := $brew_base.brews }}
