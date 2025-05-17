@@ -8,6 +8,9 @@
 [includeIf "gitdir:{{ .chezmoi.homeDir }}/dev/src/github.com/smasato/**"]
 	path = ~/.gitconfig_private
 
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/dev/src/github.com/x-smasato/**"]
+	path = ~/.gitconfig_private
+
 [include]
 	path = ~/.config/gitalias/gitalias.txt
 
