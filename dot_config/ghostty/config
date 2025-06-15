@@ -6,3 +6,4 @@ background-blur-radius = 10
 macos-titlebar-style = hidden
 window-padding-y = 10
 window-padding-x = 10
+keybind = shift+enter=text:\n
