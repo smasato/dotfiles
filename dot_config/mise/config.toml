@@ -1,0 +1,10 @@
+[tools]
+usage = "latest"
+ruby = "3.4.3"
+bun = "1.2.16"
+node = "24.2.0"
+hk = "latest"
+"npm:@anthropic-ai/claude-code" = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = []
