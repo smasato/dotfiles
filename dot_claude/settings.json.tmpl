@@ -1,0 +1,16 @@
+{
+  "model": "opus",
+  "env": {
+    "GIT_PAGER": "cat",
+{{- if .work }}
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+{{- else }}
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_HEADERS": "api-key={{ (onepasswordDetailsFields "2pq2wxjeprrzpsblokgtruqkia").hxwmipcw5wvjmvpymoabyrm23q.value }}",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "https://otlp.nr-data.net:4317",
+    "OTEL_METRICS_INCLUDE_VERSION": "1"
+{{- end }}
+  }
+}
