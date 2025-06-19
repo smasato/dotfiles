@@ -1,9 +1,11 @@
 {
   "model": "opus",
   "env": {
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "GIT_PAGER": "cat",
+    "SHELL": "/opt/homebrew/bin/zsh",
 {{- if .work }}
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0"
 {{- else }}
     "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
     "OTEL_METRICS_EXPORTER": "otlp",
@@ -12,5 +14,43 @@
     "OTEL_EXPORTER_OTLP_ENDPOINT": "https://otlp.nr-data.net:4317",
     "OTEL_METRICS_INCLUDE_VERSION": "1"
 {{- end }}
+  },
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(chmod:*)",
+      "Bash(cp:*)",
+      "Bash(curl:*)",
+      "Bash(docker logs:*)",
+      "Bash(find:*)",
+      "Bash(gh api:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr edit:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(git push:*)",
+      "Bash(git rm:*)",
+      "Bash(git stash:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(open:*)",
+      "Bash(rm:*)",
+      "Bash(rg:*)",
+      "Glob(**)",
+      "Grep(**)",
+      "LS(**)",
+      "Read(~/.zshrc)"
+    ],
+    "deny": ["Bash(rm -rf /)", "Bash(sudo *)"]
   }
 }
