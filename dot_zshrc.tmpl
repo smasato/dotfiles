@@ -180,9 +180,6 @@ export PATH="$(aqua root-dir)/bin:$PATH"
 {{- if lookPath "op" }}
 {{ output "op" "completion" "zsh" | trim }}
 compdef _op op
-{{ if stat (joinPath .chezmoi.homeDir ".config/op/plugins.sh") }}
-source ~/.config/op/plugins.sh
-{{ end }}
 {{- end }}
 
 {{- if stat (joinPath .chezmoi.homeDir ".codeium/windsurf/bin") }}
