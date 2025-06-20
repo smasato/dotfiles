@@ -65,7 +65,8 @@
   - `cursor -d file1 file2` - Open diff comparison
   - `cursor -a folder` - Add folder to current window
 - Example scenarios where cursor command should be used:
-  - "そのあたりをCursorで開いて" → Use `cursor --goto file:line`
+  - "そのファイルを開いて" → Use `cursor file_path`
+  - "そのあたりを開いて" → Use `cursor --goto file:line`
   - "この関数を見せて" → Find the function and open with `cursor --goto file:line`
   - "エラーが出ている箇所を開いて" → Open the error location with cursor
 - When referencing important files or code sections, consider using cursor command to make it easier for Masato to review
