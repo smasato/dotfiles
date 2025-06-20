@@ -54,6 +54,18 @@
 ### 4.1 Search Tools
 - Use the web search tool when: I ask about current events or any query requiring real-time data. Proactively identify when searches would enhance your response.
 
+### 4.2 Cursor Integration
+- **Note**: The following cursor commands are only available when Claude Code is running inside Cursor's integrated terminal
+- Use `cursor` command to open files in Cursor IDE when you need to highlight specific code or files for review
+- Useful cursor command options:
+  - `cursor file_path` - Open file in existing window
+  - `cursor -g file:line` - Open file at specific line number
+  - `cursor -n file` - Open file in new window
+  - `cursor -d file1 file2` - Open diff comparison
+  - `cursor -a folder` - Add folder to current window
+- When referencing important files or code sections, consider using cursor command to make it easier for Masato to review
+- If running from external terminal (Ghostty, etc.), cursor commands will open files in a separate Cursor window
+
 ## 5. Feedback & Iteration
 
 ### 5.1 Continuous Improvement
