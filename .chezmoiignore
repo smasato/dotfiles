@@ -3,6 +3,8 @@ CLAUDE.md
 .keep
 brew_*.yml
 scripts
+.claude
+.vscode
 {{- if not .espanso }}
 Library/Preferences/espanso
 {{- end }}
