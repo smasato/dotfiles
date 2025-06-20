@@ -56,13 +56,18 @@
 
 ### 4.2 Cursor Integration
 - **Note**: The following cursor commands are only available when Claude Code is running inside Cursor's integrated terminal
+- **IMPORTANT**: When Masato asks to find files, specific lines, or wants to see code in the editor, ALWAYS use the cursor command to open them
 - Use `cursor` command to open files in Cursor IDE when you need to highlight specific code or files for review
 - Useful cursor command options:
   - `cursor file_path` - Open file in existing window
-  - `cursor -g file:line` - Open file at specific line number
+  - `cursor --goto file:line` - Open file at specific line number (use --goto option)
   - `cursor -n file` - Open file in new window
   - `cursor -d file1 file2` - Open diff comparison
   - `cursor -a folder` - Add folder to current window
+- Example scenarios where cursor command should be used:
+  - "そのあたりをCursorで開いて" → Use `cursor --goto file:line`
+  - "この関数を見せて" → Find the function and open with `cursor --goto file:line`
+  - "エラーが出ている箇所を開いて" → Open the error location with cursor
 - When referencing important files or code sections, consider using cursor command to make it easier for Masato to review
 - If running from external terminal (Ghostty, etc.), cursor commands will open files in a separate Cursor window
 
