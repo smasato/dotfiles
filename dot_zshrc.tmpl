@@ -135,17 +135,9 @@ eval "$(zoxide init zsh)"
 {{ output "mise" "activate" "zsh" | trim }}
 {{- end }}
 
-{{- if lookPath "aqua" }}
-export PATH="$(aqua root-dir)/bin:$PATH"
-{{- end }}
-
 {{- if lookPath "op" }}
 {{ output "op" "completion" "zsh" | trim }}
 compdef _op op
-{{- end }}
-
-{{- if stat (joinPath .chezmoi.homeDir ".codeium/windsurf/bin") }}
-export PATH="{{ joinPath .chezmoi.homeDir ".codeium/windsurf/bin" }}:$PATH"
 {{- end }}
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

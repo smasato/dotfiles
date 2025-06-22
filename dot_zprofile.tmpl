@@ -32,6 +32,14 @@ export PATH="$PATH:$HOME/dev/bin"
 export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
 {{- end }}
 
+# Development tools PATH
+{{- if lookPath "aqua" }}
+export PATH="$(aqua root-dir)/bin:$PATH"
+{{- end }}
+{{- if stat (joinPath .chezmoi.homeDir ".codeium/windsurf/bin") }}
+export PATH="{{ joinPath .chezmoi.homeDir ".codeium/windsurf/bin" }}:$PATH"
+{{- end }}
+
 {{ if .work }}
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
