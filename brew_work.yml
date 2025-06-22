@@ -1,8 +1,7 @@
 ---
 taps:
-- aquaproj/aqua
 brews:
-  aquaproj/aqua/aqua:
+  aqua:
   k9s:
   kubectx:
   libpq:
