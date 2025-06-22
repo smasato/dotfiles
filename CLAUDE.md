@@ -21,7 +21,6 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 
 ### Shell
 - **Reload shell**: `reload` (alias for `exec zsh`)
-- **Update all tools**: `topgrade` - Updates system packages, brew, mise runtimes, etc.
 
 ## Architecture
 
