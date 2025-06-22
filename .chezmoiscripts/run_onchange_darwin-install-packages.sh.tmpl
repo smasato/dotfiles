@@ -1,0 +1,52 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+# .chezmoidata/packages.yaml hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
+
+echo "Installing Homebrew packages..."
+
+brew bundle --no-upgrade --no-restart --file=/dev/stdin --verbose <<EOF
+{{- $packages := .packages.darwin }}
+{{- $taps := $packages.taps.base }}
+{{- $brews := $packages.brews.base }}
+{{- $casks := $packages.casks.base }}
+
+{{- if not .espanso }}
+  {{- $casks = without $casks "espanso" }}
+{{- end }}
+
+{{- if .work }}
+  {{- $taps = concat $taps $packages.taps.work }}
+  {{- range $key, $value := $packages.brews.work }}
+    {{- $brews = set $brews $key $value }}
+  {{- end }}
+  {{- $casks = concat $casks $packages.casks.work }}
+{{- else }}
+  {{- $taps = concat $taps $packages.taps.personal }}
+  {{- range $key, $value := $packages.brews.personal }}
+    {{- $brews = set $brews $key $value }}
+  {{- end }}
+  {{- $casks = concat $casks $packages.casks.personal }}
+{{- end }}
+
+{{- range ($taps | uniq) }}
+tap "{{ . }}"
+{{- end }}
+
+{{- range $key, $value := $brews }}
+  {{- if eq $value nil }}
+brew "{{ $key }}"
+  {{- else }}
+brew "{{ $key }}", {{ range $k, $v := $value }}{{ $k }}: {{ if kindIs "bool" $v }}{{ $v }}{{ else }}{{ toJson $v }}{{ end }}{{ if not (eq $k (keys $value | sortAlpha | last)) }}, {{ end }}{{ end }}
+  {{- end }}
+{{- end }}
+
+{{- range ($casks | uniq) }}
+cask "{{ . }}"
+{{- end }}
+EOF
+
+echo "Homebrew packages installation completed."
+{{- end }}
