@@ -1,8 +1,5 @@
 ---
 taps:
-- aws/tap
-- homebrew/bundle
-- homebrew/services
 brews:
   aom:
   atuin:
