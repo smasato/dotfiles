@@ -46,25 +46,6 @@ setopt hist_ignore_all_dups
 setopt append_history
 setopt hist_reduce_blanks
 
-{{ if (eq .chezmoi.arch "arm64") -}}
-export PATH="/opt/homebrew/bin:$PATH"
-{{- end }}
-export PATH="$PATH:{{ output "brew" "--prefix" | trim }}/sbin"
-export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/dev/bin"
-
-[ -d {{ output "brew" "--prefix" | trim }}/opt/llvm/ ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/llvm/bin
-[ -d {{ output "brew" "--prefix" | trim }}/opt/curl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/curl/bin
-[ -d {{ output "brew" "--prefix" | trim }}/opt/openssl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/openssl/bin
-[ -d {{ output "brew" "--prefix" | trim }}/opt/coreutils ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/coreutils/libexec/gnubin:$PATH
-[ -d {{ output "brew" "--prefix" | trim }}/opt/mysql-client ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/mysql-client/bin:$PATH
-
-{{- if lookPath "go" }}
-export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
-{{- end }}
-
-[ -d $HOME/.cargo ] && . "$HOME/.cargo/env"
-
 {{ if stat (joinPath .chezmoi.homeDir ".fzf.zsh") }}
 source ~/.fzf.zsh
 {{ end }}

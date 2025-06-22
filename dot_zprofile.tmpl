@@ -1,8 +1,37 @@
 export LANG=ja_JP.UTF-8
-export PATH="$HOME/.local/share/mise/shims:$PATH"
 
+# System package managers
+{{ if (eq .chezmoi.arch "arm64") -}}
+export PATH="/opt/homebrew/bin:$PATH"
+{{- end }}
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+export PATH="$PATH:{{ output "brew" "--prefix" | trim }}/sbin"
+
+# Development tools
 # Added by Toolbox App
 export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+
+# User local directories
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/dev/bin"
+
+# Optional Homebrew tools
+# Note: coreutils provides GNU versions of standard commands (ls, cp, etc.)
+# These are added to the beginning of PATH to override macOS versions
+[ -d {{ output "brew" "--prefix" | trim }}/opt/coreutils ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/coreutils/libexec/gnubin:$PATH
+[ -d {{ output "brew" "--prefix" | trim }}/opt/mysql-client ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/mysql-client/bin:$PATH
+
+# These tools are added to the end of PATH as they supplement existing functionality
+[ -d {{ output "brew" "--prefix" | trim }}/opt/llvm/ ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/llvm/bin
+[ -d {{ output "brew" "--prefix" | trim }}/opt/curl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/curl/bin
+[ -d {{ output "brew" "--prefix" | trim }}/opt/openssl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/openssl/bin
+
+# Programming language environments
+[ -d $HOME/.cargo ] && . "$HOME/.cargo/env"
+{{- if lookPath "go" }}
+export PATH=$PATH:{{ output "go" "env" "GOROOT" | trim }}/bin
+{{- end }}
+
 {{ if .work }}
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
