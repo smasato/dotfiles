@@ -1,0 +1,26 @@
+# ~/.zshenv - Environment variables for all zsh instances (login, interactive, scripts)
+
+# History settings
+export HISTFILE=${HOME}/.zsh_history
+export HISTSIZE=100000
+export SAVEHIST=530000
+export HISTORY_IGNORE="(cd|pwd|ls|rm|mv|shutdown|exit|rmdir)"
+
+# Development environment
+export GOPATH=$HOME/dev
+
+# Compiler and build flags
+export CPPFLAGS="-Wno-enum-constexpr-conversion"
+{{- if lookPath "brew" }}
+[ -d {{ output "brew" "--prefix" | trim }}/opt/libpq/lib/pkgconfig ] && export PKG_CONFIG_PATH={{ output "brew" "--prefix" | trim }}/opt/libpq/lib/pkgconfig:$PKG_CONFIG_PATH
+[ -d {{ output "brew" "--prefix" | trim }}/opt/zstd/lib ] && export LIBRARY_PATH={{ output "brew" "--prefix" | trim }}/opt/zstd/lib:$LIBRARY_PATH
+{{- end }}
+
+# Homebrew settings
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_GITHUB_API_TOKEN={{- (onepasswordDetailsFields "kqiktddg5z46edlrn2f6i5woci").t6mj2kfo3pagmpdweekmcajrc4.value }}
+export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordItemFields "4bji3bh7itygdk4grlid7u7t7y").token.value }}
+
+# Tool configurations
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
