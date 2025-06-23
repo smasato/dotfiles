@@ -11,4 +11,5 @@
 - Create a pull request using `./tmp/PULL_REQUEST.md` as the description
   - `gh pr create -t <title> --body-file ./tmp/PULL_REQUEST.md --assignee @me --base <base-branch>`
   - Usually create against the `main` branch. If the `main` branch doesn't exist, create against the `master` branch. If $ARGUMENTS is specified, use it as the base branch
+- Execute `rm ./tmp/PULL_REQUEST.md`
 - Execute `open <pull-request-url>`
