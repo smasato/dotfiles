@@ -4,7 +4,12 @@
 - Commit all changes
 - Push the branch to GitHub
 - Write PR description to `./tmp/PULL_REQUEST.md`
-  - If `./PULL_REQUEST_TEMPLATE.md` exists, use it as the template for the PR description
+  - Check if a PR template (`PULL_REQUEST_TEMPLATE.md`) exists at the repository root or inside the `.github/` directory, and obtain its path if found.
+  - Run the following command to search for the template path:
+    ```bash
+    find . -maxdepth 2 -type f -iname "PULL_REQUEST_TEMPLATE.md"
+    ```
+  - If a template file is found, use its contents as the initial value for `./tmp/PULL_REQUEST.md`.
 - Open `./tmp/PULL_REQUEST.md` in Cursor
   - I will review, modify and save the content
 - Ask me if the PR description is correct
