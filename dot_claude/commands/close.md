@@ -18,6 +18,7 @@ First, You should execute the following command to create a timestamp heading:
 echo "# $(date '+%Y-%m-%d %H:%M:%S')" >> ./tmp/CLOSE.md
 echo "" >> ./tmp/CLOSE.md
 ```
+After that, Read the `./tmp/CLOSE.md` file for Update.
 
 Then, please add your session review under this heading with the following information:
 
@@ -27,6 +28,8 @@ Then, please add your session review under this heading with the following infor
 - Environment setup issues
 - Suggestions for workflow improvements
 - Tasks to address in the next session
+
+This should be done using the Update Tool.
 
 ## Example Format
 
@@ -55,5 +58,3 @@ Then, please add your session review under this heading with the following infor
 - テストカバレッジの改善
 - CI/CD パイプラインの設定
 ```
-
-
