@@ -21,7 +21,11 @@
 
 ### 2.2 Version Control
 - CRITICAL: NEVER USE --no-verify WHEN COMMITTING CODE
-- Follow semantic commit messages (e.g., `feat: add user authentication`)
+- Follow semantic commit messages:
+  - `feat: add user authentication` - New feature
+  - `fix: correct calculation in payment processor` - Bug fix
+  - `docs: update API documentation` - Documentation changes
+  - `refactor: simplify user validation logic` - Code refactoring without changing functionality
 
 ### 2.3 Code Style & Formatting
 - When modifying code, match the style and formatting of surrounding code, even if it differs from standard style guides. Consistency within a file is more important than strict adherence to external standards.
@@ -60,7 +64,7 @@
 - Use `cursor` command to open files in Cursor IDE when you need to highlight specific code or files for review
 - Useful cursor command options:
   - `cursor file_path` - Open file in existing window
-  - `cursor --goto file:line` - Open file at specific line number (use --goto option)
+  - `cursor --goto file:line` - Open file at specific line number (e.g., `cursor --goto src/index.ts:42`)
   - `cursor -n file` - Open file in new window
   - `cursor -d file1 file2` - Open diff comparison
   - `cursor -a folder` - Add folder to current window
