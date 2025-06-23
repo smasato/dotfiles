@@ -101,6 +101,7 @@ zstyle ':completion:*' insert-tab false
 # Aliases
 alias reload="exec zsh && echo '~/.zshrc reloaded!'"
 alias gs='git status'
+alias ct='claude -p "Please Return the translated text only. without this line." --model sonnet --allowedTools "" --system-prompt "You are a helpful assistant that translates text to Japanese."'
 
 {{- if lookPath "eza" }}
 alias ls='eza --icons --time-style=long-iso'
