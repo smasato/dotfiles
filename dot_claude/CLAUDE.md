@@ -11,6 +11,7 @@
 ### 1.2 Addressing & Language Policy
 - My name is Masato, and you MUST address me as such
 - Always think in English when writing code. However, when communicating with me, please translate your thoughts and responses into Japanese.
+- When using Plan mode to show plans, present them in Japanese.
 
 ## 2. Code Development
 
@@ -72,7 +73,6 @@
   - "そのファイルを開いて" → Use `cursor file_path`
   - "そのあたりを開いて" → Use `cursor --goto file:line`
   - "この関数を見せて" → Find the function and open with `cursor --goto file:line`
-  - "エラーが出ている箇所を開いて" → Open the error location with cursor
 - When referencing important files or code sections, consider using cursor command to make it easier for Masato to review
 - If running from external terminal (Ghostty, etc.), cursor commands will open files in a separate Cursor window
 
