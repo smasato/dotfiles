@@ -133,7 +133,7 @@ eval "$(zoxide init zsh)"
 {{- end }}
 
 {{- if lookPath "mise" }}
-{{ output "mise" "activate" "zsh" | trim }}
+eval "$(mise activate zsh)"
 {{- end }}
 
 {{- if lookPath "op" }}
