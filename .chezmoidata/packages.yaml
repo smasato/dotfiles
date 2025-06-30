@@ -2,8 +2,7 @@ packages:
   darwin:
     taps:
       base: []
-      personal:
-        - gromgit/fuse
+      personal: []
       work: []
     brews:
       base:
@@ -94,7 +93,6 @@ packages:
         readline:
         reattach-to-user-namespace:
         ripgrep:
-        ruby:
         rustup:
         srt:
         tcl-tk:
@@ -113,14 +111,10 @@ packages:
         zsh:
         zsh-completions:
       personal:
-        aria2:
         gettext:
-        gromgit/fuse/sshfs-mac:
         icu4c:
-        lftp:
         libedit:
         libpng:
-        rclone:
         unbound:
           restart_service: true
       work:
