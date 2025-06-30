@@ -7,6 +7,7 @@ description: Create a pull request to GitHub
 
 Status: !`git status`
 Diff: !`git diff`
+Base branch: !`git branch | grep -E "master|main"` or $ARGUMENTS
 
 - Create a new branch
   - Read @README.md to check the branch naming convention
@@ -20,7 +21,7 @@ Diff: !`git diff`
   - I will review, modify and save the content
 - Ask me if the PR description is correct (y/n)
 - If I say "y", Create a pull request using `./PULL_REQUEST.md` as the description
-  - Bash(`gh pr create -t <title> --body-file ./PULL_REQUEST.md --assignee @me --base <base-branch>`)
-  - !`git branch | grep -E "master|main"` to determine the base branch. If $ARGUMENTS is specified, use it as the base branch. Otherwise, use the first branch found
+  - Read(`./PULL_REQUEST.md`) to make the title
+  - Bash(`gh pr create -t <title> --body-file ./PULL_REQUEST.md --assignee @me --base <Base branch>`)
 - Bash(`rm ./PULL_REQUEST.md`)
 - Bash(`open <pull-request-url>`)
