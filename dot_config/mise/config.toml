@@ -12,6 +12,7 @@ hk = "latest"
 # npm packages
 "npm:@anthropic-ai/claude-code" = "latest"
 "npm:ccusage" = "latest"
+"npm:@google/gemini-cli" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = []
