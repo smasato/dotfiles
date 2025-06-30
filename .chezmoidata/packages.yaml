@@ -137,7 +137,9 @@ packages:
         - espanso
         - fantastical
         - firefox@developer-edition
+        # Fonts
         - font-m+-nerd-font
+        - font-udev-gothic-nf
         - fork
         - ghostty
         - google-drive
