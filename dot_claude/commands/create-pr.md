@@ -14,9 +14,9 @@ Base branch: !`git branch | grep -E "master|main"` or $ARGUMENTS
 - Commit all changes
 - Push the branch to GitHub
 - Write PR description to `./PULL_REQUEST.md`
-  - Check if a PR template (`PULL_REQUEST_TEMPLATE.md`) exists at the repository root or inside the `.github/` directory, and obtain its path if found.
-  - Run Bash(`find . -maxdepth 2 -type f -iname "PULL_REQUEST_TEMPLATE.md"`) to search for the template path:
-  - If a template file is found, use its contents as the initial value for `./PULL_REQUEST.md`.
+  - Run Bash(`find . -maxdepth 2 -type f -iname "PULL_REQUEST_TEMPLATE.md"`) to search for `<template-path>`
+  - Read(`<template-path>`) to get the template content
+  - If a template file is found, use its contents as the initial value for `./PULL_REQUEST.md`
 - Bash(`cursor ./PULL_REQUEST.md`)
   - I will review, modify and save the content
 - Ask me if the PR description is correct (y/n)
