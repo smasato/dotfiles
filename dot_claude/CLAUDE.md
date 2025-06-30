@@ -56,10 +56,72 @@
 
 ## 4. Tool Usage
 
-### 4.1 Search Tools
+### 4.1 Search Tools Priority
+- **Code Search Priority Order**:
+  1. **ast-grep**: ALWAYS first choice for structural code search.
+  2. **Grep tool**: Only when searching for plain text patterns or non-code files.
+  3. **Task tool**: For complex, multi-step search operations.
 - Use the web search tool when: I ask about current events or any query requiring real-time data. Proactively identify when searches would enhance your response.
 
-### 4.2 Cursor Integration
+### 4.2 ast-grep Usage
+- **CRITICAL**: ALWAYS use ast-grep for code search and structural pattern matching instead of grep or basic text search
+- **ast-grep** is a powerful AST-based code search tool that understands code structure, making it far superior to text-based search for programming tasks
+- Prefer ast-grep over Grep tool when searching for:
+  - Function calls, definitions, or specific code patterns
+  - Variable declarations or usages
+  - Import/export statements
+  - Class definitions or method calls
+  - Any structural code patterns
+
+#### Basic ast-grep Commands
+- **Pattern search**: `ast-grep -p 'pattern' --lang language`
+  - Example: `ast-grep -p 'console.log($MSG)' --lang javascript`
+- **Code rewriting**: `ast-grep -p 'old_pattern' -r 'new_pattern' --lang language`
+  - Example: `ast-grep -p 'var $VAR = $VALUE' -r 'let $VAR = $VALUE' --lang javascript`
+- **With context**: Use `-C 3` to show 3 lines of context around matches
+- **JSON output**: Use `--json` for structured output when processing results
+- Use specific language flags (`--lang`) to improve accuracy.
+
+#### Pattern Syntax
+- `$VARIABLE`: Matches any single AST node (e.g., `$MSG`, `$FUNC`)
+- `$$$ARGS`: Matches zero or more AST nodes (useful for function arguments)
+- `$_ANONYMOUS`: Non-capturing meta-variable (prefixed with underscore)
+
+#### Common Search Patterns
+```bash
+# Function calls
+ast-grep -p 'functionName($$$ARGS)'
+
+# Async functions
+ast-grep -p 'async function $NAME($$$PARAMS) { $$$ }'
+
+# Import statements
+ast-grep -p 'import { $IMPORT } from "$MODULE"' --lang typescript
+
+# Class methods
+ast-grep -p 'class $CLASS { $METHOD($$$PARAMS) { $$$ } }'
+
+# Variable declarations
+ast-grep -p 'const $VAR = $VALUE'
+```
+
+#### When to Use ast-grep vs Other Tools
+- **Use ast-grep for**:
+  - Finding all usages of a function or variable
+  - Refactoring code patterns across the codebase
+  - Searching for specific code structures (not just text)
+  - Analyzing code patterns before making changes
+  - Finding complex patterns like nested function calls or specific AST structures
+- **Use Grep tool for**:
+  - Simple text searches in non-code files (README, docs, configs)
+  - Finding strings that don't represent code structure
+  - Quick searches when ast-grep language support is unavailable
+- **Use Task tool for**:
+  - Complex searches requiring multiple steps
+  - When you need to combine search with other operations
+  - Exploratory searches where the exact pattern is unclear
+
+### 4.3 Cursor Integration
 - **Note**: The following cursor commands are only available when Claude Code is running inside Cursor's integrated terminal
 - **IMPORTANT**: When Masato asks to find files, specific lines, or wants to see code in the editor, ALWAYS use the cursor command to open them
 - Use `cursor` command to open files in Cursor IDE when you need to highlight specific code or files for review
