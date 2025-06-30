@@ -1,0 +1,49 @@
+extensions:
+  cursor:
+    ext_ids:
+      # Theme & Icon
+      - catppuccin.catppuccin-vsc
+      - catppuccin.catppuccin-vsc-icons
+      - miguelsolorio.fluent-icons
+      # Language Pack
+      - ms-ceintl.vscode-language-pack-ja
+      # AI Agent
+      - anthropic.claude-code
+      # Lens
+      - eamodio.gitlens
+      - usernamehw.errorlens
+      # GitHub
+      - ziyasal.vscode-open-in-github
+      # GitHub Actions
+      - github.vscode-github-actions
+      # Capture
+      - adpyke.codesnap
+      # Lint & Format
+      - charliermarsh.ruff
+      - dbaeumer.vscode-eslint
+      - esbenp.prettier-vscode
+      # Container & Docker
+      - ms-azuretools.vscode-docker
+      # Python
+      - anysphere.cursorpyright
+      - ms-python.debugpy
+      - ms-python.python
+      # Ruby
+      - mame.ruby-typeprof
+      - shopify.ruby-lsp
+      - soutaro.rbs-syntax
+      # Go
+      - golang.go
+      # Vue
+      - vue.volar
+      # i18n
+      - lokalise.i18n-ally
+      # Spell Checker
+      - streetsidesoftware.code-spell-checker
+      # TOML
+      - tamasfe.even-better-toml
+      # Markdown
+      - marp-team.marp-vscode
+      - bierner.markdown-mermaid
+    remote_paths:
+      - https://github.com/apple/pkl-vscode/releases/download/0.19.0/pkl-vscode-0.19.0.vsix
