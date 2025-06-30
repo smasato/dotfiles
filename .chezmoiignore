@@ -1,7 +1,6 @@
 README.md
 CLAUDE.md
 .keep
-brew_*.yml
 scripts
 .vscode
 {{- if not .espanso }}
