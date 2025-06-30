@@ -9,6 +9,8 @@ packages:
       base:
         # Shell
         starship:
+        # Tools
+        ast-grep:
         aom:
         atuin:
         autoconf:
