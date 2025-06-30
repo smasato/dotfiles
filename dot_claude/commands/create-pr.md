@@ -1,4 +1,12 @@
+---
+allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(find:*), Bash(gh pr create:*), Bash(rm ./PULL_REQUEST.md), Bash(open:*)
+description: Create a pull request to GitHub
+---
+
 # Create a Pull Request to GitHub
+
+- Status: !`git status`
+- Diff: !`git diff`
 
 - Create a new branch
 - Commit all changes
