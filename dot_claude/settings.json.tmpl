@@ -54,5 +54,29 @@
       "Read(~/.zshrc)"
     ],
     "deny": ["Bash(rm -rf /)", "Bash(sudo *)"]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{ .chezmoi.homeDir }}/.claude/hooks/stop.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{ .chezmoi.homeDir }}/.claude/hooks/notification.sh"
+          }
+        ]
+      }
+    ]
   }
 }
