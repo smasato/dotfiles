@@ -10,6 +10,7 @@ packages:
         starship:
         # Tools
         ast-grep:
+        terminal-notifier:
         aom:
         atuin:
         autoconf:
