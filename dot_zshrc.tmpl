@@ -84,9 +84,6 @@ setopt magic_equal_subst
 setopt always_last_prompt
 
 autoload -U colors
-{{ if stat (joinPath .chezmoi.homeDir ".dir_colors") }}
-{{ output "dircolors" (joinPath .chezmoi.homeDir ".dir_colors") | trim }}
-{{ end }}
 
 zstyle ':completion::complete:*' use-cache true
 zstyle ':completion:*:default' menu select=1

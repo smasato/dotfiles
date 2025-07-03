@@ -7,6 +7,9 @@ export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 export PATH="$PATH:{{ output "brew" "--prefix" | trim }}/sbin"
 
+# Color scheme
+export LS_COLORS=$(vivid generate catppuccin-mocha)
+
 # Development tools
 # Added by Toolbox App
 export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
