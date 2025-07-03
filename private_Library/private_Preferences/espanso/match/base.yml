@@ -1,10 +1,10 @@
 # espanso match file
 
 matches:
-  - trigger: ":n"
-    replace: "{{mytime}}"
+  - trigger: ':n'
+    replace: '{{mytime}}'
     vars:
       - name: mytime
         type: date
         params:
-          format: "%H:%M"
+          format: '%H:%M'

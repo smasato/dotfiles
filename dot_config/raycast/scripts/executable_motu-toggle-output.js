@@ -21,23 +21,27 @@ if (arg !== 'a' && arg !== 'b') {
 
 // a: Speaker
 // b: Headphone
-const payloads = arg === 'a'
-  ? [
-    new Uint8Array([19,153,0,0,0,1,0]),
-    new Uint8Array([19,152,0,0,0,1,1])
-  ]
-  : [
-    new Uint8Array([19,152,0,0,0,1,0]),
-    new Uint8Array([19,153,0,0,0,1,1])
-  ];
+const payloads =
+  arg === 'a'
+    ? [
+        new Uint8Array([19, 153, 0, 0, 0, 1, 0]),
+        new Uint8Array([19, 152, 0, 0, 0, 1, 1]),
+      ]
+    : [
+        new Uint8Array([19, 152, 0, 0, 0, 1, 0]),
+        new Uint8Array([19, 153, 0, 0, 0, 1, 1]),
+      ];
 
 const ws = new WebSocket('ws://127.0.0.1:1281/UL5LFF1F3C');
 ws.binaryType = 'arraybuffer';
 
 ws.addEventListener('open', () => {
-  payloads.forEach(payload => {
+  payloads.forEach((payload) => {
     ws.send(payload);
   });
   ws.close();
 });
-ws.addEventListener('error', e => { console.error(e.message); process.exit(2); });
+ws.addEventListener('error', (e) => {
+  console.error(e.message);
+  process.exit(2);
+});
