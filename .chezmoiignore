@@ -3,6 +3,8 @@ CLAUDE.md
 .keep
 scripts
 .vscode
+mise.toml
+hk.pkl
 {{- if not .espanso }}
 Library/Preferences/espanso
 {{- end }}
