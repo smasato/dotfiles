@@ -5,6 +5,8 @@ scripts
 .vscode
 mise.toml
 hk.pkl
+.prettierrc
+.prettierignore
 {{- if not .espanso }}
 Library/Preferences/espanso
 {{- end }}

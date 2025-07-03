@@ -18,6 +18,7 @@ First, You should execute the following command to create a timestamp heading:
 echo "# $(date '+%Y-%m-%d %H:%M:%S')" >> ./tmp/CLOSE.md
 echo "" >> ./tmp/CLOSE.md
 ```
+
 After that, Read the `./tmp/CLOSE.md` file for Update.
 
 Then, please add your session review under this heading with the following information:
@@ -37,24 +38,29 @@ This should be done using the Update Tool.
 # 2025-06-23 10:00:00
 
 ## セッションサマリー
+
 - Homebrew bundle ファイルの更新スクリプトを実装
 - chezmoi テンプレートの修正
 
 ## 改善提案
 
 ### ドキュメント関連
+
 - CLAUDE.md にテスト実行コマンドの記載が不足していた
 - README.md の環境構築手順が古い（mise の設定が反映されていない）
 
 ### 環境・設定
+
 - brew.rb スクリプトの依存関係チェックが必要
 - .chezmoidata.yaml のデフォルト値設定を追加すべき
 
 ### ワークフロー
+
 - PR 作成前の自動チェックスクリプトがあると便利
 - chezmoi apply の前に diff を確認する習慣をつける
 
 ## 次回への申し送り
+
 - テストカバレッジの改善
 - CI/CD パイプラインの設定
 ```
