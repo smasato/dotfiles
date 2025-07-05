@@ -2,6 +2,16 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+@README.md
+
+[@README.md](README.md)
+
+[@README.md](./README.md)
+
+[.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md)
+
+[.github/PULL_REQUEST_TEMPLATE.md](./.github/PULL_REQUEST_TEMPLATE.md)
+
 ## Repository Overview
 
 This is a chezmoi-managed dotfiles repository for a macOS development environment. The repository contains configuration files, scripts, and templates that are deployed to the home directory using chezmoi.
