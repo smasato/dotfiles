@@ -6,6 +6,10 @@
     type = "file"
     url = "https://raw.githubusercontent.com/GitAlias/gitalias/main/gitalias.txt"
     refreshPeriod = "168h"
+[".config/atuin/themes/catppuccin-mocha-sky.toml"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/catppuccin/atuin/refs/heads/main/themes/mocha/catppuccin-mocha-sky.toml"
+    refreshPeriod = "168h"
 ["antigen.zsh"]
     type = "file"
     url = "https://git.io/antigen"
