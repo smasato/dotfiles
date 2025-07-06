@@ -14,6 +14,14 @@
     type = "file"
     url = "https://raw.githubusercontent.com/catppuccin/fzf/refs/heads/main/themes/catppuccin-fzf-mocha.sh"
     refreshPeriod = "168h"
+[".config/bat/themes/Catppuccin Mocha.tmTheme"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/catppuccin/bat/refs/heads/main/themes/Catppuccin%20Mocha.tmTheme"
+    refreshPeriod = "168h"
+[".config/delta/themes/catppuccin.gitconfig"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/catppuccin/delta/refs/heads/main/catppuccin.gitconfig"
+    refreshPeriod = "168h"
 ["antigen.zsh"]
     type = "file"
     url = "https://git.io/antigen"
