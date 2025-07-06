@@ -10,6 +10,10 @@
     type = "file"
     url = "https://raw.githubusercontent.com/catppuccin/atuin/refs/heads/main/themes/mocha/catppuccin-mocha-sky.toml"
     refreshPeriod = "168h"
+[".zsh/catppuccin-fzf-mocha.sh"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/catppuccin/fzf/refs/heads/main/themes/catppuccin-fzf-mocha.sh"
+    refreshPeriod = "168h"
 ["antigen.zsh"]
     type = "file"
     url = "https://git.io/antigen"
