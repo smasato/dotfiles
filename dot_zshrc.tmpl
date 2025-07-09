@@ -60,7 +60,7 @@ bindkey '^xi' anyframe-widget-insert-git-branch # Gitブランチ名をコマン
 bindkey '^xf' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
 
 {{- if lookPath "wt" }}
-# wt shell integration
+# twt shell integration
 eval "$(wt shell --init)"
 zstyle ':wt:selector:fzf:' command 'fzf --height=40% --layout=reverse --border --preview "echo Worktree: {2} && echo Path: {-1}"'
 {{- end }}
