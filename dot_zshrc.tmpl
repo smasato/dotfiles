@@ -59,12 +59,6 @@ bindkey '^xk' anyframe-widget-kill # プロセスをkillする
 bindkey '^xi' anyframe-widget-insert-git-branch # Gitブランチ名をコマンドラインに挿入する
 bindkey '^xf' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
 
-{{- if lookPath "wt" }}
-# twt shell integration
-eval "$(wt shell --init)"
-zstyle ':wt:selector:fzf:' command 'fzf --height=40% --layout=reverse --border --preview "echo Worktree: {2} && echo Path: {-1}"'
-{{- end }}
-
 # Completion
 {{- if lookPath "brew" }}
 FPATH={{ output "brew" "--prefix" | trim }}/share/zsh/site-functions:$FPATH
@@ -73,9 +67,8 @@ autoload -Uz compinit
 compinit
 {{- end }}
 
-{{- if lookPath "wt" }}
-source <(wt completion zsh)
-{{- end }}
+eval "$(twt completion zsh)"
+eval "$(twt shell --init)"
 
 setopt complete_in_word
 setopt auto_menu
@@ -133,5 +126,7 @@ eval "$(mise activate zsh)"
 {{ output "op" "completion" "zsh" | trim }}
 compdef _op op
 {{- end }}
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 eval "$(starship init zsh)"
