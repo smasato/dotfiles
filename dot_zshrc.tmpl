@@ -67,8 +67,8 @@ autoload -Uz compinit
 compinit
 {{- end }}
 
-eval "$(twt completion zsh)"
 eval "$(twt shell --init)"
+eval "$(twt completion zsh)"
 
 setopt complete_in_word
 setopt auto_menu
