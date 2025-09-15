@@ -1,7 +1,7 @@
 font-family = "UDEV Gothic NF"
 font-feature = -calt, -liga, -dlig
 
-theme = "catppuccin-mocha"
+theme = "Catppuccin Mocha"
 background-opacity = 0.8
 background-blur-radius = 10
 
