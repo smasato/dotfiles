@@ -3,7 +3,7 @@
 ruby = "3.4.3"
 bun = "1.2.16"
 node = "24.2.0"
-python = "latest"
+python = "3.11"
 
 # tools
 usage = "latest"
@@ -12,7 +12,7 @@ hk = "latest"
 # npm packages
 "npm:@anthropic-ai/claude-code" = "latest"
 "npm:ccusage" = "latest"
-"npm:@google/gemini-cli" = "latest"
+"npm:renovate" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = []
