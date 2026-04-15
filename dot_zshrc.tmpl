@@ -67,9 +67,6 @@ autoload -Uz compinit
 compinit
 {{- end }}
 
-eval "$(twt shell --init)"
-eval "$(twt completion zsh)"
-
 setopt complete_in_word
 setopt auto_menu
 setopt auto_param_keys
@@ -126,7 +123,5 @@ eval "$(mise activate zsh)"
 {{ output "op" "completion" "zsh" | trim }}
 compdef _op op
 {{- end }}
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 eval "$(starship init zsh)"
