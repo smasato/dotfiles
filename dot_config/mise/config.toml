@@ -13,6 +13,7 @@ hk = "latest"
 "npm:@anthropic-ai/claude-code" = "latest"
 "npm:ccusage" = "latest"
 "npm:renovate" = "latest"
+"npm:prettier" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = []
