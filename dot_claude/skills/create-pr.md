@@ -17,11 +17,9 @@ Base branch: !`git branch | grep -E "master|main"` or $ARGUMENTS
   - Run Bash(`find . -maxdepth 2 -type f -iname "PULL_REQUEST_TEMPLATE.md"`) to search for `<template-path>`
   - Read(`<template-path>`) to get the template content
   - If a template file is found, use its contents as the initial value for `./PULL_REQUEST.md`
-- Bash(`cursor ./PULL_REQUEST.md`)
-  - I will review, modify and save the content
+- I will review, modify and save the content
 - Ask me if the PR description is correct (y/n)
 - If I say "y", Create a pull request using `./PULL_REQUEST.md` as the description
   - Read(`./PULL_REQUEST.md`) to make the title
   - Bash(`gh pr create -t <title> --body-file ./PULL_REQUEST.md --assignee @me --base <Base branch>`)
 - Bash(`rm ./PULL_REQUEST.md`)
-- Bash(`open <pull-request-url>`)
