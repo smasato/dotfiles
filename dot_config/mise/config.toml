@@ -12,6 +12,7 @@ aube = "latest"
 
 # npm packages
 claude-code = "latest"
+codex = "latest"
 "npm:ccusage" = "latest"
 "npm:prettier" = "latest"
 
