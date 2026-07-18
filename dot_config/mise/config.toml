@@ -8,11 +8,11 @@ python = "3.11"
 # tools
 usage = "latest"
 hk = "latest"
+aube = "latest"
 
 # npm packages
-"npm:@anthropic-ai/claude-code" = "latest"
+claude-code = "latest"
 "npm:ccusage" = "latest"
-"npm:renovate" = "latest"
 "npm:prettier" = "latest"
 
 [settings]
