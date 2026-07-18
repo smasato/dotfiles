@@ -43,7 +43,6 @@ packages:
         gcc:
         gd:
         geos:
-        gh:
         ghostscript:
         ghq:
         git:

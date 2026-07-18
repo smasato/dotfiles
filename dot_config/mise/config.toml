@@ -6,6 +6,7 @@ node = "24.2.0"
 python = "3.11"
 
 # tools
+gh = "latest"
 usage = "latest"
 hk = "latest"
 aube = "latest"
