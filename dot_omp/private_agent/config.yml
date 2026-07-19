@@ -1,0 +1,9 @@
+providers:
+  webSearch: auto
+setupVersion: 1
+theme:
+  dark: dark-catppuccin
+  light: light-catppuccin
+symbolPreset: nerd
+modelRoles:
+  default: openai-codex/gpt-5.6-sol
