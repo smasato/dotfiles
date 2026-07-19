@@ -15,10 +15,14 @@ fetch = "case '{{ branch | default('') }}' in ''|-|@|^|pr:*|mr:*) ;; *) git show
 # Diverged or no upstream: keep the base content (|| true).
 sync = "{% if upstream %}git merge --ff-only {{ upstream }} || true{% endif %}"
 
-[post-start]
-# Open newly created worktrees in Herdr with a shell + file viewer split in tab 1
-# (ignore failure when the server is not running)
-herdr = "bash ~/.config/herdr/scripts/worktree-open.sh {{ repo_path }} {{ worktree_path }} {{ branch }} || true"
+[post-switch]
+# Open the worktree in Herdr with the standard layout (shell + file viewer in
+# tab 1, lazygit tab, hunk tab). post-switch rather than post-start so it also
+# fires when switching to an already-existing worktree, e.g. via the herdr
+# worktrunk plugin picker. The script itself skips workspaces that are already
+# laid out. Skip the primary worktree; ignore failure when the server is not
+# running.
+herdr = "[ '{{ worktree_path }}' = '{{ primary_worktree_path }}' ] || bash ~/.config/herdr/scripts/worktree-open.sh {{ repo_path }} {{ worktree_path }} {{ branch }} || true"
 
 [post-remove]
 # Close the Herdr workspace attached to the removed worktree, deferred through

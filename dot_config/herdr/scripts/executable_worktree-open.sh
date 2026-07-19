@@ -6,10 +6,13 @@
 #          unstaged (pane label "hunk"), right pane: whole-branch diff against
 #          upstream (pane label "hunk:branch"); labels match hunk-diff.sh so
 #          its toggle logic recognizes both panes
-# Called from worktrunk's post-start hook with the repo path, worktree path,
-# and branch. The layout is only built when the workspace is newly created
-# (`already_open` false) so re-running the hook against an existing workspace
-# doesn't stack extra panes or tabs.
+# Called from worktrunk's post-switch hook with the repo path, worktree path,
+# and branch. The layout is only built while the workspace is still bare (a
+# single pane) so re-running the hook against a laid-out workspace doesn't
+# stack extra panes or tabs. The pane count is the guard rather than the
+# `already_open` flag from `worktree open`: the herdr worktrunk plugin picker
+# registers the workspace itself right after `wt switch` returns, so this hook
+# often finds the workspace already open but not yet laid out.
 #
 # The viewer split targets the workspace's initial shell pane explicitly
 # (`--target-pane`) instead of invoking the plugin's open-file-viewer action,
@@ -27,18 +30,21 @@ branch="$3"
 out="$(herdr worktree open --cwd "$repo_path" --path "$worktree_path" --label "$branch" --focus --json)"
 
 ws="$(printf '%s' "$out" | jq -r '.result.workspace.workspace_id // empty')"
-already_open="$(printf '%s' "$out" | jq -r '.result.already_open // false')"
 [ -n "$ws" ] || exit 0
-[ "$already_open" = "false" ] || exit 0
 
 # The workspace's initial shell pane can appear slightly after worktree open
 # returns; poll briefly for it.
-pane=""
+panes='[]'
 for _ in 1 2 3 4 5 6 7 8 9 10; do
-  pane="$(herdr pane list --workspace "$ws" 2>/dev/null | jq -r '.result.panes[0].pane_id // empty')"
-  [ -n "$pane" ] && break
+  panes="$(herdr pane list --workspace "$ws" 2>/dev/null | jq -c '.result.panes // []')"
+  [ "$(printf '%s' "$panes" | jq 'length')" -gt 0 ] && break
   sleep 0.2
 done
+
+# Bare workspace has exactly the initial shell pane; more means the layout is
+# already built.
+[ "$(printf '%s' "$panes" | jq 'length')" = 1 ] || exit 0
+pane="$(printf '%s' "$panes" | jq -r '.[0].pane_id // empty')"
 [ -n "$pane" ] || exit 0
 
 # Keep focus on the shell pane; the viewer opens beside it unfocused.
