@@ -55,7 +55,6 @@ packages:
         harfbuzz:
         imagemagick:
         jpeg:
-        jq:
         libass:
         libavif:
         libffi:
