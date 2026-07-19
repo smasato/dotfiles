@@ -29,7 +29,6 @@ packages:
         coreutils:
         csvq:
         curl:
-        eza:
         fb303:
         fbthrift:
         ffmpeg:
