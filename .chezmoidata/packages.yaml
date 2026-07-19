@@ -6,8 +6,6 @@ packages:
       work: []
     brews:
       base:
-        # Shell
-        starship:
         # Tools
         terminal-notifier:
         aom:
