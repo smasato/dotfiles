@@ -4,6 +4,7 @@ ruby = "3.4.3"
 bun = "1.2.16"
 node = "24.2.0"
 python = "3.11"
+rust = "latest"
 
 # tools
 gh = "latest"
