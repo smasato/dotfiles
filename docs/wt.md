@@ -1,0 +1,93 @@
+# Worktrunk (wt) の仕組み
+
+Worktrunk（`wt` CLI）による git worktree 管理の構成メモ。
+インストールからライフサイクル hook、Herdr / Claude Code 連携までこのリポジトリで管理している。
+
+## 構成要素
+
+| ファイル                                                   | 役割                                                      |
+| ---------------------------------------------------------- | --------------------------------------------------------- |
+| `dot_config/mise/config.toml`                              | mise で `worktrunk = "latest"` をインストール             |
+| `dot_zshrc.tmpl`                                           | シェル統合（`wt config shell init zsh` を eval）          |
+| `dot_config/worktrunk/config.toml`                         | ユーザー設定。ライフサイクル hook を定義                  |
+| `dot_config/herdr/scripts/executable_worktree-open.sh`     | post-start hook から呼ばれ、worktree を Herdr で開く      |
+| `dot_config/herdr/scripts/executable_worktree-close.sh`    | post-remove hook から呼ばれ、Herdr ワークスペースを閉じる |
+| `.chezmoiscripts/run_onchange_after_herdr-plugins.sh.tmpl` | Herdr の `herdr-worktrunk` プラグインをインストール       |
+| `dot_claude/settings.json.tmpl`                            | Claude Code の worktrunk プラグイン有効化と worktree 権限 |
+
+## インストールとシェル統合
+
+- 本体は mise 管理（`dot_config/mise/config.toml` の `worktrunk = "latest"`）。
+- `.zshrc` で `wt` が存在すれば `eval "$(command wt config shell init zsh)"` を実行。
+  これで `wt switch` 後にシェルの cwd が worktree へ移動する（シェル統合なしでは cd できない）。
+
+## ライフサイクル hook（`~/.config/worktrunk/config.toml`）
+
+worktree の作成〜削除に合わせて 4 つの hook を定義している。
+
+| Hook          | 名前    | やること                                                                                                                                              |
+| ------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pre-switch`  | `fetch` | ローカルに存在しないブランチへ切り替えるとき先に `git fetch origin --prune`。remote-tracking ref からトラッキングブランチを作れるようにする           |
+| `pre-start`   | `sync`  | upstream があれば `git merge --ff-only` で fast-forward。`wt switch --create` はベースから分岐するため、origin に同名ブランチがある場合に内容を揃える |
+| `post-start`  | `herdr` | `worktree-open.sh` で新しい worktree を Herdr に開き、ワークスペースを自動レイアウト                                                                  |
+| `post-remove` | `herdr` | `worktree-close.sh` で対応する Herdr ワークスペースを閉じる                                                                                           |
+
+### pre-switch: `fetch`
+
+ショートカット（`^` `@` `-` `pr:` `mr:`）とローカルに既にあるブランチはスキップ。
+オフライン等で fetch が失敗しても `|| true` で switch 自体は止めない。
+
+### pre-start: `sync`
+
+`wt switch --create <branch>`（Claude Code の WorktreeCreate hook 経由を含む）は
+`origin/<branch>` が既に存在してもベースから分岐する。wt はその場合も upstream を
+設定してくれるので、fast-forward してリモートの内容で開く。
+diverge している・upstream がない場合はベースの内容のまま（`|| true`）。
+
+### post-start / post-remove: Herdr 連携
+
+どちらも Herdr サーバーが動いていないときは失敗を無視する（`|| true`）。
+
+## Herdr 連携の詳細
+
+### worktree-open.sh（post-start）
+
+`herdr worktree open` でワークスペースを作成・フォーカスし、新規作成時のみ以下をレイアウトする
+（既存ワークスペースへの再実行ではペイン・タブを積み増さない）:
+
+1. タブ 1: シェル（左）+ ファイルビューア（右）の split
+2. タブ 2: lazygit（タブラベル `lazygit`）
+3. タブ 3: hunk diff（左: working tree、右: upstream との branch diff）
+
+### worktree-close.sh（post-remove）
+
+削除された worktree のパスに一致するワークスペースを探して閉じる。
+pueue 経由で 5 秒遅延実行するのがポイント: ワークスペースを閉じるとペインの
+プロセスグループが kill されるため、`wt remove` を実行したペインで直接閉じると
+wt 自身の trash 掃除（`.git/wt/trash` の rm）まで巻き添えになる。
+
+### herdr-worktrunk プラグイン
+
+`.chezmoiscripts/run_onchange_after_herdr-plugins.sh.tmpl` で
+`devashish2203/herdr-worktrunk` をインストール。キーバインドは `docs/herdr.md` 参照:
+
+- `prefix+shift+g` — worktree ピッカー（`worktrunk.open`）
+- `prefix+shift+c` — カレントリポジトリを開く（`worktrunk.open-current`）
+
+Herdr 組み込みの worktree 作成（`new_worktree`）は無効化し、このピッカーに置き換えている。
+
+## Claude Code 連携
+
+`dot_claude/settings.json.tmpl` で設定:
+
+- `worktrunk@worktrunk` プラグインを有効化（marketplace: `max-sixty/worktrunk`）。
+  worktrunk スキル（設定・hook のリファレンス）と `wt-switch-create` スキルが使える
+- `permissions.allow` に `EnterWorktree` / `ExitWorktree` を追加。
+  Claude Code の worktree 分離（`isolation: "worktree"`）が確認なしで動く
+
+## 注意点
+
+- hook は `~/.config/worktrunk/config.toml`（ユーザー設定）のみ。
+  プロジェクト設定 `.config/wt.toml` はこのリポジトリでは使っていない
+- プロジェクト設定の hook は初回実行時に承認が必要（`wt config approvals add`）。
+  ユーザー設定の hook に承認は不要
