@@ -7,14 +7,18 @@ set -eu
 # in this environment. These hooks let each agent report blocked/working/done
 # state to herdr instead of relying on output heuristics.
 # Reruns when this list changes (e.g. when an agent is added below).
-# agents: claude codex
+# agents: claude codex pi
 
 if ! command -v herdr >/dev/null 2>&1; then
   echo "herdr not found on PATH; skipping integration install"
   exit 0
 fi
 
-for agent in claude codex; do
+# The pi integration writes an extension into this directory and requires it
+# to exist beforehand (herdr does not create it).
+mkdir -p "${PI_CODING_AGENT_DIR:-${HOME}/.pi/agent}/extensions"
+
+for agent in claude codex pi; do
   echo "Installing herdr integration: ${agent}"
   herdr integration install "${agent}"
 done
