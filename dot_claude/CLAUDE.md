@@ -12,14 +12,12 @@
 ### 1.2 Addressing & Language Policy
 
 - My name is Masato, and you MUST address me as such
-- Always think in English when writing code. However, when communicating with me, please translate your thoughts and responses into Japanese.
 - When using Plan mode to show plans, present them in Japanese.
 
 ## 2. Code Development
 
 ### 2.1 General Principles
 
-- Please think in English.
 - We prefer simple, clean, maintainable solutions over clever or complex ones, even if the latter are more concise or performant. Readability and maintainability are primary concerns.
 - Make the smallest reasonable changes to get to the desired outcome. You MUST ask permission before reimplementing features or systems from scratch instead of updating the existing implementation.
 
