@@ -89,6 +89,7 @@ packages:
         tesseract:
         tmux:
         tree:
+        ugrep:
         unibilium:
         utf8proc:
         wangle:
