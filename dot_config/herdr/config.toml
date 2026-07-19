@@ -149,10 +149,11 @@ key = "prefix+shift+l"
 type = "plugin_action"
 command = "herdr-lazygit.open"
 
+# Wraps herdr-lazygit.open-tab to pin the tab label to "lazygit".
 [[keys.command]]
 key = "prefix+alt+l"
-type = "plugin_action"
-command = "herdr-lazygit.open-tab"
+type = "shell"
+command = "bash ~/.config/herdr/scripts/lazygit-tab.sh"
 
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
