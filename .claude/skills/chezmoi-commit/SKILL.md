@@ -18,5 +18,5 @@ chezmoi ソースの変更を検証してコミットするまでの手順。
 ## 注意
 
 - ソース（このリポジトリ）だけを編集する。ターゲット側（`~/` 配下）を直接編集しない。
-- `.chezmoidata/packages.yaml` を変更した場合はコミット前に `yq -i 'sort_keys(.packages.darwin.*.*) | (.packages.darwin.*.* | select(tag == "!!seq")) |= sort' .chezmoidata/packages.yaml` でソートする。
+- `.chezmoidata/packages.yaml` を変更した場合はコミット前に `mise run sort` でソートする。
 - pre-commit フックは hk が実行する。`--no-verify` は使わない。

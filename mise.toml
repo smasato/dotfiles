@@ -2,3 +2,8 @@
 hk = "latest"
 "npm:prettier" = "latest"
 pkl = "latest"
+yq = "latest"
+
+[tasks.sort]
+description = "Sort package entries in .chezmoidata/packages.yaml"
+run = '''yq -i 'sort_keys(.packages.darwin.*.*) | (.packages.darwin.*.* | select(tag == "!!seq")) |= sort' .chezmoidata/packages.yaml'''
