@@ -9,7 +9,6 @@ packages:
         # Shell
         starship:
         # Tools
-        ast-grep:
         terminal-notifier:
         aom:
         autoconf:
