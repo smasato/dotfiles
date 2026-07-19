@@ -89,19 +89,9 @@ staged)
   hunk_cmd="hunk diff --staged"
   ;;
 branch)
-  branch="$(git -C "$cwd" branch --show-current 2>/dev/null || true)"
-  [ -n "$branch" ] || branch=HEAD
-  upstream="$(git -C "$cwd" rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null || true)"
-  if [ -z "$upstream" ]; then
-    for candidate in origin/main origin/master main master; do
-      if git -C "$cwd" rev-parse --verify --quiet "$candidate" >/dev/null 2>&1; then
-        upstream="$candidate"
-        break
-      fi
-    done
-  fi
-  [ -n "$upstream" ] || upstream=origin/main
-  hunk_cmd="$(printf 'hunk diff %q..%q' "$upstream" "$branch")"
+  # Whole-branch diff from the merge-base with the PR base branch (or the
+  # default branch when no PR exists); resolution lives in branch-diff-cmd.sh.
+  hunk_cmd="$(bash "$HOME/.config/herdr/scripts/branch-diff-cmd.sh" "$cwd")"
   ;;
 *)
   hunk_cmd="hunk diff"
