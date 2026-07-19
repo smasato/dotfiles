@@ -80,6 +80,8 @@ packages:
         poppler:
         procs:
         proj:
+        pueue:
+          start_service: true
         re2c:
         readline:
         reattach-to-user-namespace:

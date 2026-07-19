@@ -7,5 +7,8 @@
 herdr = "bash ~/.config/herdr/scripts/worktree-open.sh {{ repo_path }} {{ worktree_path }} {{ branch }} || true"
 
 [post-remove]
-# Close the Herdr workspace attached to the removed worktree (ignore failure when the server is not running)
-herdr = "herdr workspace list | jq -r --arg p {{ worktree_path }} '.result.workspaces[] | select(.worktree.checkout_path == $p) | .workspace_id' | xargs herdr workspace close || true"
+# Close the Herdr workspace attached to the removed worktree, deferred through
+# pueue so the close runs in pueued's session — closing the workspace kills the
+# pane's process group, which would otherwise take wt's own trash cleanup down
+# with it (ignore failure when pueued or the herdr server is not running)
+herdr = "pueue add --delay '5 seconds' -- bash ~/.config/herdr/scripts/worktree-close.sh {{ worktree_path }} || true"
