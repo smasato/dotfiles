@@ -129,6 +129,14 @@ new_worktree = ""
 # width = "80%"
 # height = "80%"
 
+# Scratch shell: session-modal popup terminal without changing the tab layout.
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = "zsh -l"
+width = "80%"
+height = "80%"
+
 [[keys.command]]
 key = "prefix+shift+g"
 type = "plugin_action"
