@@ -22,6 +22,10 @@
     type = "file"
     url = "https://raw.githubusercontent.com/catppuccin/delta/refs/heads/main/catppuccin.gitconfig"
     refreshPeriod = "168h"
+[".config/lazygit/themes/catppuccin-mocha-sky.yml"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/catppuccin/lazygit/refs/heads/main/themes-mergable/mocha/sky.yml"
+    refreshPeriod = "168h"
 ["antigen.zsh"]
     type = "file"
     url = "https://git.io/antigen"
