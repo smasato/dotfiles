@@ -9,11 +9,14 @@
 fetch = "case '{{ branch | default('') }}' in ''|-|@|^|pr:*|mr:*) ;; *) git show-ref --verify --quiet 'refs/heads/{{ branch }}' || git fetch origin --prune || true ;; esac"
 
 [pre-start]
-# `wt switch --create <branch>` (e.g. via Claude Code's WorktreeCreate hook)
-# branches from the base even when origin/<branch> already exists. wt still sets
-# the upstream in that case, so fast-forward to it to open with remote content.
-# Diverged or no upstream: keep the base content (|| true).
-sync = "{% if upstream %}git merge --ff-only {{ upstream }} || true{% endif %}"
+# `wt switch --create <branch>` (e.g. via Claude Code's WorktreeCreate hook or
+# the herdr worktrunk plugin picker, which picks --create whenever the branch
+# doesn't exist locally) branches from the base even when origin/<branch>
+# already exists. If wt set the upstream, fast-forward to it; wt doesn't always
+# do so, so otherwise adopt an existing origin/<branch> as upstream and
+# fast-forward. Either way the worktree opens with the remote content.
+# Diverged or no matching remote branch: keep the base content (|| true).
+sync = "{% if upstream %}git merge --ff-only {{ upstream }} || true{% else %}{ git rev-parse --verify --quiet 'refs/remotes/origin/{{ branch }}' >/dev/null && git branch --set-upstream-to 'origin/{{ branch }}' && git merge --ff-only 'origin/{{ branch }}'; } || true{% endif %}"
 
 [post-switch]
 # Open the worktree in Herdr with the standard layout (shell + file viewer in
