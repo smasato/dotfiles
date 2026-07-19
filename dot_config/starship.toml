@@ -20,7 +20,7 @@ $kotlin\
 $haskell\
 $python\
 [](fg:green bg:sapphire)\
-$conda\
+$mise\
 [ ](fg:lavender)\
 $cmd_duration\
 $line_break\
@@ -137,11 +137,11 @@ symbol = ""
 style = "bg:sapphire"
 format = '[[ $symbol( $context) ](fg:crust bg:sapphire)]($style)'
 
-[conda]
-symbol = "  "
+[mise]
+disabled = false
+symbol = "󱁤 "
 style = "fg:crust bg:sapphire"
-format = '[$symbol$environment ]($style)'
-ignore_base = false
+format = '[ $symbol$health ]($style)'
 
 [time]
 disabled = false
