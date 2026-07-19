@@ -4,3 +4,7 @@
 [post-start]
 # Open newly created worktrees in Herdr (ignore failure when the server is not running)
 herdr = "herdr worktree open --cwd {{ repo_path }} --path {{ worktree_path }} --label {{ branch }} --focus || true"
+
+[post-remove]
+# Close the Herdr workspace attached to the removed worktree (ignore failure when the server is not running)
+herdr = "herdr workspace list | jq -r --arg p {{ worktree_path }} '.result.workspaces[] | select(.worktree.checkout_path == $p) | .workspace_id' | xargs herdr workspace close || true"
