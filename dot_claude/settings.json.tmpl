@@ -46,17 +46,6 @@
   },
   "model": "claude-fable-5[1m]",
   "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "{{ .chezmoi.homeDir }}/.claude/hooks/notification.sh"
-          }
-        ]
-      }
-    ],
     "SessionStart": [
       {
         "matcher": "*",
