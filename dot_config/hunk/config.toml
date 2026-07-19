@@ -2,3 +2,7 @@ theme = "catppuccin-mocha"
 mode = "auto"
 line_numbers = true
 watch = true
+
+# git pager (stdin) can't be reopened, so watch must stay off there
+[pager]
+watch = false
