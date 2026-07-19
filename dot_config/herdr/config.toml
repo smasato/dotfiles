@@ -139,6 +139,11 @@ key = "prefix+shift+c"
 type = "plugin_action"
 command = "worktrunk.open-current"
 
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer"
+
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
 # [keys.indexed]
