@@ -15,7 +15,6 @@ packages:
         automake:
         awscli:
         bash:
-        bat:
         bdw-gc:
         boost:
         bzip2:
