@@ -1,2 +1,3 @@
 brew_local.yml
 brew_local_diff.yml
+.claude/settings.local.json
