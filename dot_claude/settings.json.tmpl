@@ -1,8 +1,59 @@
 {
+  "advisorModel": "fable",
+  "editorMode": "normal",
+  "effortLevel": "high",
+  "enabledPlugins": {
+    "catppuccin@claude-themes": true,
+    "caveman@caveman": true,
+    "skill-creator@claude-plugins-official": true,
+    "worktrunk@worktrunk": true
+  },
   "env": {
     "GIT_PAGER": "cat",
     "SHELL": "/opt/homebrew/bin/zsh"
   },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "repo": "JuliusBrussee/caveman",
+        "source": "github"
+      }
+    },
+    "claude-themes": {
+      "source": {
+        "repo": "matcra587/claude-themes",
+        "source": "github"
+      }
+    },
+    "cognition": {
+      "source": {
+        "repo": "club-cog/devin-handoff",
+        "source": "github"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "repo": "max-sixty/worktrunk",
+        "source": "github"
+      }
+    }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bash '{{ .chezmoi.homeDir }}/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ]
+  },
+  "language": "日本語",
+  "model": "claude-fable-5[1m]",
   "permissions": {
     "allow": [
       "Bash(agent-browser:*)",
@@ -41,83 +92,32 @@
       "EnterWorktree",
       "ExitWorktree"
     ],
+    "defaultMode": "auto",
     "deny": [
       "Bash(rm -rf /)",
       "Bash(rm -rf ~/)",
       "Bash(sudo:*)"
-    ],
-    "defaultMode": "auto"
-  },
-  "model": "claude-fable-5[1m]",
-  "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '{{ .chezmoi.homeDir }}/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10
-          }
-        ]
-      }
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": "wt list statusline --format=claude-code"
-  },
-  "enabledPlugins": {
-    "caveman@caveman": true,
-    "skill-creator@claude-plugins-official": true,
-    "worktrunk@worktrunk": true,
-    "catppuccin@claude-themes": true
-  },
-  "extraKnownMarketplaces": {
-    "caveman": {
-      "source": {
-        "source": "github",
-        "repo": "JuliusBrussee/caveman"
-      }
-    },
-    "cognition": {
-      "source": {
-        "source": "github",
-        "repo": "club-cog/devin-handoff"
-      }
-    },
-    "worktrunk": {
-      "source": {
-        "source": "github",
-        "repo": "max-sixty/worktrunk"
-      }
-    },
-    "claude-themes": {
-      "source": {
-        "source": "github",
-        "repo": "matcra587/claude-themes"
-      }
-    }
-  },
-  "language": "日本語",
   "sandbox": {
     "enabled": false,
+    "excludedCommands": [
+      "git push",
+      "git push *"
+    ],
     "filesystem": {
       "allowWrite": [
         "{{ .chezmoi.homeDir }}/Library/Caches/hk",
         "{{ .chezmoi.homeDir }}/Library/Caches/mise",
         "{{ .chezmoi.homeDir }}/.agent-browser"
       ]
-    },
-    "excludedCommands": [
-      "git push",
-      "git push *"
-    ]
+    }
   },
-  "effortLevel": "high",
-  "advisorModel": "fable",
-  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "statusLine": {
+    "command": "wt list statusline --format=claude-code",
+    "type": "command"
+  },
   "theme": "custom:catppuccin:catppuccin-mocha-ansi",
-  "editorMode": "normal"
+  "tui": "fullscreen"
 }
