@@ -1,0 +1,14 @@
+#!/bin/sh
+# origin の default ブランチ名 (origin/HEAD が指す先) を出力する。
+# 取得できない場合は stderr にヒントを出して exit 1。
+# git は default branch という概念を持たないため、リモートが宣言した
+# origin/HEAD を引く必要がある。`git clone` 時にしかセットされないので
+# リモート側で default が変わったら `git remote set-head origin --auto` で更新する。
+set -eu
+
+ref=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null) || {
+  echo "Could not detect default branch (origin/HEAD)." >&2
+  echo "Run: git remote set-head origin --auto" >&2
+  exit 1
+}
+echo "${ref#refs/remotes/origin/}"

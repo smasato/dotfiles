@@ -1,0 +1,21 @@
+#!/bin/sh
+# 現在 checkout 中のブランチを除き、
+# origin を upstream に持つローカルブランチをまとめて FF 更新する。
+# upstream 未設定 / 他リモート追跡 / [gone] のブランチは対象外。
+# FF できないブランチがあれば git がエラーで終了する。
+set -eu
+
+cur=$(git symbolic-ref --short HEAD 2>/dev/null || true)
+
+refs=$(git for-each-ref \
+  --format='%(refname:short)%09%(upstream:remotename)%09%(upstream:lstrip=3)%09%(upstream:track)' \
+  refs/heads/ \
+  | awk -F'\t' -v cur="$cur" '$2 == "origin" && $1 != cur && $4 != "[gone]" { print $3":"$1 }')
+
+if [ -z "$refs" ]; then
+  echo "No local branches to update." >&2
+  exit 0
+fi
+
+# shellcheck disable=SC2086
+git fetch origin $refs

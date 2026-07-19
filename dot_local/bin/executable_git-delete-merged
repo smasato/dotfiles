@@ -1,0 +1,26 @@
+#!/bin/sh
+# リモート default ブランチ (origin/HEAD が指す先) にマージ済みの
+# ローカルブランチをまとめて削除する。
+# ローカル default ブランチではなく origin/<default> を基準にすることで、
+# ローカル default を pull する前でも判定できる。
+# 現在 checkout 中のブランチと default ブランチ自体は除外。
+# `git branch -d` を使うため未マージのブランチは git 側で拒否される。
+set -eu
+
+default=$(git default-branch)
+cur=$(git symbolic-ref --short HEAD 2>/dev/null || true)
+
+branches=$(git branch --merged "origin/$default" --format='%(refname:short)' \
+  | grep -vx "$default" \
+  | grep -vx "$cur" \
+  || true)
+
+if [ -z "$branches" ]; then
+  echo "No merged branches to delete."
+  exit 0
+fi
+
+echo "Merged into origin/$default (deleting):"
+echo "$branches" | sed 's/^/  /'
+
+echo "$branches" | xargs git branch -d

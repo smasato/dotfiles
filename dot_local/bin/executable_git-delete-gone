@@ -1,0 +1,28 @@
+#!/bin/sh
+# upstream (追跡リモートブランチ) が削除されたローカルブランチを
+# プロンプト確認付きでまとめて削除する。
+# PR が squash-merge された後などに残るブランチの掃除に便利。
+# `git fetch --prune` で先にリモート追跡を整理してから使うこと。
+set -eu
+
+cur=$(git symbolic-ref --short HEAD 2>/dev/null || true)
+
+branches=$(git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads/ \
+  | awk '$2 == "[gone]" {print $1}' \
+  | grep -vx "$cur" \
+  || true)
+
+if [ -z "$branches" ]; then
+  echo "No gone branches to delete."
+  exit 0
+fi
+
+echo "Upstream gone (will be deleted):"
+echo "$branches" | sed 's/^/  /'
+
+printf 'Delete these branches? (y/N): '
+read -r ans
+[ "$ans" = "y" ] || exit 0
+
+# -D: squash-merge 等で --merged 判定できないため強制削除
+echo "$branches" | xargs git branch -D
