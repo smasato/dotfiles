@@ -155,6 +155,37 @@ key = "prefix+alt+l"
 type = "shell"
 command = "bash ~/.config/herdr/scripts/lazygit-tab.sh"
 
+# hunk diffs: d = worktree, shift+s = staged, shift+b = branch; alt = tab.
+[[keys.command]]
+key = "prefix+d"
+type = "shell"
+command = "bash ~/.config/herdr/scripts/hunk-diff.sh worktree split"
+
+[[keys.command]]
+key = "prefix+alt+d"
+type = "shell"
+command = "bash ~/.config/herdr/scripts/hunk-diff.sh worktree tab"
+
+[[keys.command]]
+key = "prefix+shift+s"
+type = "shell"
+command = "bash ~/.config/herdr/scripts/hunk-diff.sh staged split"
+
+[[keys.command]]
+key = "prefix+alt+s"
+type = "shell"
+command = "bash ~/.config/herdr/scripts/hunk-diff.sh staged tab"
+
+[[keys.command]]
+key = "prefix+shift+b"
+type = "shell"
+command = "bash ~/.config/herdr/scripts/hunk-diff.sh branch split"
+
+[[keys.command]]
+key = "prefix+alt+b"
+type = "shell"
+command = "bash ~/.config/herdr/scripts/hunk-diff.sh branch tab"
+
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
 # [keys.indexed]
