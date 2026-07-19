@@ -16,10 +16,13 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - **Diff changes**: `chezmoi diff` - See what changes will be applied
 - **Update from repo**: `chezmoi update` - Pull and apply latest changes
 
-### Homebrew Management
+### Repo Tooling
 
-- **Update bundle files**: `ruby scripts/brew.rb` - Regenerates brew YAML files from current system
-- **Install from bundle**: `brew bundle --file=brew_base.yml` - Install packages from bundle file
+- **Lint**: `hk check` - Run linters (prettier, pkl) defined in `hk.pkl`
+- **Fix**: `hk fix` - Run linters with auto-fix
+- Git hooks (pre-commit, pre-push) are managed by hk and run the same linters
+- Repo-local tools (hk, prettier, pkl) are pinned in `mise.toml` at the repo root
+- **Sort package YAML**: `ruby scripts/yaml_sort.rb <file>` - Sorts taps/brews/casks in a Homebrew package YAML
 
 ### Shell
 
@@ -30,31 +33,40 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 ### Directory Structure
 
 - `/dot_*` files: Templates that get deployed to home directory (the `dot_` prefix becomes `.`)
-- `/private_*` files: Templates with sensitive data (uses 1Password integration)
-- `/scripts/`: Utility scripts for system management
-- `/brew_*.yml`: Homebrew bundle files (base, personal, work profiles)
+- `/private_*` files: Files deployed with restricted permissions (e.g. `private_Library/` for macOS `~/Library` files)
+- `/dot_config/`: Deployed to `~/.config` - bat, ghostty, herdr, hunk, mise, nvim, atuin, karabiner, raycast, starship.toml
+- `/dot_claude/`: Claude Code configuration - global CLAUDE.md, settings template, and skills (e.g. create-pr)
+- `/.chezmoidata/`: Data files for templates - `packages.yaml` (Homebrew packages), `extensions.yaml` (Cursor extensions)
+- `/.chezmoiscripts/`: Install/setup scripts run by chezmoi (Homebrew packages, Cursor extensions, macOS defaults, agent skills, etc.)
+- `/.chezmoiexternal.toml`: Externally fetched files (antigen.zsh, catppuccin themes, gitalias, tmux tpm)
+- `/scripts/`: Utility scripts (`yaml_sort.rb`)
+- `/.github/PULL_REQUEST_TEMPLATE.md`: Pull request template
 
 ### Key Technologies
 
 - **Dotfiles Manager**: chezmoi with templating support
-- **Shell**: Zsh with Powerlevel10k, Antigen for plugin management
-- **Runtime Management**: mise (formerly rtx) for managing language versions
-- **Package Management**: Homebrew for system packages
-- **IDE**: Cursor (VS Code fork) with curated extensions
-- **Secrets**: 1Password CLI integration for sensitive values
+- **Shell**: Zsh with Antigen for plugins and Starship for the prompt
+- **Runtime/Tool Management**: mise for language runtimes (Ruby, Node, Bun, Python) and CLI tools, declared in `dot_config/mise/config.toml`
+- **Package Management**: Homebrew - packages declared in `.chezmoidata/packages.yaml` and installed by a `.chezmoiscripts` run script during `chezmoi apply`
+- **Git Hooks**: hk, configured in `hk.pkl`
+- **Editors**: Cursor (extensions declared in `.chezmoidata/extensions.yaml`) and Neovim (`dot_config/nvim`)
+- **Terminal**: Ghostty, tmux, and Herdr; Atuin for shell history
+- **Secrets**: 1Password CLI integration for sensitive values (e.g. `onepasswordDetailsFields` in templates)
 
 ### Template Variables
 
-Templates use Go templating with chezmoi. Common variables:
+Templates use Go templating with chezmoi. Variables are prompted during `chezmoi init` (see `.chezmoi.toml.tmpl`):
 
-- `{{ .email }}`: User email (set during chezmoi init)
-- `{{ .chezmoi.homeDir }}`: Home directory path
-- `{{ .chezmoi.sourceDir }}`: Chezmoi source directory
+- `{{ .email }}`: User email
+- `{{ .work }}`: Work vs personal profile (selects Homebrew package sets, work-only config)
+- `{{ .espanso }}`: Whether to install/configure espanso
+- `{{ .chezmoi.homeDir }}`, `{{ .chezmoi.sourceDir }}`: chezmoi built-ins
 - Conditional logic based on installed tools: `{{ if lookPath "brew" }}`
 
 ### Configuration Patterns
 
 - Environment-specific configs using chezmoi templates
-- Work vs personal profile differentiation
-- 1Password integration for secrets (private\_\* files)
-- Lazy loading and conditional sourcing based on tool availability
+- Work vs personal profile differentiation via the `work` variable
+- 1Password integration for secrets in templates
+- Conditional sourcing based on tool availability (`lookPath`)
+- `run_onchange_*` scripts re-run when their embedded data hashes change (e.g. package or extension lists)
