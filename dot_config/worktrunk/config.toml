@@ -1,0 +1,6 @@
+# Worktrunk user configuration
+# https://worktrunk.dev/config/
+
+[post-start]
+# Open newly created worktrees in Herdr (ignore failure when the server is not running)
+herdr = "herdr worktree open --cwd {{ repo_path }} --path {{ worktree_path }} --label {{ branch }} --focus || true"
