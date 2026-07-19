@@ -1,0 +1,26 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+set -eu
+
+# Symlink the hunk-review skill bundled with hunk into Claude Code's skills
+# directory so agents can drive live hunk review sessions.
+
+if ! command -v hunk >/dev/null 2>&1; then
+  echo "hunk not found on PATH; skipping skill install"
+  exit 0
+fi
+
+skill_dir="$(dirname "$(hunk skill path)")"
+
+# hunk reports a version-pinned mise install path; link through mise's
+# "latest" alias instead so the skill keeps working after upgrades.
+latest_dir="$(echo "${skill_dir}" | sed -E 's|(/installs/hunk/)[^/]+|\1latest|')"
+if [ -d "${latest_dir}" ]; then
+  skill_dir="${latest_dir}"
+fi
+
+mkdir -p "${HOME}/.claude/skills"
+ln -sfn "${skill_dir}" "${HOME}/.claude/skills/hunk-review"
+echo "Installed hunk-review skill: ${skill_dir}"
+{{- end }}
