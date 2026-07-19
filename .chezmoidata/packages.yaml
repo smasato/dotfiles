@@ -43,7 +43,6 @@ packages:
         gd:
         geos:
         ghostscript:
-        ghq:
         git:
         git-delta:
         git-extras:
