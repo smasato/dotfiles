@@ -7,7 +7,7 @@ set -eufo pipefail
 
 echo "Installing Homebrew packages..."
 
-brew bundle --no-upgrade --no-restart --file=/dev/stdin --verbose <<EOF
+brew bundle --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- $packages := .packages.darwin }}
 {{- $taps := $packages.taps.base }}
 {{- $brews := $packages.brews.base }}
