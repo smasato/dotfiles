@@ -32,7 +32,6 @@ packages:
         folly:
         freetype:
         fribidi:
-        fzf:
         gawk:
         gcc:
         gd:
