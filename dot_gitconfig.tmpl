@@ -67,3 +67,11 @@
 
 [alias]
 	fu = "!git log -n 16 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+
+[hook "hk-pre-commit"]
+	command = test \"${HK:-1}\" = \"0\" || ~/.local/share/mise/installs/hk/latest/hk run pre-commit --from-hook --staged
+	event = pre-commit
+
+[hook "hk-pre-push"]
+	command = test \"${HK:-1}\" = \"0\" || ~/.local/share/mise/installs/hk/latest/hk run pre-push --from-hook
+	event = pre-push
