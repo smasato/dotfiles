@@ -85,6 +85,7 @@ packages:
         re2c:
         readline:
         reattach-to-user-namespace:
+        sevenzip:
         srt:
         tcl-tk:
         terminal-notifier:
@@ -99,6 +100,7 @@ packages:
         x264:
         x265:
         xz:
+        yazi:
         zoxide:
         zsh:
         zsh-completions:

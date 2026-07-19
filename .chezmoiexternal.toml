@@ -33,3 +33,11 @@
 [".tmux/plugins/tpm"]
     type = "git-repo"
     url = "https://github.com/tmux-plugins/tpm.git"
+[".config/yazi/theme.toml"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/catppuccin/yazi/refs/heads/main/themes/mocha/catppuccin-mocha-sky.toml"
+    refreshPeriod = "168h"
+[".config/yazi/Catppuccin-mocha.tmTheme"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/catppuccin/bat/refs/heads/main/themes/Catppuccin%20Mocha.tmTheme"
+    refreshPeriod = "168h"

@@ -111,6 +111,16 @@ alias xdump='ugrep -X ""' # hexdump files without searching
 eval "$(zoxide init zsh)"
 {{- end }}
 
+{{- if lookPath "yazi" }}
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+{{- end }}
+
 {{- if lookPath "mise" }}
 eval "$(mise activate zsh)"
 {{- end }}
