@@ -12,7 +12,6 @@ packages:
         ast-grep:
         terminal-notifier:
         aom:
-        atuin:
         autoconf:
         automake:
         awscli:
