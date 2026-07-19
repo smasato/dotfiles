@@ -19,8 +19,8 @@ Base branch: !`git branch | grep -E "master|main"` or $ARGUMENTS
   - Read(`<template-path>`) to get the template content
   - If a template file is found, use its contents as the initial value for `./PULL_REQUEST.md`
 - Show `./PULL_REQUEST.md` in a text editor so I can review and edit it
-  - The editor command is: `vim -c "set autoread | autocmd CursorHold,FocusGained * checktime" ./PULL_REQUEST.md`
-    - `autoread` + `checktime` make vim pick up external changes to the file, so edits you make to `./PULL_REQUEST.md` appear without a manual reload
+  - The editor command is: `nvim -c "set autoread | autocmd CursorHold,FocusGained * checktime" ./PULL_REQUEST.md`
+    - `autoread` + `checktime` make nvim pick up external changes to the file, so edits you make to `./PULL_REQUEST.md` appear without a manual reload
   - If running inside Herdr (`$HERDR_ENV` is `1`), open it in a pane:
     - Bash(`herdr pane split --current --direction right --no-focus`) and read `pane_id` from the JSON response
     - Bash(`herdr pane run <pane-id> "<the editor command>"`)
