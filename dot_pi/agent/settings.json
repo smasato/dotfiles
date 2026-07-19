@@ -1,0 +1,8 @@
+{
+  "lastChangelogVersion": "0.80.10",
+  "theme": "catppuccin-mocha",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "medium",
+  "packages": ["npm:@firstpick/pi-themes-bundle"]
+}
