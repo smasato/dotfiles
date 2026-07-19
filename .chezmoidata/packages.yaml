@@ -124,7 +124,6 @@ packages:
         - arc
         - atok
         - cursor
-        - espanso
         - fantastical
         - firefox@developer-edition
         - font-m+-nerd-font

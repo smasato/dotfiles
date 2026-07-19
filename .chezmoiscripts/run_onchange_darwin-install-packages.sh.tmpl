@@ -13,10 +13,6 @@ brew bundle --no-upgrade --file=/dev/stdin --verbose <<EOF
 {{- $brews := $packages.brews.base }}
 {{- $casks := $packages.casks.base }}
 
-{{- if not .espanso }}
-  {{- $casks = without $casks "espanso" }}
-{{- end }}
-
 {{- if .work }}
   {{- $taps = concat $taps $packages.taps.work }}
   {{- range $key, $value := $packages.brews.work }}

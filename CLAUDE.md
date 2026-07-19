@@ -59,7 +59,6 @@ Templates use Go templating with chezmoi. Variables are prompted during `chezmoi
 
 - `{{ .email }}`: User email
 - `{{ .work }}`: Work vs personal profile (selects Homebrew package sets, work-only config)
-- `{{ .espanso }}`: Whether to install/configure espanso
 - `{{ .chezmoi.homeDir }}`, `{{ .chezmoi.sourceDir }}`: chezmoi built-ins
 - Conditional logic based on installed tools: `{{ if lookPath "brew" }}`
 
