@@ -2,8 +2,10 @@
 # Open a worktree in herdr and lay out the workspace:
 #   tab 1: shell (left) + file viewer (right)
 #   tab 2: lazygit (tab label "lazygit", matching scripts/lazygit-tab.sh)
-#   tab 3: hunk diff of the working tree (tab label "hunk", pane label "hunk"
-#          so the hunk-diff.sh keybinding's toggle logic recognizes it)
+#   tab 3: hunk diffs (tab label "hunk") — left pane: working tree incl.
+#          unstaged (pane label "hunk"), right pane: whole-branch diff against
+#          upstream (pane label "hunk:branch"); labels match hunk-diff.sh so
+#          its toggle logic recognizes both panes
 # Called from worktrunk's post-start hook with the repo path, worktree path,
 # and branch. The layout is only built when the workspace is newly created
 # (`already_open` false) so re-running the hook against an existing workspace
@@ -59,13 +61,33 @@ lazygit_tab="$(herdr plugin pane open \
   --no-focus | jq -r '.result.plugin_pane.pane.tab_id // empty')"
 [ -n "$lazygit_tab" ] && herdr tab rename "$lazygit_tab" lazygit >/dev/null
 
-# Tab 3: hunk diff of the working tree — same tab variant hunk-diff.sh builds
-# (tab + pane labeled "hunk", running `hunk diff`).
+# Tab 3: hunk diffs — left pane shows the working tree incl. unstaged changes
+# (`hunk diff`, label "hunk"), right pane shows the whole branch against its
+# upstream (label "hunk:branch"). Upstream detection mirrors hunk-diff.sh:
+# @{upstream} first, then the usual default-branch candidates.
 hunk_pane="$(herdr tab create --workspace "$ws" --cwd "$worktree_path" --label hunk --no-focus |
   jq -r '.result.root_pane.pane_id // empty')"
 if [ -n "$hunk_pane" ]; then
   herdr pane rename "$hunk_pane" hunk >/dev/null
   herdr pane run "$hunk_pane" "hunk diff" >/dev/null
+
+  upstream="$(git -C "$worktree_path" rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null || true)"
+  if [ -z "$upstream" ]; then
+    for candidate in origin/main origin/master main master; do
+      if git -C "$worktree_path" rev-parse --verify --quiet "$candidate" >/dev/null 2>&1; then
+        upstream="$candidate"
+        break
+      fi
+    done
+  fi
+  [ -n "$upstream" ] || upstream=origin/main
+
+  branch_pane="$(herdr pane split "$hunk_pane" --direction right --cwd "$worktree_path" --no-focus |
+    jq -r '.result.pane.pane_id // empty')"
+  if [ -n "$branch_pane" ]; then
+    herdr pane rename "$branch_pane" "hunk:branch" >/dev/null
+    herdr pane run "$branch_pane" "$(printf 'hunk diff %q..%q' "$upstream" "$branch")" >/dev/null
+  fi
 fi
 
 # Land the user on tab 1's shell: the viewer split can steal in-tab focus even
