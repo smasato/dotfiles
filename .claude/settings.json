@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chezmoi diff)",
+      "Bash(chezmoi diff *)",
+      "Bash(herdr api schema *)",
+      "Bash(herdr pane list *)",
+      "Bash(herdr pane read *)",
+      "Bash(hk check)",
+      "Bash(hk check *)",
+      "Bash(chezmoi source-path *)",
+      "Bash(hunk session list)",
+      "Bash(hunk session list *)",
+      "Bash(herdr workspace list *)",
+      "Bash(herdr tab list *)",
+      "Bash(herdr config check *)",
+      "Bash(chezmoi managed)",
+      "Bash(chezmoi managed *)",
+      "Bash(herdr plugin list *)",
+      "Bash(mise registry *)",
+      "Bash(wt list *)",
+      "Bash(xxd *)",
+      "Bash(herdr pane current)"
+    ]
+  }
+}
