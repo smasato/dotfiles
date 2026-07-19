@@ -15,6 +15,7 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - **Edit file**: `chezmoi edit <file>` - Edit a managed file
 - **Diff changes**: `chezmoi diff` - See what changes will be applied
 - **Update from repo**: `chezmoi update` - Pull and apply latest changes
+- `chezmoi diff` always shows `.chezmoiscripts/0_antigen.sh` and `1_bat.sh` as pending script runs. This is expected - ignore them when checking for unintended diffs
 
 ### Repo Tooling
 
