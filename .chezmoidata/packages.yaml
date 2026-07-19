@@ -8,7 +8,6 @@ packages:
       base:
         # Shell
         starship:
-        vivid:
         # Tools
         ast-grep:
         terminal-notifier:
