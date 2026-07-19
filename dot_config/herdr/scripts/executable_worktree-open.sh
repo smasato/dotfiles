@@ -7,6 +7,7 @@
 #          the merge-base with the PR base / default branch (pane label
 #          "hunk:branch"); labels match hunk-diff.sh so its toggle logic
 #          recognizes both panes
+#   tab 4: shell (left) + yazi (right) (tab label "yazi")
 # Called from worktrunk's post-switch hook with the repo path, worktree path,
 # and branch. The layout is only built while the workspace is still bare (a
 # single pane) so re-running the hook against a laid-out workspace doesn't
@@ -84,6 +85,19 @@ if [ -n "$hunk_pane" ]; then
   if [ -n "$branch_pane" ]; then
     herdr pane rename "$branch_pane" "hunk:branch" >/dev/null
     herdr pane run "$branch_pane" "$(bash "$HOME/.config/herdr/scripts/branch-diff-cmd.sh" "$worktree_path")" >/dev/null
+  fi
+fi
+
+# Tab 4: shell (left) + yazi (right); the tab's initial pane stays a plain
+# shell and yazi runs in the split.
+yazi_shell_pane="$(herdr tab create --workspace "$ws" --cwd "$worktree_path" --label yazi --no-focus |
+  jq -r '.result.root_pane.pane_id // empty')"
+if [ -n "$yazi_shell_pane" ]; then
+  yazi_pane="$(herdr pane split "$yazi_shell_pane" --direction right --cwd "$worktree_path" --no-focus |
+    jq -r '.result.pane.pane_id // empty')"
+  if [ -n "$yazi_pane" ]; then
+    herdr pane rename "$yazi_pane" yazi >/dev/null
+    herdr pane run "$yazi_pane" yazi >/dev/null
   fi
 fi
 
