@@ -63,15 +63,23 @@
     "type": "command",
     "command": "wt list statusline --format=claude-code"
   },
+  "enabledPlugins": {
+    "worktrunk@worktrunk": true,
+    "catppuccin@claude-themes": true
+  },
   "extraKnownMarketplaces": {
     "worktrunk": {
       "source": {
         "source": "github",
         "repo": "max-sixty/worktrunk"
       }
+    },
+    "claude-themes": {
+      "source": {
+        "source": "github",
+        "repo": "matcra587/claude-themes"
+      }
     }
   },
-  "enabledPlugins": {
-    "worktrunk@worktrunk": true
-  }
+  "theme": "custom:catppuccin:catppuccin-mocha-ansi"
 }
