@@ -25,6 +25,7 @@ aube = "latest"
 worktrunk = "latest"
 hunk = "latest"
 neovim = "latest"
+lazygit = "latest"
 glow = "latest"
 shellcheck = "latest"
 
