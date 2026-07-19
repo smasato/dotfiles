@@ -1,3 +1,9 @@
+-- Pick up external changes to files without a manual reload.
+vim.o.autoread = true
+vim.api.nvim_create_autocmd({ "CursorHold", "FocusGained" }, {
+  command = "checktime",
+})
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
