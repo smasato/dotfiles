@@ -42,10 +42,6 @@ setopt hist_ignore_all_dups
 setopt append_history
 setopt hist_reduce_blanks
 
-{{ if stat (joinPath .chezmoi.homeDir ".fzf.zsh") }}
-source ~/.fzf.zsh
-{{ end }}
-
 # Config for anyframe
 # https://qiita.com/mollifier/items/81b18c012d7841ab33c3
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
