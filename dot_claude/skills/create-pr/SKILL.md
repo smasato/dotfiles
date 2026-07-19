@@ -14,6 +14,7 @@ Base branch: !`git branch | grep -E "master|main"` or $ARGUMENTS
 - Commit all changes
 - Push the branch to GitHub
 - Write PR description to `./PULL_REQUEST.md`
+  - Do not write the PR title in `./PULL_REQUEST.md`; the file is used verbatim as the PR body
   - Run Bash(`find . -maxdepth 2 -type f -iname "PULL_REQUEST_TEMPLATE.md"`) to search for `<template-path>`
   - Read(`<template-path>`) to get the template content
   - If a template file is found, use its contents as the initial value for `./PULL_REQUEST.md`
@@ -29,7 +30,7 @@ Base branch: !`git branch | grep -E "master|main"` or $ARGUMENTS
 - I will review, modify and save the content
 - Ask me if the PR description is correct (y/n)
 - If I say "y", Create a pull request using `./PULL_REQUEST.md` as the description
-  - Read(`./PULL_REQUEST.md`) to make the title
+  - Make the title from the branch's commit messages, following the semantic commit format
   - Bash(`gh pr create -t <title> --body-file ./PULL_REQUEST.md --assignee @me --base <Base branch>`)
 - Bash(`rm ./PULL_REQUEST.md`)
 - If a hunk pane was opened, Bash(`herdr pane close <pane-id>`)
