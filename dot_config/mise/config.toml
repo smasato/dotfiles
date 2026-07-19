@@ -28,6 +28,7 @@ claude-code = "latest"
 codex = "latest"
 "npm:ccusage" = "latest"
 "npm:prettier" = "latest"
+"npm:skills" = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = []
