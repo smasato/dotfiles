@@ -5,14 +5,14 @@ set -eu
 
 # Install herdr plugins used in this environment.
 # Reruns when this list changes (e.g. when a plugin is added below).
-# plugins: devashish2203/herdr-worktrunk
+# plugins: devashish2203/herdr-worktrunk smarzban/herdr-file-viewer
 
 if ! command -v herdr >/dev/null 2>&1; then
   echo "herdr not found on PATH; skipping plugin install"
   exit 0
 fi
 
-for plugin in devashish2203/herdr-worktrunk; do
+for plugin in devashish2203/herdr-worktrunk smarzban/herdr-file-viewer; do
   echo "Installing herdr plugin: ${plugin}"
   herdr plugin install "${plugin}" --yes
 done

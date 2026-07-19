@@ -25,6 +25,7 @@ aube = "latest"
 worktrunk = "latest"
 hunk = "latest"
 neovim = "latest"
+glow = "latest"
 
 # npm packages
 claude-code = "latest"
