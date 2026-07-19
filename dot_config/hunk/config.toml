@@ -1,0 +1,3 @@
+theme = "catppuccin-mocha"
+mode = "auto"
+line_numbers = true
