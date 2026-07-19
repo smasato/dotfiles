@@ -1,3 +1,4 @@
+{{- /* chezmoi:modify-template */ -}}
 notify = ["{{ .chezmoi.homeDir }}/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
 model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
@@ -54,4 +55,13 @@ trust_level = "trusted"
 trusted_hash = "sha256:0717ed9d6c35270039cbb711af93688ffbcc76d352a7678db40a85213bd08ecc"
 
 [tui.model_availability_nux]
-"gpt-5.6-sol" = 1
+{{- /* Codex updates this NUX counter itself; pass through the current value. */}}
+{{- $nux := dict "gpt-5.6-sol" 1 }}
+{{- if .chezmoi.stdin }}
+{{-   with fromToml .chezmoi.stdin }}
+{{-     with dig "tui" "model_availability_nux" "" . }}{{ $nux = . }}{{ end }}
+{{-   end }}
+{{- end }}
+{{- range $k, $v := $nux }}
+{{ printf "%q = %v" $k $v }}
+{{- end }}
