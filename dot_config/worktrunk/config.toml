@@ -1,6 +1,13 @@
 # Worktrunk user configuration
 # https://worktrunk.dev/config/
 
+[pre-switch]
+# When switching to a branch that doesn't exist locally, fetch first so the
+# remote-tracking ref is available and wt can create a tracking branch from it.
+# Skipped for shortcuts (^ @ - pr: mr:) and branches that already exist locally;
+# fetch failure (e.g. offline) doesn't block the switch.
+fetch = "case '{{ branch | default('') }}' in ''|-|@|^|pr:*|mr:*) ;; *) git show-ref --verify --quiet 'refs/heads/{{ branch }}' || git fetch origin --prune || true ;; esac"
+
 [post-start]
 # Open newly created worktrees in Herdr with a shell + file viewer split in tab 1
 # (ignore failure when the server is not running)
