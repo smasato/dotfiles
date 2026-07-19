@@ -84,7 +84,6 @@ packages:
         re2c:
         readline:
         reattach-to-user-namespace:
-        rustup:
         srt:
         tcl-tk:
         tesseract:
