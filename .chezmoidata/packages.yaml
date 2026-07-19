@@ -91,7 +91,6 @@ packages:
         re2c:
         readline:
         reattach-to-user-namespace:
-        ripgrep:
         rustup:
         srt:
         tcl-tk:
