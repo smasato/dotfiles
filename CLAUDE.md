@@ -22,7 +22,7 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - **Fix**: `hk fix` - Run linters with auto-fix
 - Git hooks (pre-commit, pre-push) are managed by hk and run the same linters
 - Repo-local tools (hk, prettier, pkl) are pinned in `mise.toml` at the repo root
-- **Sort package YAML**: `ruby scripts/yaml_sort.rb <file>` - Sorts taps/brews/casks in a Homebrew package YAML
+- **Sort package YAML**: `ruby scripts/yaml_sort.rb .chezmoidata/packages.yaml` - Sorts the package entries per profile (base/personal/work) under taps/brews/casks. Do not put comments in packages.yaml
 
 ### Shell
 

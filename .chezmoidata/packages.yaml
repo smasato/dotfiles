@@ -6,8 +6,6 @@ packages:
       work: []
     brews:
       base:
-        # Tools
-        terminal-notifier:
         aom:
         autoconf:
         automake:
@@ -87,6 +85,7 @@ packages:
         reattach-to-user-namespace:
         srt:
         tcl-tk:
+        terminal-notifier:
         tesseract:
         tree:
         ugrep:
@@ -124,7 +123,6 @@ packages:
         - espanso
         - fantastical
         - firefox@developer-edition
-        # Fonts
         - font-m+-nerd-font
         - font-udev-gothic-nf
         - fork
