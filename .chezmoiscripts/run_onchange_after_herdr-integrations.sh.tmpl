@@ -1,0 +1,21 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+set -eu
+
+# Install herdr agent-state integration hooks for the AI coding agents used
+# in this environment. These hooks let each agent report blocked/working/done
+# state to herdr instead of relying on output heuristics.
+# Reruns when this list changes (e.g. when an agent is added below).
+# agents: claude codex
+
+if ! command -v herdr >/dev/null 2>&1; then
+  echo "herdr not found on PATH; skipping integration install"
+  exit 0
+fi
+
+for agent in claude codex; do
+  echo "Installing herdr integration: ${agent}"
+  herdr integration install "${agent}"
+done
+{{- end }}
