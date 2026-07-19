@@ -24,6 +24,7 @@ hk = "latest"
 aube = "latest"
 worktrunk = "latest"
 hunk = "latest"
+neovim = "latest"
 
 # npm packages
 claude-code = "latest"
