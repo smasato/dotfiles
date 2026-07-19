@@ -23,7 +23,7 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - **Fix**: `hk fix` - Run linters with auto-fix
 - Git hooks (pre-commit, pre-push) are managed by hk and run the same linters
 - Repo-local tools (hk, prettier, pkl) are pinned in `mise.toml` at the repo root
-- **Sort package YAML**: `ruby scripts/yaml_sort.rb .chezmoidata/packages.yaml` - Sorts the package entries per profile (base/personal/work) under taps/brews/casks. Do not put comments in packages.yaml
+- **Sort package YAML**: `yq -i 'sort_keys(.packages.darwin.*.*) | (.packages.darwin.*.* | select(tag == "!!seq")) |= sort' .chezmoidata/packages.yaml` - Sorts the package entries per profile (base/personal/work) under taps/brews/casks. Do not put comments in packages.yaml
 
 ### Shell
 
@@ -40,7 +40,6 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - `/.chezmoidata/`: Data files for templates - `packages.yaml` (Homebrew packages), `extensions.yaml` (Cursor extensions)
 - `/.chezmoiscripts/`: Install/setup scripts run by chezmoi (Homebrew packages, Cursor extensions, macOS defaults, agent skills, etc.)
 - `/.chezmoiexternal.toml`: Externally fetched files (antigen.zsh, catppuccin themes, gitalias, tmux tpm)
-- `/scripts/`: Utility scripts (`yaml_sort.rb`)
 - `/.github/PULL_REQUEST_TEMPLATE.md`: Pull request template
 
 ### Key Technologies

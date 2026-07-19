@@ -29,6 +29,7 @@ neovim = "latest"
 lazygit = "latest"
 glow = "latest"
 shellcheck = "latest"
+yq = "latest"
 
 # npm packages
 claude-code = "latest"
