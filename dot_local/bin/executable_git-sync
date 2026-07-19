@@ -2,7 +2,7 @@
 # 朝一用まとめコマンド:
 # 1. git fetch --prune         (リモート追跡を最新化 & 消えたものを整理)
 # 2. default ブランチに switch (既に default にいれば何もしない)
-# 3. git pull --ff-only        (default ブランチを FF 更新; 失敗時は警告のみ)
+# 3. git merge --ff-only       (default ブランチを FF 更新; 失敗時は警告のみ)
 # 4. git fetch-all-local       (現在ブランチ以外のローカルを FF 更新)
 # 5. git delete-merged         (origin/<default> にマージ済みを削除)
 # 6. git delete-gone           (upstream が消えたブランチを削除)
@@ -21,14 +21,19 @@ default=$(git default-branch)
 cur=$(git symbolic-ref --short HEAD 2>/dev/null || true)
 if [ "$cur" != "$default" ]; then
   echo "=> git switch $default"
-  git switch "$default"
+  # --no-overwrite-ignore: 切替先に同パスの追跡ファイルがあると
+  # ignore されたファイルが黙って上書きされるため、その場合は中断させる
+  git switch --no-overwrite-ignore "$default"
 fi
 
-# pull --ff-only を delete 系より先に行うのは、`git branch -d` が upstream [gone] の
+# FF 更新を delete 系より先に行うのは、`git branch -d` が upstream [gone] の
 # ブランチに対して HEAD (= ローカル default) を基準にマージ判定するため。
 # ローカル default が古いと、origin/default にはマージ済みでも -d が拒否される。
-echo '=> git pull --ff-only'
-if ! git pull --ff-only; then
+# pull ではなく merge を使うのは、pull が --no-overwrite-ignore を受け付けないため
+# (ignore されたファイルが FF merge で黙って上書きされるのを防ぐ)。
+# fetch は冒頭の git fetch --prune で済んでいるので merge だけで等価。
+echo '=> git merge --ff-only'
+if ! git merge --ff-only --no-overwrite-ignore "origin/$default"; then
   echo "Failed to fast-forward current branch. Skipped." >&2
 fi
 

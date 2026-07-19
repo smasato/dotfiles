@@ -15,7 +15,9 @@ export LS_COLORS=$(vivid generate catppuccin-mocha)
 export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
 
 # User local directories
-export PATH="$PATH:$HOME/.local/bin"
+# .local/bin は先頭に置く: 自作スクリプトで同名コマンドを上書きするため
+# (例: git-sync は git-extras 版が破壊的なので自作版を優先させる)
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$HOME/dev/bin"
 
 # Optional Homebrew tools
