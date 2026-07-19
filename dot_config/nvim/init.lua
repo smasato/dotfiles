@@ -14,6 +14,24 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    -- Same catppuccin-mocha palette as the hunk theme.
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    opts = {
+      flavour = "mocha",
+      transparent_background = true,
+    },
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+      vim.cmd.colorscheme("catppuccin")
+    end,
+  },
+  {
+    "nvim-mini/mini.icons",
+    opts = {},
+  },
+  {
     -- Renders headings, tables, checkboxes, and code blocks inline in Markdown buffers.
     -- Uses the markdown treesitter parsers bundled with Neovim.
     "MeanderingProgrammer/render-markdown.nvim",
