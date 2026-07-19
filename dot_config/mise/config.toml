@@ -22,6 +22,7 @@ herdr = "latest"
 usage = "latest"
 hk = "latest"
 aube = "latest"
+worktrunk = "latest"
 
 # npm packages
 claude-code = "latest"
