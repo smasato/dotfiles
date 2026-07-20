@@ -1,6 +1,12 @@
 # Worktrunk user configuration
 # https://worktrunk.dev/config/
 
+[list]
+# Pin JSON output to schema 2 (envelope). Unset currently falls back to
+# schema 1 (bare array) with a warning, and the default will flip in a
+# future release.
+json-schema = 2
+
 [pre-switch]
 # When switching to a branch that doesn't exist locally, fetch first so the
 # remote-tracking ref is available and wt can create a tracking branch from it.
