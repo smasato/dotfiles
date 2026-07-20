@@ -58,13 +58,18 @@
       {
         "hooks": [
           {
-            "command": "bash '{{ .chezmoi.homeDir }}/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10,
-            "type": "command"
-          },
-          {
             "command": "sh '{{ .chezmoi.homeDir }}/.claude/hooks/i-have-adhd-activate.sh'",
             "timeout": 5,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      },
+      {
+        "hooks": [
+          {
+            "command": "bash '{{ .chezmoi.homeDir }}/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10,
             "type": "command"
           }
         ],
