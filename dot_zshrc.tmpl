@@ -4,7 +4,6 @@ source ~/antigen.zsh
 antigen bundle z-shell/F-Sy-H --branch=main
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle mollifier/anyframe
 antigen bundle atuinsh/atuin@main
 antigen bundle jreese/zsh-titles
 
@@ -42,18 +41,43 @@ setopt hist_ignore_all_dups
 setopt append_history
 setopt hist_reduce_blanks
 
-# Config for anyframe
-# https://qiita.com/mollifier/items/81b18c012d7841ab33c3
-autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
-add-zsh-hook chpwd chpwd_recent_dirs
+# fzf widgets (anyframe 置き換え)
+fzf-widget-checkout-git-branch() {
+	local branch
+	branch=$(git branch --format='%(refname:short)' | fzf) || { zle redisplay; return }
+	BUFFER="git checkout ${branch}"
+	zle accept-line
+}
+zle -N fzf-widget-checkout-git-branch
 
-zstyle ":anyframe:selector:" use fzf
-bindkey '^xb' anyframe-widget-cdr # 過去に移動したことのあるディレクトリに移動する
-bindkey '^x^b' anyframe-widget-checkout-git-branch
-bindkey '^xg' anyframe-widget-cd-ghq-repository # ghqコマンドで管理しているリポジトリに移動する
-bindkey '^xk' anyframe-widget-kill # プロセスをkillする
-bindkey '^xi' anyframe-widget-insert-git-branch # Gitブランチ名をコマンドラインに挿入する
-bindkey '^xf' anyframe-widget-insert-filename # ファイル名をコマンドラインに挿入する
+fzf-widget-cd-ghq-repository() {
+	local repo
+	repo=$(ghq list | fzf) || { zle redisplay; return }
+	BUFFER="cd $(ghq root)/${repo}"
+	zle accept-line
+}
+zle -N fzf-widget-cd-ghq-repository
+
+fzf-widget-insert-git-branch() {
+	local branch
+	branch=$(git branch --format='%(refname:short)' | fzf) || { zle redisplay; return }
+	LBUFFER+="${branch}"
+	zle redisplay
+}
+zle -N fzf-widget-insert-git-branch
+
+fzf-widget-insert-filename() {
+	local file
+	file=$(fzf < /dev/tty) || { zle redisplay; return }
+	LBUFFER+="${file}"
+	zle redisplay
+}
+zle -N fzf-widget-insert-filename
+
+bindkey '^xb' fzf-widget-checkout-git-branch
+bindkey '^xg' fzf-widget-cd-ghq-repository # ghqコマンドで管理しているリポジトリに移動する
+bindkey '^xi' fzf-widget-insert-git-branch # Gitブランチ名をコマンドラインに挿入する
+bindkey '^xf' fzf-widget-insert-filename # ファイル名をコマンドラインに挿入する
 
 # Completion
 {{- if lookPath "brew" }}
