@@ -27,3 +27,5 @@ export BUNDLE_RUBYGEMS__PKG__GITHUB__COM={{- (onepasswordItemFields "4bji3bh7ity
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export LG_CONFIG_FILE="${HOME}/.config/lazygit/config.yml,${HOME}/.config/lazygit/themes/catppuccin-mocha-sky.yml"
 source ~/.zsh/catppuccin-fzf-mocha.sh
+# bg:-1 で端末デフォルト背景を使い、ターミナルの透過を活かす
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg:-1,gutter:-1"
