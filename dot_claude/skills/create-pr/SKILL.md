@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(find:*), Bash(gh pr create:*), Bash(rm ./PULL_REQUEST.md), Bash(open:*), Bash(herdr pane:*)
+allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(find:*), Bash(gh pr create:*), Bash(gh pr checks:*), Bash(rm ./PULL_REQUEST.md), Bash(open:*), Bash(herdr pane:*)
 description: Create a pull request to GitHub. Use when the user asks to create a PR or open a pull request.
 ---
 
@@ -34,3 +34,5 @@ Base branch: !`git branch | grep -E "master|main"` or $ARGUMENTS
   - Bash(`gh pr create -t <title> --body-file ./PULL_REQUEST.md --assignee @me --base <Base branch>`)
 - Bash(`rm ./PULL_REQUEST.md`)
 - If an editor pane was opened, Bash(`herdr pane close <pane-id>`)
+- Watch CI with Bash(`gh pr checks --watch`) and report the result
+  - If a check fails, report which check failed and ask me how to proceed; do not push fixes on your own
