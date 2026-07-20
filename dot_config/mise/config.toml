@@ -41,4 +41,9 @@ codex = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 
 [settings]
+env_file = '.env'
+experimental = true
 idiomatic_version_file_enable_tools = []
+
+[settings.task]
+output = "prefix"
