@@ -10,6 +10,10 @@ export HISTORY_IGNORE="(cd|pwd|ls|rm|mv|shutdown|exit|rmdir)"
 export GOPATH=$HOME/dev
 export EDITOR=nvim
 
+# mise shims: 非対話 SSH（moshi の herdr セッション検出など）は .zshenv しか
+# 読まないため、.zprofile とは別にここでも PATH に載せる
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
 # Compiler and build flags
 export CPPFLAGS="-Wno-enum-constexpr-conversion"
 {{- if lookPath "brew" }}
