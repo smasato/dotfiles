@@ -54,6 +54,10 @@
 - Never suppress errors silently - always handle them explicitly
 - When multiple error solutions exist, explain the trade-offs of each approach
 
+### 2.7 Long-Running Commands
+
+- Any command expected to take roughly 2 minutes or more (builds, downloads, batch jobs, full test suites) MUST be enqueued via the pueue skill instead of `run_in_background`, so it survives the session and its logs are collected.
+
 ## 3. Subagent Delegation
 
 ### 3.1 Model-Pinned Agents Over Built-ins
