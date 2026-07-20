@@ -26,8 +26,10 @@ Base branch: !`git branch | grep -E "master|main"` or $ARGUMENTS
     - Bash(`herdr pane run <pane-id> "<the editor command>"`)
   - Otherwise, tell me to run the editor command in my terminal
 - I will review, modify and save the content
-- Ask me if the PR description is correct (y/n)
-- If I say "y", Create a pull request using `./PULL_REQUEST.md` as the description
+- Ask me with AskUserQuestion whether the PR description is correct
+  - Options: "作成する" (create the PR) / "修正する" (I will edit `./PULL_REQUEST.md` again)
+  - If I choose "修正する", wait for my edits, re-read `./PULL_REQUEST.md`, and ask again
+- If I choose "作成する", create a pull request using `./PULL_REQUEST.md` as the description
   - Make the title from the branch's commit messages, following the semantic commit format
   - Bash(`gh pr create -t <title> --body-file ./PULL_REQUEST.md --assignee @me --base <Base branch>`)
 - Bash(`rm ./PULL_REQUEST.md`)
