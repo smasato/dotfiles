@@ -69,7 +69,6 @@ packages:
         mosh:
         msgpack:
         ncurses:
-        node:
         nss:
         numpy:
         openjdk:
