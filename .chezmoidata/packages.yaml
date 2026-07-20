@@ -132,7 +132,6 @@ packages:
         - fork
         - ghostty
         - google-drive
-        - jetbrains-toolbox
         - jordanbaird-ice
         - karabiner-elements
         - keka
