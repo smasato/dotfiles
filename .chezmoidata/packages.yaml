@@ -66,6 +66,7 @@ packages:
         little-cms2:
         llvm:
         mise:
+        mosh:
         msgpack:
         ncurses:
         node:
@@ -140,6 +141,7 @@ packages:
         - slack
         - spotify
         - sunsama
+        - tailscale-app
         - zoom
       personal:
         - adobe-creative-cloud
