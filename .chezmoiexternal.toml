@@ -28,7 +28,7 @@
     refreshPeriod = "168h"
 ["antigen.zsh"]
     type = "file"
-    url = "https://git.io/antigen"
+    url = "https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh"
     refreshPeriod = "168h"
 [".tmux/plugins/tpm"]
     type = "git-repo"
