@@ -1,6 +1,9 @@
+gui:
+  language: en
+  nerdFontsVersion: '3'
 git:
-  paging:
-    colorArg: always
-    # side-by-side is enabled globally in ~/.gitconfig but is too cramped in
-    # lazygit's half-width pane, so disable it here.
-    pager: delta --dark --paging=never --side-by-side=false
+  pagers:
+    - colorArg: always
+      # side-by-side is enabled globally in ~/.gitconfig but is too cramped in
+      # lazygit's half-width pane, so disable it here.
+      pager: delta --dark --paging=never --side-by-side=false
