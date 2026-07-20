@@ -12,13 +12,13 @@ prefer the wt equivalent.
 
 ## Command mapping
 
-| Task | Use | Not |
-| --- | --- | --- |
-| Create worktree + branch | `wt switch --create <branch>` | `git worktree add` |
-| Switch to existing worktree | `wt switch <branch>` | `cd` by hand |
-| List worktrees | `wt list` | `git worktree list` |
+| Task                                          | Use                                  | Not                                                   |
+| --------------------------------------------- | ------------------------------------ | ----------------------------------------------------- |
+| Create worktree + branch                      | `wt switch --create <branch>`        | `git worktree add`                                    |
+| Switch to existing worktree                   | `wt switch <branch>`                 | `cd` by hand                                          |
+| List worktrees                                | `wt list`                            | `git worktree list`                                   |
 | Merge branch into default branch and clean up | `wt merge` (run inside the worktree) | `git merge` + `git worktree remove` + `git branch -d` |
-| Remove worktree (branch deleted if merged) | `wt remove [branch-or-path]` | `git worktree remove` + `git branch -d` |
+| Remove worktree (branch deleted if merged)    | `wt remove [branch-or-path]`         | `git worktree remove` + `git branch -d`               |
 
 ## Merge behavior — check before running
 

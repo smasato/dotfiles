@@ -25,12 +25,12 @@ Worktrunk（`wt` CLI）による git worktree 管理の構成メモ。
 
 worktree の作成〜削除に合わせて 4 つの hook を定義している。
 
-| Hook          | 名前    | やること                                                                                                                                              |
-| ------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pre-switch`  | `fetch` | ローカルに存在しないブランチへ切り替えるとき先に `git fetch origin --prune`。remote-tracking ref からトラッキングブランチを作れるようにする           |
+| Hook          | 名前    | やること                                                                                                                                                                       |
+| ------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pre-switch`  | `fetch` | ローカルに存在しないブランチへ切り替えるとき先に `git fetch origin --prune`。remote-tracking ref からトラッキングブランチを作れるようにする                                    |
 | `pre-start`   | `sync`  | `origin/<branch>` があれば upstream 設定 + `git merge --ff-only` で fast-forward。`wt switch --create` はベースから分岐するため、origin に同名ブランチがある場合に内容を揃える |
-| `post-switch` | `herdr` | `worktree-open.sh` で switch 先 worktree を Herdr に開き、ワークスペースを自動レイアウト（primary worktree はスキップ）                              |
-| `post-remove` | `herdr` | `worktree-close.sh` で対応する Herdr ワークスペースを閉じる                                                                                           |
+| `post-switch` | `herdr` | `worktree-open.sh` で switch 先 worktree を Herdr に開き、ワークスペースを自動レイアウト（primary worktree はスキップ）                                                        |
+| `post-remove` | `herdr` | `worktree-close.sh` で対応する Herdr ワークスペースを閉じる                                                                                                                    |
 
 ### pre-switch: `fetch`
 

@@ -1,6 +1,6 @@
 gui:
   language: en
-  nerdFontsVersion: "3"
+  nerdFontsVersion: '3'
 git:
   pagers:
     - colorArg: always
