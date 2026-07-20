@@ -1,9 +1,7 @@
 export LANG=ja_JP.UTF-8
 
 # System package managers
-{{ if (eq .chezmoi.arch "arm64") -}}
 export PATH="/opt/homebrew/bin:$PATH"
-{{- end }}
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 export PATH="$PATH:{{ output "brew" "--prefix" | trim }}/sbin"
 
