@@ -1,0 +1,21 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+set -eu
+
+# Install mise-managed tools before the integration scripts below run.
+# Reruns when the mise tool list changes.
+# mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+
+export PATH="/opt/homebrew/bin:${PATH}"
+
+if ! command -v mise >/dev/null 2>&1; then
+  echo "mise not found on PATH; cannot install tools" >&2
+  exit 1
+fi
+
+# Run from $HOME so only the global ~/.config/mise/config.toml applies —
+# a repo-local mise.toml (e.g. the chezmoi source dir's) must not leak in.
+cd "${HOME}"
+mise install --yes
+{{- end }}

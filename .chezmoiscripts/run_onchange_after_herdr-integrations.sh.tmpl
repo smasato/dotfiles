@@ -9,9 +9,15 @@ set -eu
 # Reruns when this list changes (e.g. when an agent is added below).
 # agents: claude codex omp pi
 
+# Rebuild PATH from scratch: mise env prepends its tool bin dirs, and dropping
+# the inherited PATH keeps stale entries (e.g. Homebrew's node) from shadowing them.
+export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+cd "${HOME}"
+eval "$(mise env -s bash)"
+
 if ! command -v herdr >/dev/null 2>&1; then
-  echo "herdr not found on PATH; skipping integration install"
-  exit 0
+  echo "herdr not found on PATH; run 'mise install' first" >&2
+  exit 1
 fi
 
 # The Pi and OMP integrations write extensions into these directories and

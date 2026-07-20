@@ -6,9 +6,15 @@ set -eu
 # Symlink the hunk-review skill bundled with hunk into Claude Code's skills
 # directory so agents can drive live hunk review sessions.
 
+# Rebuild PATH from scratch: mise env prepends its tool bin dirs, and dropping
+# the inherited PATH keeps stale entries (e.g. Homebrew's node) from shadowing them.
+export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+cd "${HOME}"
+eval "$(mise env -s bash)"
+
 if ! command -v hunk >/dev/null 2>&1; then
-  echo "hunk not found on PATH; skipping skill install"
-  exit 0
+  echo "hunk not found on PATH; run 'mise install' first" >&2
+  exit 1
 fi
 
 skill_dir="$(dirname "$(hunk skill path)")"
