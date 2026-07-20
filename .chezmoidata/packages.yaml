@@ -125,6 +125,7 @@ packages:
         - arc
         - atok
         - cursor
+        - devin-cli
         - fantastical
         - firefox@developer-edition
         - font-m+-nerd-font
