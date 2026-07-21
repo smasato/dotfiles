@@ -5,6 +5,14 @@
 {{-   $email = promptString "email" -}}
 {{- end -}}
 
+{{- $opAccount := "" -}}
+{{- if hasKey . "opAccount" -}}
+{{-   $opAccount = .opAccount -}}
+{{- else -}}
+{{-   $opAccount = promptString "opAccount" -}}
+{{- end -}}
+
 [data]
     email = {{ $email | quote }}
+    opAccount = {{ $opAccount | quote }}
     work = {{ promptBool "work" }}
