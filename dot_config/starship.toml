@@ -19,8 +19,6 @@ $java\
 $kotlin\
 $haskell\
 $python\
-[](fg:green bg:sapphire)\
-$mise\
 [ ](fg:lavender)\
 $cmd_duration\
 $line_break\
@@ -136,12 +134,6 @@ format = '[[ $symbol( $version)(\(#$virtualenv\)) ](fg:crust bg:green)]($style)'
 symbol = ""
 style = "bg:sapphire"
 format = '[[ $symbol( $context) ](fg:crust bg:sapphire)]($style)'
-
-[mise]
-disabled = false
-symbol = "󱁤 "
-style = "fg:crust bg:sapphire"
-format = '[ $symbol$health ]($style)'
 
 [time]
 disabled = false
