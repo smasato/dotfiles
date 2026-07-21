@@ -138,6 +138,11 @@
         "{{ .chezmoi.homeDir }}/Library/Caches/mise",
         "{{ .chezmoi.homeDir }}/.agent-browser"
       ]
+    },
+    "network": {
+      "allowUnixSockets": [
+        "{{ .chezmoi.homeDir }}/Library/Application Support/pueue/pueue_*.socket"
+      ]
     }
   },
   "skipDangerousModePermissionPrompt": true,
