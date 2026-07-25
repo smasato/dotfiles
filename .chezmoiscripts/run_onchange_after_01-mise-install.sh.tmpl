@@ -3,7 +3,9 @@
 
 set -eu
 
-# Install mise-managed tools before the integration scripts below run.
+# Install mise-managed tools first: later after-scripts (bat, skills, herdr and
+# hunk integrations) invoke binaries that mise provides. after-scripts run in
+# lexical order of their target name, hence the zero-padded numeric prefix.
 # Reruns when the mise tool list changes.
 # mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
 
