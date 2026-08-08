@@ -38,8 +38,8 @@ herdr デフォルトでは未割り当てのアクションに独自キーを�
 キーバインドではないが、`wt` で worktree へ switch すると post-switch hook（`scripts/worktree-open.sh`）が
 その worktree を Herdr で開き、ワークスペースが素の状態ならレイアウトする:
 タブ 1 = 「左: シェル / 右: ファイルビューア」の split、タブ 2 = lazygit、
-タブ 3 = 「左: hunk diff（worktree、未ステージ含む作業ツリー）/ 右: hunk diff（branch、merge-base からのブランチ全体の差分。base は open PR があればその base ブランチ、なければデフォルトブランチ）」の split、
-タブ 4 = 「左: シェル / 右: yazi」の split（タブラベル "yazi"）。
+タブ 3 = 「左: シェル / 右: yazi」の split（タブラベル "yazi"）。
+hunk diff タブは自動では作らず、必要なときに `scripts/hunk-diff.sh` のキーバインドで開く。
 フォーカスはタブ 1 のシェルに残る。
 `wt remove` 時は post-remove hook が pueue 経由で `scripts/worktree-close.sh` を遅延実行し、
 その worktree のワークスペースを閉じる（pueued のセッションで走るため、close が

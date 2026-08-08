@@ -26,7 +26,7 @@ sync = "{% if upstream %}git merge --ff-only {{ upstream }} || true{% else %}{ g
 
 [post-switch]
 # Open the worktree in Herdr with the standard layout (shell + file viewer in
-# tab 1, lazygit tab, hunk tab). post-switch rather than post-start so it also
+# tab 1, lazygit tab, yazi tab). post-switch rather than post-start so it also
 # fires when switching to an already-existing worktree, e.g. via the herdr
 # worktrunk plugin picker. The script itself skips workspaces that are already
 # laid out. Skip the primary worktree; ignore failure when the server is not

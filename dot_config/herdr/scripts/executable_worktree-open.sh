@@ -2,12 +2,9 @@
 # Open a worktree in herdr and lay out the workspace:
 #   tab 1: shell (left) + file viewer (right)
 #   tab 2: lazygit (tab label "lazygit", matching scripts/lazygit-tab.sh)
-#   tab 3: hunk diffs (tab label "hunk") — left pane: working tree incl.
-#          unstaged (pane label "hunk"), right pane: whole-branch diff from
-#          the merge-base with the PR base / default branch (pane label
-#          "hunk:branch"); labels match hunk-diff.sh so its toggle logic
-#          recognizes both panes
-#   tab 4: shell (left) + yazi (right) (tab label "yazi")
+#   tab 3: shell (left) + yazi (right) (tab label "yazi")
+# Hunk diff tabs are not part of the layout; open them on demand via
+# hunk-diff.sh.
 # Called from worktrunk's post-switch hook with the repo path, worktree path,
 # and branch. The layout is only built while the workspace is still bare (a
 # single pane) so re-running the hook against a laid-out workspace doesn't
@@ -69,26 +66,7 @@ lazygit_tab="$(herdr plugin pane open \
   --no-focus | jq -r '.result.plugin_pane.pane.tab_id // empty')"
 [ -n "$lazygit_tab" ] && herdr tab rename "$lazygit_tab" lazygit >/dev/null
 
-# Tab 3: hunk diffs — left pane shows the working tree incl. unstaged changes
-# (`hunk diff`, label "hunk"), right pane shows the whole branch from the
-# merge-base with its PR base branch or the default branch (label
-# "hunk:branch"); resolution lives in branch-diff-cmd.sh, shared with
-# hunk-diff.sh.
-hunk_pane="$(herdr tab create --workspace "$ws" --cwd "$worktree_path" --label hunk --no-focus |
-  jq -r '.result.root_pane.pane_id // empty')"
-if [ -n "$hunk_pane" ]; then
-  herdr pane rename "$hunk_pane" hunk >/dev/null
-  herdr pane run "$hunk_pane" "hunk diff" >/dev/null
-
-  branch_pane="$(herdr pane split "$hunk_pane" --direction right --cwd "$worktree_path" --no-focus |
-    jq -r '.result.pane.pane_id // empty')"
-  if [ -n "$branch_pane" ]; then
-    herdr pane rename "$branch_pane" "hunk:branch" >/dev/null
-    herdr pane run "$branch_pane" "$(bash "$HOME/.config/herdr/scripts/branch-diff-cmd.sh" "$worktree_path")" >/dev/null
-  fi
-fi
-
-# Tab 4: shell (left) + yazi (right); the tab's initial pane stays a plain
+# Tab 3: shell (left) + yazi (right); the tab's initial pane stays a plain
 # shell and yazi runs in the split.
 yazi_shell_pane="$(herdr tab create --workspace "$ws" --cwd "$worktree_path" --label yazi --no-focus |
   jq -r '.result.root_pane.pane_id // empty')"
