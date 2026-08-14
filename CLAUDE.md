@@ -36,7 +36,8 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - `/dot_*` files: Templates that get deployed to home directory (the `dot_` prefix becomes `.`)
 - `/private_*` files: Files deployed with restricted permissions (e.g. `private_Library/` for macOS `~/Library` files)
 - `/dot_config/`: Deployed to `~/.config` - bat, ghostty, herdr, hunk, mise, nvim, atuin, karabiner, raycast, starship.toml
-- `/dot_claude/`: Claude Code configuration - global CLAUDE.md, settings template, and skills (e.g. create-pr)
+- `/dot_claude/`: Claude Code configuration - global CLAUDE.md, settings template, and a `skills` symlink to `~/.agents/skills`
+- `/dot_agents/`: Deployed to `~/.agents` - canonical agent skills store (e.g. create-pr), shared across agents
 - `/.chezmoidata/`: Data files for templates - `packages.yaml` (Homebrew packages), `extensions.yaml` (Cursor extensions)
 - `/.chezmoiscripts/`: Install/setup scripts run by chezmoi (Homebrew packages, Cursor extensions, macOS defaults, agent skills, etc.)
 - `/.chezmoiexternal.toml`: Externally fetched files (antigen.zsh, catppuccin themes, gitalias, tmux tpm)
