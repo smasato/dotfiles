@@ -3,7 +3,8 @@
 
 set -eu
 
-# Install herdr plugins used in this environment.
+# Install herdr plugins used in this environment, then write agent skills from
+# the installed herdr binary and plugin checkouts so they stay version-matched.
 # Reruns when this list changes (e.g. when a plugin is added below) or when
 # the installed herdr version changes, which also picks up plugin updates
 # (plugins are pinned to the commit resolved at install time; reinstalling
@@ -26,4 +27,26 @@ for plugin in devashish2203/herdr-worktrunk smarzban/herdr-file-viewer crokily/h
   echo "Installing herdr plugin: ${plugin}"
   herdr plugin install "${plugin}" --yes
 done
+
+skills_root="${HOME}/.agents/skills"
+
+echo "Writing herdr skill from herdr --skill"
+mkdir -p "${skills_root}/herdr"
+tmp="$(mktemp)"
+herdr --skill > "${tmp}"
+mv "${tmp}" "${skills_root}/herdr/SKILL.md"
+
+fv_root="$(herdr plugin list --json | jq -r '
+  .result.plugins[]
+  | select(.plugin_id == "herdr-file-viewer")
+  | .source.managed_path // empty
+')"
+fv_skill="${fv_root}/skills/herdr-file-viewer/SKILL.md"
+if [ -z "${fv_root}" ] || [ ! -f "${fv_skill}" ]; then
+  echo "herdr-file-viewer skill not found at ${fv_skill}" >&2
+  exit 1
+fi
+echo "Copying herdr-file-viewer skill"
+mkdir -p "${skills_root}/herdr-file-viewer"
+cp "${fv_skill}" "${skills_root}/herdr-file-viewer/SKILL.md"
 {{- end }}

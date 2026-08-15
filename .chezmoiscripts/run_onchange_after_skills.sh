@@ -5,7 +5,8 @@ set -eu
 # Install global agent skills via the mise-managed `skills` CLI.
 # Reruns when this list changes (e.g. when a skill is added below).
 # skills: JuliusBrussee/caveman:caveman
-# skills: ogulcancelik/herdr
+# herdr skills are written by run_onchange_after_herdr-plugins.sh from the
+# installed herdr binary and plugin checkouts, not from this list.
 #
 # Target only the universal store: skills land in the canonical
 # ~/.agents/skills, and ~/.claude/skills is a chezmoi-managed symlink to that
@@ -26,6 +27,3 @@ fi
 
 echo "Adding skill: JuliusBrussee/caveman (caveman)"
 skills add JuliusBrussee/caveman --skill caveman --agent universal -g -y
-
-echo "Adding skill: ogulcancelik/herdr (herdr)"
-skills add ogulcancelik/herdr --skill herdr --agent universal -g -y
