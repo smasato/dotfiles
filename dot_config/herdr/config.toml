@@ -221,6 +221,9 @@ command = "bash ~/.config/herdr/scripts/hunk-diff.sh branch tab"
 # Collapsed sidebar presentation: "compact" keeps the narrow status rail, "hidden" uses zero width.
 # sidebar_collapsed_mode = "compact"
 
+# Start with the sidebar collapsed. Changes take effect on the next launch.
+# sidebar_start_collapsed = false
+
 # Terminal width at or below which Herdr uses the mobile single-column layout.
 # Increase this for foldables, tablets, or wide phone terminals.
 # mobile_width_threshold = 64
@@ -258,6 +261,13 @@ command = "bash ~/.config/herdr/scripts/hunk-diff.sh branch tab"
 # Set false to create tabs immediately with generated names.
 prompt_new_tab_name = false
 
+# Ask for a workspace name before interactive creation.
+# prompt_new_workspace_name = false
+
+# Draw interactive scrollbars beside terminal panes.
+# Set false to reclaim the scrollbar column and keep it out of terminal-native selections.
+pane_scrollbars = false
+
 # Draw borders around split panes.
 # pane_borders = true
 
@@ -270,6 +280,9 @@ prompt_new_tab_name = false
 # Hide the tab row when a workspace has exactly one tab.
 # New tabs can still be created with the configured keybinding.
 # hide_tab_bar_when_single_tab = false
+
+# Desktop tab row placement: "top" or "bottom".
+tab_bar_position = "bottom"
 
 # Agent panel ordering: "spaces" (grouped by space) or "priority" (attention queue).
 # "workspaces" is accepted as an alias for "spaces".
