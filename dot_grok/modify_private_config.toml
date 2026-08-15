@@ -90,6 +90,14 @@ sessions = true
 
 [memory]
 enabled = false
+{{- /* Grok records the acked privacy banner here; dropping it re-shows the banner. */ -}}
+{{- with index $src "privacy" }}
+{{-   if hasKey . "privacy_banner_acked" }}
+
+[privacy]
+privacy_banner_acked = {{ printf "%q" (index . "privacy_banner_acked") }}
+{{-   end }}
+{{- end }}
 
 # Grok writes marketplace install state; keep the official source and any extras.
 [marketplace]
