@@ -84,6 +84,7 @@ wt 自身の trash 掃除（`.git/wt/trash` の rm）まで巻き添えになる
 - `prefix+shift+c` — カレントリポジトリを開く（`worktrunk.open-current`）
 
 Herdr 組み込みの worktree 作成（`new_worktree`）は無効化し、このピッカーに置き換えている。
+ピッカーは `show_remote_branches = true` で remote-tracking ブランチ（`origin/foo`）も出す。
 
 ## Claude Code 連携
 

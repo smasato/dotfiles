@@ -1,0 +1,3 @@
+# herdr-worktrunk plugin config
+# Read on each picker run; no plugin reinstall required.
+show_remote_branches = true
