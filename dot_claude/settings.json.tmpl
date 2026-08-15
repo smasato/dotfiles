@@ -1,5 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 365,
   "env": {
     "DISABLE_AUTOUPDATER": "1",
     "GIT_PAGER": "cat",
@@ -42,7 +43,8 @@
       "Bash(rg:*)",
       "Read(**)",
       "EnterWorktree",
-      "Bash(gh pr merge:*)"
+      "Bash(gh pr merge:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [
       "Bash(rm -rf /)",
@@ -142,8 +144,18 @@
       ]
     },
     "excludedCommands": [
-      "git push",
-      "git push *"
+      "git",
+      "git *",
+      "gh",
+      "gh *",
+      "mise",
+      "mise *",
+      "wt",
+      "wt *",
+      "agent-browser",
+      "agent-browser *",
+      "hk",
+      "hk *"
     ]
   },
   "effortLevel": "high",
@@ -153,6 +165,7 @@
   "skipWorkflowUsageWarning": true,
   "theme": "custom:catppuccin:catppuccin-mocha-ansi",
   "editorMode": "normal",
+  "autoCompactEnabled": false,
   "autoMode": {
     "environment": [
       "**Internal sharing / snippet hosting**: treat public paste/gist services as outside the trust boundary",
