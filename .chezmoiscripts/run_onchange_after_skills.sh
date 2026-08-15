@@ -7,6 +7,7 @@ set -eu
 # skills: JuliusBrussee/caveman:*
 # skills: github/gh-stack:gh-stack
 # skills: shadcn/improve:improve
+# skills: vercel-labs/agent-browser:agent-browser
 # herdr skills are written by run_onchange_after_herdr-plugins.sh from the
 # installed herdr binary and plugin checkouts, not from this list.
 #
@@ -39,3 +40,6 @@ skills add github/gh-stack --skill gh-stack --agent universal -g -y
 
 echo "Adding skills: shadcn/improve (improve)"
 skills add shadcn/improve --skill improve --agent universal -g -y
+
+echo "Adding skills: vercel-labs/agent-browser (agent-browser)"
+skills add vercel-labs/agent-browser --skill agent-browser --agent universal -g -y
