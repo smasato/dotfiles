@@ -29,7 +29,7 @@ repo_path="$1"
 worktree_path="$2"
 branch="$3"
 
-out="$(herdr worktree open --cwd "$repo_path" --path "$worktree_path" --label "$branch" --no-focus --json)"
+out="$(herdr worktree open --cwd "$repo_path" --path "$worktree_path" --label "$branch" --no-focus)"
 
 ws="$(printf '%s' "$out" | jq -r '.result.workspace.workspace_id // empty')"
 [ -n "$ws" ] || exit 0

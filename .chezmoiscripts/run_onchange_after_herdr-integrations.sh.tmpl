@@ -3,9 +3,9 @@
 
 set -eu
 
-# Install herdr agent-state integration hooks for the AI coding agents used
-# in this environment. These hooks let each agent report blocked/working/done
-# state to herdr instead of relying on output heuristics.
+# Install herdr integrations for the AI coding agents used in this environment.
+# Depending on the agent, integrations report lifecycle state, resumable
+# session identity, or both.
 # Reruns when this list changes (e.g. when an agent is added below) or when
 # the installed herdr version changes, so hooks never go stale after updates.
 # agents: claude codex grok omp opencode pi
