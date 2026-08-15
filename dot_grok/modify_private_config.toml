@@ -1,0 +1,124 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $src := dict -}}
+{{- if .chezmoi.stdin -}}
+{{-   with fromToml .chezmoi.stdin -}}{{ $src = . }}{{ end -}}
+{{- end -}}
+[cli]
+auto_update = false
+
+[models]
+default = "grok-4.6"
+web_search = "grok-4.6"
+
+[ui]
+theme = "rosepine"
+screen_mode = "fullscreen"
+simple_mode = true
+vim_mode = false
+permission_mode = "auto"
+remember_tool_approvals = true
+default_selected_permission = "allow_command_always"
+max_thoughts_width = 120
+show_thinking_blocks = true
+group_tool_verbs = true
+collapsed_edit_blocks = true
+compact_mode = false
+yolo = false
+fork_secondary_model = "grok-4.5"
+follow_up_behavior = "steer"
+
+[features]
+telemetry = false
+codebase_indexing = true
+lsp_tools = false
+
+[session]
+auto_compact_threshold_percent = 85
+load_envrc = true
+
+[tools]
+respect_gitignore = true
+
+[permission]
+deny = [
+  "Bash(rm -rf /)",
+  "Bash(rm -rf ~/)",
+  "Bash(sudo *)",
+]
+allow = [
+  "Read(**)",
+  "Bash(git *)",
+  "Bash(gh *)",
+  "Bash(rg *)",
+  "Bash(pueue *)",
+  "Bash(wt *)",
+]
+
+[subagents]
+enabled = true
+
+[subagents.models]
+explore = "grok-4.5"
+
+[hints]
+new_session_worktree_mode = "never"
+fork_worktree_mode = "never"
+{{- with index $src "hints" }}
+{{-   if hasKey . "memory_modal_fullscreen" }}
+memory_modal_fullscreen = {{ index . "memory_modal_fullscreen" }}
+{{-   end }}
+{{- end }}
+
+[compat.cursor]
+skills = false
+rules = false
+agents = false
+mcps = false
+hooks = false
+sessions = true
+
+[compat.claude]
+skills = true
+rules = true
+agents = true
+mcps = true
+hooks = true
+sessions = true
+
+[compat.codex]
+sessions = true
+
+[memory]
+enabled = false
+
+# Grok writes marketplace install state; keep the official source and any extras.
+[marketplace]
+{{- $purged := true -}}
+{{- $official := true -}}
+{{- with index $src "marketplace" }}
+{{-   if hasKey . "default_skills_installs_purged" }}{{ $purged = index . "default_skills_installs_purged" }}{{ end }}
+{{-   if hasKey . "official_marketplace_auto_installed" }}{{ $official = index . "official_marketplace_auto_installed" }}{{ end }}
+{{- end }}
+default_skills_installs_purged = {{ $purged }}
+official_marketplace_auto_installed = {{ $official }}
+
+[[marketplace.sources]]
+name = "xAI Official"
+git = "https://github.com/xai-org/plugin-marketplace.git"
+{{- with index $src "marketplace" }}
+{{-   range index . "sources" | default list }}
+{{-     if ne (index . "name") "xAI Official" }}
+[[marketplace.sources]]
+name = {{ printf "%q" (index . "name") }}
+{{-       if hasKey . "git" }}
+git = {{ printf "%q" (index . "git") }}
+{{-       end }}
+{{-       if hasKey . "path" }}
+path = {{ printf "%q" (index . "path") }}
+{{-       end }}
+{{-       if hasKey . "branch" }}
+branch = {{ printf "%q" (index . "branch") }}
+{{-       end }}
+{{-     end }}
+{{-   end }}
+{{- end }}
