@@ -40,7 +40,8 @@ herdr デフォルトでは未割り当てのアクションに独自キーを�
 タブ 1 = 「左: シェル / 右: ファイルビューア」の split、タブ 2 = lazygit、
 タブ 3 = 「左: シェル / 右: yazi」の split（タブラベル "yazi"）。
 hunk diff タブは自動では作らず、必要なときに `scripts/hunk-diff.sh` のキーバインドで開く。
-フォーカスはタブ 1 のシェルに残る。
+hook はフォーカスを動かさない。ピッカー（`prefix+shift+g` / `prefix+shift+c`）から開いたときは
+ピッカー側がフォーカスする。
 `wt remove` 時は post-remove hook が pueue 経由で `scripts/worktree-close.sh` を遅延実行し、
 その worktree のワークスペースを閉じる（pueued のセッションで走るため、close が
 `wt remove` 自身のバックグラウンド掃除を巻き添えにしない）。

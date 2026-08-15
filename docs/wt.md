@@ -55,7 +55,7 @@ diverge している・同名リモート branch がない場合はベースの�
 
 ### worktree-open.sh（post-switch）
 
-`herdr worktree open` でワークスペースを作成・フォーカスし、ワークスペースがまだ素の状態
+`herdr worktree open --no-focus` でワークスペースを作成し（今見ているワークスペースは動かない）、ワークスペースがまだ素の状態
 （ペイン 1 つだけ）のときのみ以下をレイアウトする（レイアウト済みワークスペースへの
 再実行ではペイン・タブを積み増さない）。post-start ではなく post-switch なのは、
 herdr の worktrunk ピッカーで既存 worktree を開いたときにも発火させるため。

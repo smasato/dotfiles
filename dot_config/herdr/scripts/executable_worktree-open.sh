@@ -20,13 +20,16 @@
 # the pane command is a relative path resolved against the plugin root, and the
 # viewer roots its tree from the workspace cwd herdr injects via
 # HERDR_PLUGIN_CONTEXT_JSON, not the process cwd.
+# Open and lay out with --no-focus so creating a worktree does not steal the
+# current workspace. The worktrunk picker focuses afterwards when the user
+# picks one; a plain `wt switch` from a shell does not.
 set -eu
 
 repo_path="$1"
 worktree_path="$2"
 branch="$3"
 
-out="$(herdr worktree open --cwd "$repo_path" --path "$worktree_path" --label "$branch" --focus --json)"
+out="$(herdr worktree open --cwd "$repo_path" --path "$worktree_path" --label "$branch" --no-focus --json)"
 
 ws="$(printf '%s' "$out" | jq -r '.result.workspace.workspace_id // empty')"
 [ -n "$ws" ] || exit 0
@@ -78,10 +81,3 @@ if [ -n "$yazi_shell_pane" ]; then
     herdr pane run "$yazi_pane" yazi >/dev/null
   fi
 fi
-
-# Land the user on tab 1's shell: the viewer split can steal in-tab focus even
-# with --no-focus. herdr has no focus-by-id, so focus via a zoom on/off cycle
-# (--on focuses and maximizes, --off un-maximizes keeping focus) — the same
-# trick the file-viewer plugin's own launcher uses.
-herdr pane zoom "$pane" --on >/dev/null 2>&1 || true
-herdr pane zoom "$pane" --off >/dev/null 2>&1 || true
