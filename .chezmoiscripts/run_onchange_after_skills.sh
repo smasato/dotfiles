@@ -4,6 +4,7 @@ set -eu
 
 # Install global agent skills via the mise-managed `skills` CLI.
 # Reruns when this list changes (e.g. when a skill is added below).
+# skills: JuliusBrussee/caveman:caveman
 # skills: ogulcancelik/herdr
 #
 # Target only the universal store: skills land in the canonical
@@ -23,5 +24,8 @@ if ! command -v skills >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "Adding skill: ogulcancelik/herdr"
+echo "Adding skill: JuliusBrussee/caveman (caveman)"
+skills add JuliusBrussee/caveman --skill caveman --agent universal -g -y
+
+echo "Adding skill: ogulcancelik/herdr (herdr)"
 skills add ogulcancelik/herdr --skill herdr --agent universal -g -y
