@@ -4,8 +4,12 @@
 set -eu
 
 # Install herdr plugins used in this environment.
-# Reruns when this list changes (e.g. when a plugin is added below).
+# Reruns when this list changes (e.g. when a plugin is added below) or when
+# the installed herdr version changes, which also picks up plugin updates
+# (plugins are pinned to the commit resolved at install time; reinstalling
+# is the only way to move them forward).
 # plugins: devashish2203/herdr-worktrunk smarzban/herdr-file-viewer crokily/herdr-lazygit
+# herdr: {{ if lookPath "herdr" }}{{ output "herdr" "--version" | trim }}{{ else }}not installed{{ end }}
 
 # Rebuild PATH from scratch: mise env prepends its tool bin dirs, and dropping
 # the inherited PATH keeps stale entries (e.g. Homebrew's node) from shadowing them.

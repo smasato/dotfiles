@@ -6,8 +6,10 @@ set -eu
 # Install herdr agent-state integration hooks for the AI coding agents used
 # in this environment. These hooks let each agent report blocked/working/done
 # state to herdr instead of relying on output heuristics.
-# Reruns when this list changes (e.g. when an agent is added below).
+# Reruns when this list changes (e.g. when an agent is added below) or when
+# the installed herdr version changes, so hooks never go stale after updates.
 # agents: claude codex grok omp opencode pi
+# herdr: {{ if lookPath "herdr" }}{{ output "herdr" "--version" | trim }}{{ else }}not installed{{ end }}
 
 # Rebuild PATH from scratch: mise env prepends its tool bin dirs, and dropping
 # the inherited PATH keeps stale entries (e.g. Homebrew's node) from shadowing them.
