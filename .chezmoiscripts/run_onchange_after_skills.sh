@@ -4,7 +4,7 @@ set -eu
 
 # Install global agent skills via the mise-managed `skills` CLI.
 # Reruns when this list changes (e.g. when a skill is added below).
-# skills: JuliusBrussee/caveman:caveman
+# skills: JuliusBrussee/caveman:*
 # herdr skills are written by run_onchange_after_herdr-plugins.sh from the
 # installed herdr binary and plugin checkouts, not from this list.
 #
@@ -25,5 +25,9 @@ if ! command -v skills >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "Adding skill: JuliusBrussee/caveman (caveman)"
-skills add JuliusBrussee/caveman --skill caveman --agent universal -g -y
+# --skill '*' installs every skill in the repo (caveman family plus
+# investigate-first, lean-build, migration, safe-refactor, surgical-patch,
+# verify-and-stop). Not --all: that implies --agent '*', but only the
+# universal store may be targeted (see above).
+echo "Adding skills: JuliusBrussee/caveman (all)"
+skills add JuliusBrussee/caveman --skill '*' --agent universal -g -y
