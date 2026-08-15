@@ -12,8 +12,9 @@ chezmoi ソースの変更を検証してコミットするまでの手順。
 1. `chezmoi diff` を実行し、これから適用される差分を確認する。意図しない差分（他タスクの変更混入・テンプレート展開ミス）があれば停止して報告する。
 2. `chezmoi apply` で変更をホームディレクトリへ適用する。
 3. 再度 `chezmoi diff` を実行し、出力が空（drift なし）であることを確認する。差分が残る場合は原因（modify テンプレート・再ソートなど）を調査してから進む。
-4. `git status` と `git diff` で変更ファイルを確認し、今回のタスクに関係するファイルのみ `git add` する。
-5. 変更内容を要約した conventional commit メッセージ（`feat:` / `fix:` / `docs:` / `refactor:`）でコミットする。
+4. `dot_config/herdr/config.toml` を変更した場合は `herdr config check` を実行し、`config: ok` を確認する（デプロイ済み設定のみ検証できるため apply 後に行う）。
+5. `git status` と `git diff` で変更ファイルを確認し、今回のタスクに関係するファイルのみ `git add` する。
+6. 変更内容を要約した conventional commit メッセージ（`feat:` / `fix:` / `docs:` / `refactor:`）でコミットする。
 
 ## 注意
 
