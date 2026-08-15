@@ -46,7 +46,7 @@ name = "catppuccin"
 # channel = "stable"
 
 # Check herdr.dev for new Herdr versions in the background.
-# Managed by mise (aqua:ogulcancelik/herdr), so herdr's own update check is disabled.
+# Managed by mise (aqua:herdrdev/herdr), so herdr's own update check is disabled.
 version_check = false
 
 # Check herdr.dev for remote agent-detection manifest updates in the background.
