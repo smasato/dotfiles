@@ -64,7 +64,9 @@ herdr の worktrunk ピッカーで既存 worktree を開いたときにも発�
 
 1. タブ 1: シェル（左）+ ファイルビューア（右）の split
 2. タブ 2: lazygit（タブラベル `lazygit`）
-3. タブ 3: hunk diff（左: working tree、右: PR base / デフォルトブランチとの merge-base からの branch diff）
+3. タブ 3: シェル（左）+ yazi（右）の split（タブラベル `yazi`）
+
+hunk diff タブは自動では作らず、必要なときに `scripts/hunk-diff.sh` のキーバインドで開く。
 
 ### worktree-close.sh（post-remove）
 

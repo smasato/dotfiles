@@ -1,9 +1,8 @@
 #!/bin/bash
 # Print the hunk command for a whole-branch diff of the repo at $1: the current
 # branch against the merge-base with its PR base branch (via gh, when an open
-# PR exists) or the repo's default branch. Both hunk-diff.sh (prefix+shift+b /
-# prefix+alt+b) and worktree-open.sh (tab 3 right pane) use this so the two
-# stay in sync.
+# PR exists) or the repo's default branch. Used by hunk-diff.sh
+# (prefix+shift+b / prefix+alt+b).
 set -eu
 
 dir="$1"
