@@ -1,4 +1,5 @@
 ---
+name: create-pr
 allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(find:*), Bash(gh pr create:*), Bash(gh pr checks:*), Bash(rm ./PULL_REQUEST.md), Bash(open:*), Bash(herdr pane:*)
 description: Create a pull request to GitHub. Use when the user asks to create a PR or open a pull request.
 ---

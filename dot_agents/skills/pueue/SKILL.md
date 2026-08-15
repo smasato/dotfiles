@@ -1,4 +1,5 @@
 ---
+name: pueue
 allowed-tools: Bash(pueue:*)
 description: Run long-running commands (builds, downloads, batch jobs, full test suites — anything expected to take 2+ minutes) through the pueue task queue instead of run_in_background, so they survive session end and their logs are collected. Use before launching any command expected to run for minutes, or when Masato mentions pueue.
 ---
