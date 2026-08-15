@@ -55,6 +55,9 @@ hook はフォーカスを動かさない。ピッカー（`prefix+shift+g` / `p
 | `prefix+shift+l` | lazygit を split で開く（`herdr-lazygit.open`）                                                                                               |
 | `prefix+alt+l`   | lazygit をタブで開く（`scripts/lazygit-tab.sh`）。タブラベルを "lazygit" に固定。lazygit タブにいる状態でもう一度押すと、直前にいたタブへ戻る |
 
+`scripts/lazygit-tab.sh` と `scripts/hunk-diff.sh` はキーを押した時点のペイン、タブ、cwd を使うため、
+コマンド起動前に別のペインへ移動しても対象は変わらない。
+
 ### hunk diff（`scripts/hunk-diff.sh`）
 
 覚え方: `d` = worktree、`shift+s` = staged、`shift+b` = branch。`alt` を付けると split の代わりにタブで開く。同じキーをもう一度押すとトグルで閉じる。

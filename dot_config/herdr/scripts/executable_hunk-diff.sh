@@ -19,23 +19,12 @@ case "$target" in tab | split) ;; *)
   ;;
 esac
 
-# Context of the pane the keybinding fired in. cwd is read as a full line so
-# paths with spaces survive.
-{
-  read -r workspace_id
-  read -r pane_id
-  read -r tab_id
-  read -r cwd
-} <<EOF
-$(herdr pane current | python3 -c '
-import json, sys
-p = json.load(sys.stdin)["result"]["pane"]
-print(p["workspace_id"])
-print(p["pane_id"])
-print(p["tab_id"])
-print(p.get("foreground_cwd") or p.get("cwd") or ".")
-')
-EOF
+# Use the context captured when the keybinding fired. A detached shell command
+# may start after the user has focused another pane.
+workspace_id="${HERDR_ACTIVE_WORKSPACE_ID:?HERDR_ACTIVE_WORKSPACE_ID is required}"
+pane_id="${HERDR_ACTIVE_PANE_ID:?HERDR_ACTIVE_PANE_ID is required}"
+tab_id="${HERDR_ACTIVE_TAB_ID:?HERDR_ACTIVE_TAB_ID is required}"
+cwd="${HERDR_ACTIVE_PANE_CWD:-$PWD}"
 
 # Panes are labeled per mode so a repeated press can tell "toggle this diff
 # closed" apart from "switch to another diff".

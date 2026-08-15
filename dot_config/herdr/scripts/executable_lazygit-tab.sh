@@ -10,29 +10,16 @@ set -eu
 state_dir="${TMPDIR:-/tmp}/herdr-lazygit-return"
 mkdir -p "$state_dir"
 
-read -r mode workspace_id tab_id <<EOF
-$(python3 -c '
-import json, subprocess
+# Use the context captured when the keybinding fired. A detached shell command
+# may start after the user has focused another pane.
+workspace_id="${HERDR_ACTIVE_WORKSPACE_ID:?HERDR_ACTIVE_WORKSPACE_ID is required}"
+pane_id="${HERDR_ACTIVE_PANE_ID:?HERDR_ACTIVE_PANE_ID is required}"
+tab_id="${HERDR_ACTIVE_TAB_ID:?HERDR_ACTIVE_TAB_ID is required}"
+cwd="${HERDR_ACTIVE_PANE_CWD:-$PWD}"
 
-def get(cmd):
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
-    return json.loads(r.stdout)["result"]
-
-mode, ws, tab = "OPEN", "-", "-"
-try:
-    cur = get(["herdr", "pane", "current"])["pane"]
-    tabs = get(["herdr", "tab", "list"])["tabs"]
-    ws = cur.get("workspace_id") or "-"
-    tab = cur.get("tab_id") or "-"
-    label = next((t.get("label") for t in tabs
-                  if isinstance(t, dict) and t.get("tab_id") == tab), "")
-    if label == "lazygit":
-        mode = "RETURN"
-except Exception:
-    pass
-print(mode, ws, tab)
-')
-EOF
+label="$(herdr tab get "$tab_id" | jq -r '.result.tab.label // ""')"
+mode="OPEN"
+[ "$label" = "lazygit" ] && mode="RETURN"
 
 state_file="$state_dir/$(printf '%s' "$workspace_id" | tr -c 'A-Za-z0-9_-' '_')"
 
@@ -62,11 +49,13 @@ print(others[0][1] if others else "")
 fi
 
 # Remember where we came from so the next press on the lazygit tab returns here.
-if [ "$tab_id" != "-" ]; then
-  printf '%s\n' "$tab_id" >"$state_file"
-fi
+printf '%s\n' "$tab_id" >"$state_file"
 
-herdr plugin action invoke open-tab --plugin herdr-lazygit
+HERDR_WORKSPACE_ID="$workspace_id" \
+  HERDR_TAB_ID="$tab_id" \
+  HERDR_PANE_ID="$pane_id" \
+  HERDR_ACTIVE_PANE_CWD="$cwd" \
+  herdr plugin action invoke open-tab --plugin herdr-lazygit
 
 # The pane opens asynchronously; poll briefly for "Git" panes that are the
 # only pane in their tab (the tab variant — split lazygit panes share a tab
