@@ -138,6 +138,7 @@ focus_agent = "prefix+alt+1..9"
 key = "prefix+t"
 type = "popup"
 command = "zsh -l"
+description = "open scratch shell"
 width = "80%"
 height = "80%"
 
@@ -145,58 +146,69 @@ height = "80%"
 key = "prefix+shift+g"
 type = "plugin_action"
 command = "worktrunk.open"
+description = "Worktree: switch / create from default branch"
 
 [[keys.command]]
 key = "prefix+shift+c"
 type = "plugin_action"
 command = "worktrunk.open-current"
+description = "Worktree: switch / create from current branch"
 
 [[keys.command]]
 key = "prefix+f"
 type = "plugin_action"
 command = "herdr-file-viewer.open-file-viewer"
+description = "open file viewer"
 
 [[keys.command]]
 key = "prefix+shift+l"
 type = "plugin_action"
 command = "herdr-lazygit.open"
+description = "open lazygit (split)"
 
 # Wraps herdr-lazygit.open-tab to pin the tab label to "lazygit".
 [[keys.command]]
 key = "prefix+alt+l"
 type = "shell"
 command = "bash ~/.config/herdr/scripts/lazygit-tab.sh"
+description = "open lazygit (tab)"
 
 # hunk diffs: d = worktree, shift+s = staged, shift+b = branch; alt = tab.
 [[keys.command]]
 key = "prefix+d"
 type = "shell"
 command = "bash ~/.config/herdr/scripts/hunk-diff.sh worktree split"
+description = "hunk: worktree diff (split)"
 
 [[keys.command]]
 key = "prefix+alt+d"
 type = "shell"
 command = "bash ~/.config/herdr/scripts/hunk-diff.sh worktree tab"
+description = "hunk: worktree diff (tab)"
 
 [[keys.command]]
 key = "prefix+shift+s"
 type = "shell"
 command = "bash ~/.config/herdr/scripts/hunk-diff.sh staged split"
+description = "hunk: staged diff (split)"
 
 [[keys.command]]
 key = "prefix+alt+s"
 type = "shell"
 command = "bash ~/.config/herdr/scripts/hunk-diff.sh staged tab"
+description = "hunk: staged diff (tab)"
 
 [[keys.command]]
 key = "prefix+shift+b"
 type = "shell"
 command = "bash ~/.config/herdr/scripts/hunk-diff.sh branch split"
+description = "hunk: branch diff (split)"
 
 [[keys.command]]
 key = "prefix+alt+b"
 type = "shell"
 command = "bash ~/.config/herdr/scripts/hunk-diff.sh branch tab"
+description = "hunk: branch diff (tab)"
 
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.

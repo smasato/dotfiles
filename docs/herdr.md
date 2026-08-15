@@ -9,6 +9,8 @@ macOS では prefix モード中に ASCII 入力ソースへ自動切り替え�
 
 ## 独自ショートカット（config.toml の `[keys]` 上書きと `[[keys.command]]`）
 
+`[[keys.command]]` には `description` を付けているので、`prefix+?` のヘルプでも同じラベルが出る。
+
 ### エージェント切り替え（`[keys]`）
 
 herdr デフォルトでは未割り当てのアクションに独自キーを割り当てている。
