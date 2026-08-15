@@ -31,19 +31,7 @@ if [ "$mode" = "RETURN" ]; then
   fi
   # The recorded tab is gone — fall back to the lowest-numbered other tab in
   # this workspace, or stay put if the lazygit tab is the only one.
-  fallback="$(HERDR_WS="$workspace_id" HERDR_TAB="$tab_id" python3 -c '
-import json, os, subprocess
-r = subprocess.run(["herdr", "tab", "list"], capture_output=True, text=True, timeout=5)
-try:
-    tabs = json.loads(r.stdout)["result"]["tabs"]
-except Exception:
-    tabs = []
-ws, cur_tab = os.environ["HERDR_WS"], os.environ["HERDR_TAB"]
-others = sorted((t.get("number", 0), t.get("tab_id") or "") for t in tabs
-                if isinstance(t, dict) and t.get("workspace_id") == ws
-                and t.get("tab_id") != cur_tab)
-print(others[0][1] if others else "")
-')"
+  fallback="$(herdr tab list 2>/dev/null | jq -r --arg ws "$workspace_id" --arg cur "$tab_id" '[.result.tabs[] | select(.workspace_id == $ws and .tab_id != $cur)] | sort_by(.number) | .[0].tab_id // ""' 2>/dev/null || true)"
   [ -n "$fallback" ] && exec herdr tab focus "$fallback"
   exit 0
 fi
@@ -61,19 +49,11 @@ HERDR_WORKSPACE_ID="$workspace_id" \
 # only pane in their tab (the tab variant — split lazygit panes share a tab
 # with other panes). On the toggle-close path nothing matches and we time out.
 for _ in 1 2 3 4 5 6 7 8 9 10; do
-  tab_ids="$(herdr pane list 2>/dev/null | python3 -c '
-import json, sys
-from collections import Counter
-try:
-    panes = json.load(sys.stdin)["result"]["panes"]
-except Exception:
-    sys.exit(0)
-panes = [p for p in panes if isinstance(p, dict)]
-counts = Counter(p.get("tab_id") for p in panes)
-for p in panes:
-    if p.get("label") == "Git" and counts[p.get("tab_id")] == 1:
-        print(p.get("tab_id"))
-')"
+  tab_ids="$(herdr pane list 2>/dev/null | jq -r '
+    .result.panes as $panes
+    | reduce $panes[] as $p ({}; .[$p.tab_id] += 1) as $counts
+    | $panes[] | select(.label == "Git" and $counts[.tab_id] == 1) | .tab_id
+  ' 2>/dev/null || true)"
   if [ -n "${tab_ids}" ]; then
     for tab_id in ${tab_ids}; do
       herdr tab rename "${tab_id}" lazygit >/dev/null 2>&1 || true

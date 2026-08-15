@@ -44,16 +44,7 @@ if [ "$target" = "split" ]; then
     [ "$open_label" = "$pane_label" ] && toggle_off=1
     [ "$open_pane" = "$pane_id" ] && closed_self=1
   done <<EOF
-$(herdr pane list | HUNK_TAB="$tab_id" python3 -c '
-import json, os, sys
-panes = json.load(sys.stdin)["result"]["panes"]
-for p in panes:
-    if not isinstance(p, dict) or p.get("tab_id") != os.environ["HUNK_TAB"]:
-        continue
-    label = p.get("label") or ""
-    if label == "hunk" or label.startswith("hunk:"):
-        print(p["pane_id"], label)
-')
+$(herdr pane list | jq -r --arg tab "$tab_id" '.result.panes[] | select(.tab_id == $tab) | select((.label // "") == "hunk" or ((.label // "") | startswith("hunk:"))) | "\(.pane_id) \(.label // "")"')
 EOF
   [ "$toggle_off" = "1" ] && exit 0
   # Fired from inside a hunk pane that we just closed as part of a mode
@@ -63,12 +54,7 @@ EOF
       read -r pane_id
       read -r cwd
     } <<EOF2
-$(herdr pane current | python3 -c '
-import json, sys
-p = json.load(sys.stdin)["result"]["pane"]
-print(p["pane_id"])
-print(p.get("foreground_cwd") or p.get("cwd") or ".")
-')
+$(herdr pane current | jq -r '.result.pane | .pane_id, (.foreground_cwd // .cwd // ".")')
 EOF2
   fi
 fi
@@ -89,10 +75,10 @@ esac
 
 if [ "$target" = "tab" ]; then
   new_pane="$(herdr tab create --workspace "$workspace_id" --cwd "$cwd" --label hunk --focus |
-    python3 -c 'import json, sys; print(json.load(sys.stdin)["result"]["root_pane"]["pane_id"])')"
+    jq -r '.result.root_pane.pane_id')"
 else
   new_pane="$(herdr pane split "$pane_id" --direction right --cwd "$cwd" --focus |
-    python3 -c 'import json, sys; print(json.load(sys.stdin)["result"]["pane"]["pane_id"])')"
+    jq -r '.result.pane.pane_id')"
 fi
 
 herdr pane rename "$new_pane" "$pane_label" >/dev/null
