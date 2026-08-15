@@ -154,6 +154,10 @@ eval "$(mise activate zsh)"
 compdef _op op
 {{- end }}
 
+{{- if lookPath "herdr" }}
+{{ output "herdr" "completion" "zsh" | trim }}
+{{- end }}
+
 eval "$(starship init zsh)"
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
