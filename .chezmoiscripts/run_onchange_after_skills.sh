@@ -6,6 +6,7 @@ set -eu
 # Reruns when this list changes (e.g. when a skill is added below).
 # skills: JuliusBrussee/caveman:*
 # skills: github/gh-stack:gh-stack
+# skills: shadcn/improve:improve
 # herdr skills are written by run_onchange_after_herdr-plugins.sh from the
 # installed herdr binary and plugin checkouts, not from this list.
 #
@@ -35,3 +36,6 @@ skills add JuliusBrussee/caveman --skill '*' --agent universal -g -y
 
 echo "Adding skills: github/gh-stack (gh-stack)"
 skills add github/gh-stack --skill gh-stack --agent universal -g -y
+
+echo "Adding skills: shadcn/improve (improve)"
+skills add shadcn/improve --skill improve --agent universal -g -y
