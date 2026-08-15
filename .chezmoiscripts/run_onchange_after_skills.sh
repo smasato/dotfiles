@@ -5,6 +5,7 @@ set -eu
 # Install global agent skills via the mise-managed `skills` CLI.
 # Reruns when this list changes (e.g. when a skill is added below).
 # skills: JuliusBrussee/caveman:*
+# skills: github/gh-stack:gh-stack
 # herdr skills are written by run_onchange_after_herdr-plugins.sh from the
 # installed herdr binary and plugin checkouts, not from this list.
 #
@@ -31,3 +32,6 @@ fi
 # universal store may be targeted (see above).
 echo "Adding skills: JuliusBrussee/caveman (all)"
 skills add JuliusBrussee/caveman --skill '*' --agent universal -g -y
+
+echo "Adding skills: github/gh-stack (gh-stack)"
+skills add github/gh-stack --skill gh-stack --agent universal -g -y
