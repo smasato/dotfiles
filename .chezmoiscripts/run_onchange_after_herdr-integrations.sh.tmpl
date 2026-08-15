@@ -7,7 +7,7 @@ set -eu
 # in this environment. These hooks let each agent report blocked/working/done
 # state to herdr instead of relying on output heuristics.
 # Reruns when this list changes (e.g. when an agent is added below).
-# agents: claude codex omp pi
+# agents: claude codex omp opencode pi
 
 # Rebuild PATH from scratch: mise env prepends its tool bin dirs, and dropping
 # the inherited PATH keeps stale entries (e.g. Homebrew's node) from shadowing them.
@@ -20,12 +20,14 @@ if ! command -v herdr >/dev/null 2>&1; then
   exit 1
 fi
 
-# The Pi and OMP integrations write extensions into these directories and
-# require them to exist beforehand (Herdr does not create them).
+# The Pi and OMP integrations write extensions into these directories, while
+# OpenCode writes a plugin into its config directory. Herdr requires each
+# destination directory to exist beforehand.
 mkdir -p "${PI_CODING_AGENT_DIR:-${HOME}/.omp/agent}/extensions"
 mkdir -p "${PI_CODING_AGENT_DIR:-${HOME}/.pi/agent}/extensions"
+mkdir -p "${XDG_CONFIG_HOME:-${HOME}/.config}/opencode/plugins"
 
-for agent in claude codex omp pi; do
+for agent in claude codex omp opencode pi; do
   echo "Installing herdr integration: ${agent}"
   herdr integration install "${agent}"
 done
