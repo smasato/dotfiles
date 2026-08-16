@@ -29,7 +29,7 @@ parsed=$(echo "$output" | grep '^Current' | sed -E \
     -e 's/^Current week \(all models\): ([0-9]+%) used · resets (.+) \(.*\)$/W \1 (\2)/' \
     -e 's/^Current week \(([^)]+)\): ([0-9]+%) used · resets (.+) \(.*\)$/\1 \2 (\3)/' \
     -e 's/ at / /g' \
-    | perl -pe 'BEGIN{%m=(Jan=>1,Feb=>2,Mar=>3,Apr=>4,May=>5,Jun=>6,Jul=>7,Aug=>8,Sep=>9,Oct=>10,Nov=>11,Dec=>12)} s{\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b}{sprintf("%02d/%02d", $m{$1}, $2)}ge; s{\b(\d{1,2})(?::(\d{2}))?(am|pm)\b}{sprintf("%02d:%02d", ($1 % 12) + ($3 eq "pm" ? 12 : 0), defined $2 ? $2 : 0)}ge; s{(\d+)%}{($1 >= 90 ? "🔴" : $1 >= 70 ? "🟡" : "🔵") . " " . (" " x (3 - length($1))) . "$1%"}ge' \
+    | perl -pe 'BEGIN{%m=(Jan=>1,Feb=>2,Mar=>3,Apr=>4,May=>5,Jun=>6,Jul=>7,Aug=>8,Sep=>9,Oct=>10,Nov=>11,Dec=>12)} s{\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b}{sprintf("%02d/%02d", $m{$1}, $2)}ge; s{\b(\d{1,2})(?::(\d{2}))?(am|pm)\b}{sprintf("%02d:%02d", ($1 % 12) + ($3 eq "pm" ? 12 : 0), defined $2 ? $2 : 0)}ge; s{(\d+)%}{($1 >= 90 ? "🔴" : $1 >= 75 ? "🟡" : "🔵") . " " . (" " x (3 - length($1))) . "$1%"}ge' \
     | awk '{printf "%s%s", sep, $0; sep=" · "} END {print ""}')
 
 if [ -z "$parsed" ]; then
