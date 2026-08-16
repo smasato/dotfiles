@@ -312,8 +312,10 @@ agent_panel_sort = "priority"
 # claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
 
 # Show what each Claude/Grok pane is working on in the sidebar via the terminal title.
+# $account is the Claude account type (Team/Max) reported by the
+# herdr-claude-account.sh SessionStart hook.
 [ui.sidebar.agents.rows_by_agent]
-claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
+claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent", "$account"]]
 grok = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
 
 # Expanded space rows. Built-ins are state_icon, state_text, workspace, branch, and git_status.
