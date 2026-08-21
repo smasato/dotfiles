@@ -34,11 +34,9 @@ WORDCHARS='*?_[]~&;!#$%^(){}<>'
 setopt extended_history
 setopt share_history
 
-setopt hist_ignore_dups
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 
-setopt append_history
 setopt hist_reduce_blanks
 
 # fzf widgets (anyframe 置き換え)
@@ -89,7 +87,6 @@ compinit
 
 setopt complete_in_word
 setopt auto_menu
-setopt auto_param_keys
 setopt list_types
 setopt magic_equal_subst
 setopt always_last_prompt
@@ -102,7 +99,7 @@ zstyle ':completion:*' list-colors "${LS_COLORS}"
 zstyle ':completion:*' insert-tab false
 
 # Aliases
-alias reload="exec zsh && echo '~/.zshrc reloaded!'"
+alias reload="exec zsh"
 alias gs='git status'
 alias pclaude='CLAUDE_CONFIG_DIR="$HOME/.claude_personal_home" claude'
 
