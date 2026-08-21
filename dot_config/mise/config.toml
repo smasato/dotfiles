@@ -41,6 +41,7 @@ codex = "latest"
 "npm:skills" = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:agent-browser" = "latest"
+"npm:@opencode-ai/cli" = { version = "beta", allow_builds = ["@opencode-ai/cli"] }
 
 [settings]
 env_file = '.env'

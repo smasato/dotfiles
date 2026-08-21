@@ -1,0 +1,16 @@
+{
+  "theme": {
+    "name": "catppuccin",
+    "mode": "system"
+  },
+  "cursor": {
+    "style": "block",
+    "blinking": true
+  },
+  "attention": {
+    "enabled": true,
+    "notifications": true,
+    "sound": true,
+    "volume": 0.4
+  }
+}
