@@ -92,8 +92,11 @@ focus_agent = "prefix+alt+1..9"
 # rename_tab = "prefix+shift+t"
 # previous_tab = "prefix+p"
 # next_tab = "prefix+n"
+# Reorder the active tab without changing focus.
+move_tab_previous = "prefix+alt+p"
+move_tab_next = "prefix+alt+n"
 # switch_tab = "prefix+1..9"
-# switch_workspace = ""   # optional indexed binding, e.g. "prefix+shift+1..9"
+switch_workspace = "prefix+shift+1..9"
 # close_tab = "prefix+shift+x"
 # rename_pane = "prefix+shift+p"
 # edit_scrollback = "prefix+e"
@@ -103,12 +106,18 @@ focus_agent = "prefix+alt+1..9"
 # focus_pane_right = "prefix+l"
 # cycle_pane_next = "prefix+tab"
 # cycle_pane_previous = "prefix+shift+tab"
-# last_pane = ""          # optional, unset by default; bind e.g. "prefix+tab" for global back-and-forth
+# Global back-and-forth between the current and previous pane.
+last_pane = "prefix+space"
 # split_vertical = "prefix+v"
 # split_horizontal = "prefix+minus"
 # close_pane = "prefix+x"
 # zoom = "prefix+z"       # legacy alias: fullscreen
 # resize_mode = "prefix+r"
+# Resize panes directly without entering resize mode.
+resize_pane_left = "ctrl+shift+alt+left"
+resize_pane_down = "ctrl+shift+alt+down"
+resize_pane_up = "ctrl+shift+alt+up"
+resize_pane_right = "ctrl+shift+alt+right"
 # toggle_sidebar = "prefix+b"
 
 # Navigate-mode movement. These local shortcuts win while navigate mode is open.
@@ -296,9 +305,30 @@ show_agent_labels_on_pane_borders = true
 # Desktop tab row placement: "top" or "bottom".
 tab_bar_position = "bottom"
 
+# Ordered status entries at the right edge of the desktop tab bar.
+# Supported types: zoom, hostname, datetime, text, and command.
+# The command entry shows compact Claude usage (scripts/claude-usage.sh).
+tab_bar_right = [
+  { type = "zoom" },
+  { type = "command", command = "~/.config/herdr/scripts/claude-usage.sh", interval_seconds = 900, timeout_seconds = 60 },
+  { type = "hostname" },
+  { type = "datetime", format = "%m/%d %H:%M" },
+]
+
+# Title Herdr writes to the terminal it runs in, which is what window managers
+# show in title, tab, and group bars. Tokens are {hostname}, {workspace}, {tab},
+# {pane}, and {terminal_title}; {{ and }} are literal braces.
+# The title renders on the Herdr server, so {hostname} names the host the panes
+# run on even when attaching from a remote client.
+window_title = "{hostname}: {workspace}"
+
 # Agent panel ordering: "spaces" (grouped by space) or "priority" (attention queue).
 # "workspaces" is accepted as an alias for "spaces".
 agent_panel_sort = "priority"
+
+# Agent status indicators: "dots" preserves the compact color marks; "symbols" uses
+# distinct static glyphs for blocked, working, done, idle, and unknown states.
+status_indicators = "symbols"
 
 # Expanded agent rows. Built-ins are state_icon, state_text, workspace, tab, pane, agent,
 # terminal_title, and terminal_title_stripped.
@@ -385,7 +415,7 @@ resume_agents_on_restore = true
 # Requires a Kitty graphics-compatible outer terminal.
 # kitty_graphics = false
 # Save recent pane screen history across full server restarts.
-pane_history = false
+pane_history = true
 # While prefix mode is active, temporarily switch the macOS host input
 # source to an ASCII-capable keyboard layout so prefix commands register
 # even when a CJK IME is active, then restore the previous input source
