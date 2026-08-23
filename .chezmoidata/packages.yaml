@@ -134,7 +134,6 @@ packages:
         - fork
         - ghostty
         - google-drive
-        - jordanbaird-ice
         - karabiner-elements
         - keka
         - raycast
