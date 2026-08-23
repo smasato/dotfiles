@@ -4,6 +4,7 @@ set -eu
 
 # Install global agent skills via the mise-managed `skills` CLI.
 # Reruns when this list changes (e.g. when a skill is added below).
+# skills: ChromeDevTools/chrome-devtools-mcp:*
 # skills: JuliusBrussee/caveman:*
 # skills: github/gh-stack:gh-stack
 # skills: shadcn/improve:improve
@@ -32,6 +33,9 @@ fi
 # investigate-first, lean-build, migration, safe-refactor, surgical-patch,
 # verify-and-stop). Not --all: that implies --agent '*', but only the
 # universal store may be targeted (see above).
+echo "Adding skills: ChromeDevTools/chrome-devtools-mcp (all)"
+skills add ChromeDevTools/chrome-devtools-mcp --skill '*' --agent universal -g -y
+
 echo "Adding skills: JuliusBrussee/caveman (all)"
 skills add JuliusBrussee/caveman --skill '*' --agent universal -g -y
 
