@@ -6,9 +6,13 @@ set -eu
 # Reruns when this list changes (e.g. when a skill is added below).
 # skills: ChromeDevTools/chrome-devtools-mcp:*
 # skills: JuliusBrussee/caveman:*
+# skills: emilkowalski/skill:*
 # skills: github/gh-stack:gh-stack
+# skills: mattpocock/skills:*
 # skills: shadcn/improve:improve
+# skills: shadcn/ui:*
 # skills: vercel-labs/agent-browser:agent-browser
+# skills: vercel-labs/skills:find-skills
 # herdr skills are written by run_onchange_after_herdr-plugins.sh from the
 # installed herdr binary and plugin checkouts, not from this list.
 #
@@ -39,11 +43,23 @@ skills add ChromeDevTools/chrome-devtools-mcp --skill '*' --agent universal -g -
 echo "Adding skills: JuliusBrussee/caveman (all)"
 skills add JuliusBrussee/caveman --skill '*' --agent universal -g -y
 
+echo "Adding skills: emilkowalski/skill (all)"
+skills add emilkowalski/skill --skill '*' --agent universal -g -y
+
 echo "Adding skills: github/gh-stack (gh-stack)"
 skills add github/gh-stack --skill gh-stack --agent universal -g -y
+
+echo "Adding skills: mattpocock/skills (all)"
+skills add mattpocock/skills --skill '*' --agent universal -g -y
 
 echo "Adding skills: shadcn/improve (improve)"
 skills add shadcn/improve --skill improve --agent universal -g -y
 
+echo "Adding skills: shadcn/ui (all)"
+skills add shadcn/ui --skill '*' --agent universal -g -y
+
 echo "Adding skills: vercel-labs/agent-browser (agent-browser)"
 skills add vercel-labs/agent-browser --skill agent-browser --agent universal -g -y
+
+echo "Adding skills: vercel-labs/skills (find-skills)"
+skills add vercel-labs/skills --skill find-skills --agent universal -g -y
