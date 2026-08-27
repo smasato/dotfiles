@@ -37,6 +37,7 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - `/private_*` files: Files deployed with restricted permissions (e.g. `private_Library/` for macOS `~/Library` files)
 - `/dot_config/`: Deployed to `~/.config` - bat, ghostty, herdr, hunk, mise, nvim, atuin, karabiner, raycast, starship.toml
 - `/dot_claude/`: Claude Code configuration - global CLAUDE.md, settings template, and a `skills` symlink to `~/.agents/skills`
+- `/dot_claude_personal_home/`: Symlinks into `~/.claude` (settings, CLAUDE.md, agents, hooks, skills) so the `pclaude` alias (`CLAUDE_CONFIG_DIR=~/.claude_personal_home`, personal account) shares config while keeping its own `.claude.json` / sessions
 - `/dot_grok/`: Grok Build configuration — global AGENTS.md overlay and `config.toml` (modify-template; Grok writes marketplace state)
 - `/dot_agents/`: Deployed to `~/.agents` - canonical agent skills store (e.g. create-pr), shared across agents
 - `/.chezmoidata/`: Data files for templates - `packages.yaml` (Homebrew packages), `extensions.yaml` (Cursor extensions)
