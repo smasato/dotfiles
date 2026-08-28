@@ -6,6 +6,7 @@ set -eu
 # Reruns when this list changes (e.g. when a skill is added below).
 # skills: ChromeDevTools/chrome-devtools-mcp:*
 # skills: JuliusBrussee/caveman:*
+# skills: cursor/plugins:pstack (all except setup-pstack) + control-cli/control-ui/deslop
 # skills: emilkowalski/skill:*
 # skills: github/gh-stack:gh-stack
 # skills: mattpocock/skills:*
@@ -51,6 +52,37 @@ skills add github/gh-stack --skill gh-stack --agent universal -g -y
 
 echo "Adding skills: mattpocock/skills (all)"
 skills add mattpocock/skills --skill '*' --agent universal -g -y
+
+# pstack (https://github.com/cursor/plugins/tree/main/pstack) plus the three
+# cursor-team-kit skills poteto-mode invokes as hard steps (deslop,
+# control-cli, control-ui). The skills CLI matches frontmatter names, so
+# "Poteto Mode" and "Make Bot UI" are display names, not slugs. This block
+# must run after mattpocock/skills: both repos ship tdd and teach under the
+# same flat names, installs overwrite, and the pstack versions are the ones
+# that should win. setup-pstack is excluded: it writes ~/.cursor/rules/,
+# which Claude Code never reads; the pstack model mapping lives in
+# dot_claude/rules/pstack-models.md instead.
+echo "Adding skills: cursor/plugins (pstack + team-kit subset)"
+skills add cursor/plugins \
+  --skill architect --skill arena --skill automate-me --skill blast-radius --skill bro \
+  --skill create-verification-skill --skill figure-it-out --skill how --skill interrogate \
+  --skill maintain-verification-skill --skill "Make Bot UI" --skill no-comments --skill "Poteto Mode" \
+  --skill principle-boundary-discipline --skill principle-build-the-lever \
+  --skill principle-encode-lessons-in-structure --skill principle-exhaust-the-design-space \
+  --skill principle-experience-first --skill principle-fix-root-causes \
+  --skill principle-foundational-thinking --skill principle-guard-the-context-window \
+  --skill principle-laziness-protocol --skill principle-make-operations-idempotent \
+  --skill principle-migrate-callers-then-delete-legacy-apis --skill principle-minimize-reader-load \
+  --skill principle-model-the-domain --skill principle-never-block-on-the-human \
+  --skill principle-outcome-oriented-execution --skill principle-prove-it-works \
+  --skill principle-redesign-from-first-principles --skill principle-separate-before-serializing-shared-state \
+  --skill principle-sequence-verifiable-units --skill principle-subtract-before-you-add \
+  --skill principle-type-system-discipline --skill recall --skill reflect \
+  --skill show-me-your-work --skill swarm --skill tdd --skill teach \
+  --skill technical-writing --skill typescript-best-practices \
+  --skill unslop --skill why \
+  --skill deslop --skill control-cli --skill control-ui \
+  --agent universal -g -y
 
 echo "Adding skills: shadcn/improve (improve)"
 skills add shadcn/improve --skill improve --agent universal -g -y
