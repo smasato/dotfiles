@@ -40,8 +40,8 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - `/dot_claude_personal_home/`: Symlinks into `~/.claude` (settings, CLAUDE.md, agents, hooks, skills) so the `pclaude` alias (`CLAUDE_CONFIG_DIR=~/.claude_personal_home`, personal account) shares config while keeping its own `.claude.json` / sessions
 - `/dot_grok/`: Grok Build configuration — global AGENTS.md overlay and `config.toml` (modify-template; Grok writes marketplace state)
 - `/dot_agents/`: Deployed to `~/.agents` - canonical agent skills store (e.g. create-pr), shared across agents
-- `/.chezmoidata/`: Data files for templates - `packages.yaml` (Homebrew packages), `extensions.yaml` (Cursor extensions)
-- `/.chezmoiscripts/`: Install/setup scripts run by chezmoi (Homebrew packages, Cursor extensions, macOS defaults, agent skills, etc.)
+- `/.chezmoidata/`: Data files for templates - `packages.yaml` (Homebrew packages)
+- `/.chezmoiscripts/`: Install/setup scripts run by chezmoi (Homebrew packages, macOS defaults, agent skills, etc.)
 - `/.chezmoiexternal.toml`: Externally fetched files (antigen.zsh, catppuccin themes, gitalias, tmux tpm)
 - `/.github/PULL_REQUEST_TEMPLATE.md`: Pull request template
 
@@ -52,7 +52,7 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - **Runtime/Tool Management**: mise for language runtimes (Ruby, Node, Bun, Python) and CLI tools, declared in `dot_config/mise/config.toml`
 - **Package Management**: Homebrew - packages declared in `.chezmoidata/packages.yaml` and installed by a `.chezmoiscripts` run script during `chezmoi apply`
 - **Git Hooks**: hk, configured in `hk.pkl`
-- **Editors**: Cursor (extensions declared in `.chezmoidata/extensions.yaml`) and Neovim (`dot_config/nvim`)
+- **Editors**: Cursor and Neovim (`dot_config/nvim`)
 - **Terminal**: Ghostty, tmux, and Herdr; Atuin for shell history
 - **Secrets**: 1Password CLI integration for sensitive values (e.g. `onepasswordDetailsFields` in templates)
 
@@ -71,4 +71,4 @@ Templates use Go templating with chezmoi. Variables are prompted during `chezmoi
 - Work vs personal profile differentiation via the `work` variable
 - 1Password integration for secrets in templates
 - Conditional sourcing based on tool availability (`lookPath`)
-- `run_onchange_*` scripts re-run when their embedded data hashes change (e.g. package or extension lists)
+- `run_onchange_*` scripts re-run when their embedded data hashes change (e.g. package list)
