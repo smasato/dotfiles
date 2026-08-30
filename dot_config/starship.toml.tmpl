@@ -31,7 +31,7 @@ $time\
 [ ](lavender)\
 """
 
-palette = 'catppuccin_mocha'
+palette = 'catppuccin_{{ if eq (get . "machineRole") "worker" }}frappe{{ else }}mocha{{ end }}'
 
 [os]
 disabled = false

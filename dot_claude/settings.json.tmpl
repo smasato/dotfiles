@@ -176,7 +176,7 @@
   "disableRemoteControl": true,
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
-  "theme": "custom:catppuccin:catppuccin-latte",
+  "theme": "custom:catppuccin:catppuccin-{{ if eq (get . "machineRole") "worker" }}frappe{{ else }}latte{{ end }}",
   "editorMode": "normal",
   "autoCompactEnabled": false,
   "agentPushNotifEnabled": true,

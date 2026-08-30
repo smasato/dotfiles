@@ -12,7 +12,22 @@
 {{-   $opAccount = promptString "opAccount" -}}
 {{- end -}}
 
+{{- $work := false -}}
+{{- if hasKey . "work" -}}
+{{-   $work = .work -}}
+{{- else -}}
+{{-   $work = promptBool "work" -}}
+{{- end -}}
+
+{{- $machineRole := "" -}}
+{{- if hasKey . "machineRole" -}}
+{{-   $machineRole = .machineRole -}}
+{{- else -}}
+{{-   $machineRole = promptChoice "machineRole" (list "main" "worker") "main" -}}
+{{- end -}}
+
 [data]
     email = {{ $email | quote }}
     opAccount = {{ $opAccount | quote }}
-    work = {{ promptBool "work" }}
+    work = {{ $work }}
+    machineRole = {{ $machineRole | quote }}

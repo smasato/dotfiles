@@ -24,7 +24,14 @@ name = "catppuccin"
 # accent = "#f5c2e7"
 # red = "#ff6188"
 # green = "#a6e3a1"
-
+{{ if eq (get . "machineRole") "worker" }}
+# Catppuccin Frappé tint for the worker machine (herdr has no frappe theme,
+# so the mocha-based catppuccin theme is overridden with Frappé colors)
+[theme.custom]
+active_row_bg = "#303446"
+selection_bg = "#414559"
+accent = "#8caaee"
+{{ end }}
 [terminal]
 # Executable used for new interactive panes.
 # Empty means $SHELL, then /bin/sh.
@@ -317,7 +324,7 @@ tab_bar_right = [
 
 # Title Herdr writes to the terminal it runs in, which is what window managers
 # show in title, tab, and group bars. Tokens are {hostname}, {workspace}, {tab},
-# {pane}, and {terminal_title}; {{ and }} are literal braces.
+# {pane}, and {terminal_title}; {{ "{{ and }}" }} are literal braces.
 # The title renders on the Herdr server, so {hostname} names the host the panes
 # run on even when attaching from a remote client.
 window_title = "{hostname}: {workspace}"
