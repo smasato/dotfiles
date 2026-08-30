@@ -1,0 +1,33 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* pi が実行時に書き換えるキーは既存の値を引き継ぐ（下は新規マシン向けの初期値） */ -}}
+{{- $settings := dict
+      "lastChangelogVersion" "0.84.3"
+      "defaultProvider" "ollama"
+      "defaultModel" "qwen3.8:27b-mtp-q8_0"
+      "packages" (list "npm:@firstpick/pi-themes-bundle" "npm:@ollama/pi-web-search")
+-}}
+{{- if .chezmoi.stdin -}}
+{{-   $settings = mergeOverwrite $settings (fromJson .chezmoi.stdin) -}}
+{{- end -}}
+{{- /* chezmoi で強制する設定 */ -}}
+{{- $enforced := dict
+      "theme" "catppuccin-mocha"
+      "defaultThinkingLevel" "medium"
+      "showHardwareCursor" true
+      "enableInstallTelemetry" false
+      "quietStartup" true
+      "collapseChangelog" true
+      "defaultProjectTrust" "ask"
+      "externalEditor" "nvim"
+      "autocompleteMaxVisible" 10
+      "retry" (dict
+        "enabled" true
+        "maxRetries" 3
+        "baseDelayMs" 2000
+        "provider" (dict
+          "timeoutMs" 3600000
+          "maxRetries" 0
+          "maxRetryDelayMs" 60000))
+-}}
+{{- $settings = mergeOverwrite $settings $enforced -}}
+{{- toPrettyJson $settings | trim -}}
