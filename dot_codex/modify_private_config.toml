@@ -4,6 +4,10 @@ model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
 
 # Codex manages marketplaces, node_repl, and TUI state per machine.
+# Trusted projects, hook trust hashes, and the NUX counter are Codex-written
+# machine state, so the current values are passed through from the live file.
+{{- $cur := dict }}
+{{- if .chezmoi.stdin }}{{ $cur = fromToml .chezmoi.stdin }}{{ end }}
 
 [plugins."visualize@openai-bundled"]
 enabled = true
@@ -45,23 +49,27 @@ url = "https://developers.openai.com/mcp"
 [desktop]
 conversationDetailMode = "STEPS_COMMANDS"
 ambient-suggestions-enabled = false
+{{- $projects := dict .chezmoi.sourceDir (dict "trust_level" "trusted") }}
+{{- range $k, $v := dig "projects" (dict) $cur }}{{ $_ := set $projects $k $v }}{{ end }}
+{{- range $k, $v := $projects }}
 
-[projects."{{ .chezmoi.sourceDir }}"]
-trust_level = "trusted"
+[projects.{{ printf "%q" $k }}]
+{{- range $fk, $fv := $v }}
+{{ $fk }} = {{ if kindIs "string" $fv }}{{ printf "%q" $fv }}{{ else }}{{ $fv }}{{ end }}
+{{- end }}
+{{- end }}
 
 [hooks.state]
+{{- range $k, $v := dig "hooks" "state" (dict) $cur }}
 
-[hooks.state."{{ .chezmoi.homeDir }}/.codex/hooks.json:session_start:0:0"]
-trusted_hash = "sha256:0717ed9d6c35270039cbb711af93688ffbcc76d352a7678db40a85213bd08ecc"
+[hooks.state.{{ printf "%q" $k }}]
+{{- range $fk, $fv := $v }}
+{{ $fk }} = {{ if kindIs "string" $fv }}{{ printf "%q" $fv }}{{ else }}{{ $fv }}{{ end }}
+{{- end }}
+{{- end }}
 
 [tui.model_availability_nux]
-{{- /* Codex updates this NUX counter itself; pass through the current value. */}}
-{{- $nux := dict "gpt-5.6-sol" 1 }}
-{{- if .chezmoi.stdin }}
-{{-   with fromToml .chezmoi.stdin }}
-{{-     with dig "tui" "model_availability_nux" "" . }}{{ $nux = . }}{{ end }}
-{{-   end }}
-{{- end }}
+{{- $nux := dig "tui" "model_availability_nux" (dict "gpt-5.6-sol" 1) $cur }}
 {{- range $k, $v := $nux }}
-{{ printf "%q = %v" $k $v }}
+{{ if regexMatch "^[A-Za-z0-9_-]+$" $k }}{{ $k }}{{ else }}{{ printf "%q" $k }}{{ end }} = {{ $v }}
 {{- end }}
