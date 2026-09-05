@@ -6,10 +6,10 @@ set -eu
 # Reruns when this list changes (e.g. when a skill is added below).
 # skills: ChromeDevTools/chrome-devtools-mcp:*
 # skills: JuliusBrussee/caveman:*
-# skills: cursor/plugins:pstack (all except setup-pstack) + control-cli/control-ui/deslop
+# pstack and control-cli/control-ui/deslop are maintained in dot_agents/skills.
 # skills: emilkowalski/skill:*
 # skills: github/gh-stack:gh-stack
-# skills: mattpocock/skills:*
+# skills: mattpocock/skills:explicit list (tdd/teach are locally maintained pstack ports)
 # skills: shadcn/improve:improve
 # skills: shadcn/ui:*
 # skills: vercel-labs/agent-browser:agent-browser
@@ -50,39 +50,22 @@ skills add emilkowalski/skill --skill '*' --agent universal -g -y
 echo "Adding skills: github/gh-stack (gh-stack)"
 skills add github/gh-stack --skill gh-stack --agent universal -g -y
 
-echo "Adding skills: mattpocock/skills (all)"
-skills add mattpocock/skills --skill '*' --agent universal -g -y
-
-# pstack (https://github.com/cursor/plugins/tree/main/pstack) plus the three
-# cursor-team-kit skills poteto-mode invokes as hard steps (deslop,
-# control-cli, control-ui). The skills CLI matches frontmatter names, so
-# "Poteto Mode" and "Make Bot UI" are display names, not slugs. This block
-# must run after mattpocock/skills: both repos ship tdd and teach under the
-# same flat names, installs overwrite, and the pstack versions are the ones
-# that should win. setup-pstack is excluded: it writes ~/.cursor/rules/,
-# which Claude Code never reads; the pstack model mapping lives in
-# dot_claude/rules/pstack-models.md instead.
-echo "Adding skills: cursor/plugins (pstack + team-kit subset)"
-skills add cursor/plugins \
-  --skill architect --skill arena --skill automate-me --skill blast-radius --skill bro \
-  --skill create-verification-skill --skill figure-it-out --skill how --skill interrogate \
-  --skill maintain-verification-skill --skill "Make Bot UI" --skill no-comments --skill "Poteto Mode" \
-  --skill principle-boundary-discipline --skill principle-build-the-lever \
-  --skill principle-encode-lessons-in-structure --skill principle-exhaust-the-design-space \
-  --skill principle-experience-first --skill principle-fix-root-causes \
-  --skill principle-foundational-thinking --skill principle-guard-the-context-window \
-  --skill principle-laziness-protocol --skill principle-make-operations-idempotent \
-  --skill principle-migrate-callers-then-delete-legacy-apis --skill principle-minimize-reader-load \
-  --skill principle-model-the-domain --skill principle-never-block-on-the-human \
-  --skill principle-outcome-oriented-execution --skill principle-prove-it-works \
-  --skill principle-redesign-from-first-principles --skill principle-separate-before-serializing-shared-state \
-  --skill principle-sequence-verifiable-units --skill principle-subtract-before-you-add \
-  --skill principle-type-system-discipline --skill recall --skill reflect \
-  --skill show-me-your-work --skill swarm --skill tdd --skill teach \
-  --skill technical-writing --skill typescript-best-practices \
-  --skill unslop --skill why \
-  --skill deslop --skill control-cli --skill control-ui \
+# Explicit names keep upstream tdd/teach from overwriting the managed pstack ports.
+echo "Adding skills: mattpocock/skills (excluding managed pstack names)"
+skills add mattpocock/skills \
+  --skill prototype --skill ask-matt --skill code-review --skill codebase-design \
+  --skill diagnosing-bugs --skill domain-modeling --skill grill-with-docs \
+  --skill implement --skill improve-codebase-architecture --skill research \
+  --skill resolving-merge-conflicts --skill setup-matt-pocock-skills \
+  --skill to-spec --skill to-tickets --skill triage --skill wayfinder --skill wizard \
+  --skill claude-handoff --skill implement-spec --skill loop-me --skill retro \
+  --skill setup-ts-deep-modules --skill writing-beats --skill writing-fragments \
+  --skill writing-shape --skill git-guardrails-claude-code --skill migrate-to-shoehorn \
+  --skill scaffold-exercises --skill setup-pre-commit --skill grill-me --skill grilling \
+  --skill handoff --skill to-questionnaire --skill wait-what --skill writing-for-agents \
   --agent universal -g -y
+
+# Cursor-origin workflows are deployed directly by chezmoi. See docs/pstack/README.md.
 
 echo "Adding skills: shadcn/improve (improve)"
 skills add shadcn/improve --skill improve --agent universal -g -y

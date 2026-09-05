@@ -1,0 +1,10 @@
+# Codex execution
+
+- Discover the collaboration tools exposed in this session. In this host they are `collaboration.spawn_agent`, `send_message`, `followup_task`, `list_agents`, `wait_agent`, and `interrupt_agent`. Other Codex clients may expose `spawn_agent`, `send_input`, `wait`, and `close_agent`; follow the actual schema rather than mixing APIs.
+- Spawn a bounded task with its scope, relevant absolute file paths, and output criteria. There is no Claude `subagent_type`, `run_in_background`, or cloud environment argument here. The returned agent identifier is the handle for follow-up and waiting.
+- `fast`, `code`, and `judgment` default to inheriting the parent model. Override only with a model advertised by the current host and allowed by its instructions. For a requested diverse review, select distinct available models; if only one is available, state the limitation and use independent fresh passes. Do not submit another provider's model name.
+- With this host's full-history fork, omit model and effort overrides. To select an advertised model explicitly, use a supported limited-history or no-history fork and pass enough context for the task. Do not assume child tools or environment match the parent unless the host documents that.
+- For Comment Sicko, read `no-comments/references/comment-sicko.md` and pass its full prompt to a fresh child with the requested scope. For a poteto worker, give it `poteto-mode/SKILL.md` and the specific subtask; the parent owns the enclosing workflow.
+- A child shares the filesystem here. Scope it to a prepared worktree or disjoint files, and verify its cwd before writes. Read-only is a task constraint, not a spawn argument or an enforced sandbox change.
+- Use the exposed plan tool when available, otherwise keep a short checklist. Use the current user-input tool for missing information when available; otherwise ask in plain text.
+- Explicit-invocation policies are recorded in `agents/openai.yaml`; Claude's frontmatter alone is not the Codex policy. A parent can read a required supporting skill directly by path.

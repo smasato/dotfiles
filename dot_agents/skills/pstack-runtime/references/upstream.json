@@ -1,0 +1,288 @@
+{
+  "repository": "https://github.com/cursor/plugins",
+  "snapshot": "Installed skill snapshots captured 2026-09-05; hashes are per-directory, not a single repository revision.",
+  "skills": [
+    {
+      "name": "tdd",
+      "dir": "tdd",
+      "source": "pstack/skills/tdd/SKILL.md",
+      "upstreamFolderHash": "3a761ae539f19c61c7ae73eddbec54951d44e752"
+    },
+    {
+      "name": "teach",
+      "dir": "teach",
+      "source": "pstack/skills/teach/SKILL.md",
+      "upstreamFolderHash": "11a2a58a0bb7e303a289195bdff6f14722a29d48"
+    },
+    {
+      "name": "control-cli",
+      "dir": "control-cli",
+      "source": "cursor-team-kit/skills/control-cli/SKILL.md",
+      "upstreamFolderHash": "21f3eee2663ae7c78464bfc2a69f6a8cc6c4f7ed"
+    },
+    {
+      "name": "control-ui",
+      "dir": "control-ui",
+      "source": "cursor-team-kit/skills/control-ui/SKILL.md",
+      "upstreamFolderHash": "797e6d20a029b2ae757a97951278d308f3b53026"
+    },
+    {
+      "name": "deslop",
+      "dir": "deslop",
+      "source": "cursor-team-kit/skills/deslop/SKILL.md",
+      "upstreamFolderHash": "ac9ba043f9dd3b3a8850de6624ec5bc12e375599"
+    },
+    {
+      "name": "architect",
+      "dir": "architect",
+      "source": "pstack/skills/architect/SKILL.md",
+      "upstreamFolderHash": "0eb5abdc7af97bfd9b9d15b8d9197206e4b88fcd"
+    },
+    {
+      "name": "arena",
+      "dir": "arena",
+      "source": "pstack/skills/arena/SKILL.md",
+      "upstreamFolderHash": "43e60929c0d17183d6e94f94a99f5d443d075f2c"
+    },
+    {
+      "name": "automate-me",
+      "dir": "automate-me",
+      "source": "pstack/skills/automate-me/SKILL.md",
+      "upstreamFolderHash": "de1dcb3edaa5646124fcd244f8a8cce23bc45c1d"
+    },
+    {
+      "name": "blast-radius",
+      "dir": "blast-radius",
+      "source": "pstack/skills/blast-radius/SKILL.md",
+      "upstreamFolderHash": "b7e78173d1cee739737fa2371017a211ebe3fc8c"
+    },
+    {
+      "name": "bro",
+      "dir": "bro",
+      "source": "pstack/skills/bro/SKILL.md",
+      "upstreamFolderHash": "53c3b2c5dc11fe0ee4156468da27505df9239dc6"
+    },
+    {
+      "name": "create-verification-skill",
+      "dir": "create-verification-skill",
+      "source": "pstack/skills/create-verification-skill/SKILL.md",
+      "upstreamFolderHash": "38a3e016bb42ba7ba6f66315e04ef64242937660"
+    },
+    {
+      "name": "figure-it-out",
+      "dir": "figure-it-out",
+      "source": "pstack/skills/figure-it-out/SKILL.md",
+      "upstreamFolderHash": "ab4f59a6cf0bed04794b713e40b605963e975071"
+    },
+    {
+      "name": "how",
+      "dir": "how",
+      "source": "pstack/skills/how/SKILL.md",
+      "upstreamFolderHash": "3d341663ea4e4eaf516f17f3bc48f94cf17b75d4"
+    },
+    {
+      "name": "interrogate",
+      "dir": "interrogate",
+      "source": "pstack/skills/interrogate/SKILL.md",
+      "upstreamFolderHash": "07d83143e202963c4d824818709ad04e23091f18"
+    },
+    {
+      "name": "maintain-verification-skill",
+      "dir": "maintain-verification-skill",
+      "source": "pstack/skills/maintain-verification-skill/SKILL.md",
+      "upstreamFolderHash": "b6ce4dcdc378492f9acd55a4e56ae111204b4f11"
+    },
+    {
+      "name": "Make Bot UI",
+      "dir": "make-bot-ui",
+      "source": "pstack/skills/make-bot-ui/SKILL.md",
+      "upstreamFolderHash": "1ec6b1c00cad0aa8b8ae1ced27c8bb05537af269"
+    },
+    {
+      "name": "no-comments",
+      "dir": "no-comments",
+      "source": "pstack/skills/no-comments/SKILL.md",
+      "upstreamFolderHash": "db5caac72d02599dbfee5f44b08b34e46c373bc3"
+    },
+    {
+      "name": "Poteto Mode",
+      "dir": "poteto-mode",
+      "source": "pstack/skills/poteto-mode/SKILL.md",
+      "upstreamFolderHash": "9e74ac33c126b46ac355e126d7c153e7f9ee9d8a"
+    },
+    {
+      "name": "principle-boundary-discipline",
+      "dir": "principle-boundary-discipline",
+      "source": "pstack/skills/principle-boundary-discipline/SKILL.md",
+      "upstreamFolderHash": "022c087a63e8410dc99ad2d3415fb5bc1f9e0cc1"
+    },
+    {
+      "name": "principle-build-the-lever",
+      "dir": "principle-build-the-lever",
+      "source": "pstack/skills/principle-build-the-lever/SKILL.md",
+      "upstreamFolderHash": "ab52bdaccf67ef351d62ba6a08e37257a5aab0cb"
+    },
+    {
+      "name": "principle-encode-lessons-in-structure",
+      "dir": "principle-encode-lessons-in-structure",
+      "source": "pstack/skills/principle-encode-lessons-in-structure/SKILL.md",
+      "upstreamFolderHash": "22f227027a83520ba9122bd8624a07ec9702f3ae"
+    },
+    {
+      "name": "principle-exhaust-the-design-space",
+      "dir": "principle-exhaust-the-design-space",
+      "source": "pstack/skills/principle-exhaust-the-design-space/SKILL.md",
+      "upstreamFolderHash": "3c9528f7814d889dc91c2434cc942439a9dd6257"
+    },
+    {
+      "name": "principle-experience-first",
+      "dir": "principle-experience-first",
+      "source": "pstack/skills/principle-experience-first/SKILL.md",
+      "upstreamFolderHash": "daf94f1bbf9a5182ded9d8c5141cab98e6a1652d"
+    },
+    {
+      "name": "principle-fix-root-causes",
+      "dir": "principle-fix-root-causes",
+      "source": "pstack/skills/principle-fix-root-causes/SKILL.md",
+      "upstreamFolderHash": "476bdf66ce21dc9b2d4c4679815dc647b3f540b3"
+    },
+    {
+      "name": "principle-foundational-thinking",
+      "dir": "principle-foundational-thinking",
+      "source": "pstack/skills/principle-foundational-thinking/SKILL.md",
+      "upstreamFolderHash": "75d8010f2ebe173b9ad72035f1790a5e5005d198"
+    },
+    {
+      "name": "principle-guard-the-context-window",
+      "dir": "principle-guard-the-context-window",
+      "source": "pstack/skills/principle-guard-the-context-window/SKILL.md",
+      "upstreamFolderHash": "160097c93ba42dd955907f5c02ac38a5975f1518"
+    },
+    {
+      "name": "principle-laziness-protocol",
+      "dir": "principle-laziness-protocol",
+      "source": "pstack/skills/principle-laziness-protocol/SKILL.md",
+      "upstreamFolderHash": "b3f5ad47409de89611d80802e3fc3e9ea2702aaf"
+    },
+    {
+      "name": "principle-make-operations-idempotent",
+      "dir": "principle-make-operations-idempotent",
+      "source": "pstack/skills/principle-make-operations-idempotent/SKILL.md",
+      "upstreamFolderHash": "c69d590d8da3af63e34954aa21254e1ec9a2996c"
+    },
+    {
+      "name": "principle-migrate-callers-then-delete-legacy-apis",
+      "dir": "principle-migrate-callers-then-delete-legacy-apis",
+      "source": "pstack/skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md",
+      "upstreamFolderHash": "2604f87c7ebe4dd2ff8eb9093eb4da938526b13d"
+    },
+    {
+      "name": "principle-minimize-reader-load",
+      "dir": "principle-minimize-reader-load",
+      "source": "pstack/skills/principle-minimize-reader-load/SKILL.md",
+      "upstreamFolderHash": "11ec7245004020e7fc5e0097cc012cdb715d3c3b"
+    },
+    {
+      "name": "principle-model-the-domain",
+      "dir": "principle-model-the-domain",
+      "source": "pstack/skills/principle-model-the-domain/SKILL.md",
+      "upstreamFolderHash": "b4384796bd31ee727b9bafafccc9e84904f92db6"
+    },
+    {
+      "name": "principle-never-block-on-the-human",
+      "dir": "principle-never-block-on-the-human",
+      "source": "pstack/skills/principle-never-block-on-the-human/SKILL.md",
+      "upstreamFolderHash": "2940c8641e3e7729ce8d66f5dcca995e1dd6f495"
+    },
+    {
+      "name": "principle-outcome-oriented-execution",
+      "dir": "principle-outcome-oriented-execution",
+      "source": "pstack/skills/principle-outcome-oriented-execution/SKILL.md",
+      "upstreamFolderHash": "df70eb76cacab0c2bcbd8df2a5c50e7f664fbf1e"
+    },
+    {
+      "name": "principle-prove-it-works",
+      "dir": "principle-prove-it-works",
+      "source": "pstack/skills/principle-prove-it-works/SKILL.md",
+      "upstreamFolderHash": "809a6925dac5be32419d4b08a459f92466db11a7"
+    },
+    {
+      "name": "principle-redesign-from-first-principles",
+      "dir": "principle-redesign-from-first-principles",
+      "source": "pstack/skills/principle-redesign-from-first-principles/SKILL.md",
+      "upstreamFolderHash": "2f9ce6649070033606242178ce56903bab0fe643"
+    },
+    {
+      "name": "principle-separate-before-serializing-shared-state",
+      "dir": "principle-separate-before-serializing-shared-state",
+      "source": "pstack/skills/principle-separate-before-serializing-shared-state/SKILL.md",
+      "upstreamFolderHash": "c9f8649ad53ebc84344b1037c1383ccca3b7c86c"
+    },
+    {
+      "name": "principle-sequence-verifiable-units",
+      "dir": "principle-sequence-verifiable-units",
+      "source": "pstack/skills/principle-sequence-verifiable-units/SKILL.md",
+      "upstreamFolderHash": "a8d7d3d438b73f86b483a074f426ca64a7777cf1"
+    },
+    {
+      "name": "principle-subtract-before-you-add",
+      "dir": "principle-subtract-before-you-add",
+      "source": "pstack/skills/principle-subtract-before-you-add/SKILL.md",
+      "upstreamFolderHash": "dcd8d09a19fc6c4795d5a4799c50db4108ae59ab"
+    },
+    {
+      "name": "principle-type-system-discipline",
+      "dir": "principle-type-system-discipline",
+      "source": "pstack/skills/principle-type-system-discipline/SKILL.md",
+      "upstreamFolderHash": "7b04ed645018056af8396b93e2f31cd2efbcd358"
+    },
+    {
+      "name": "recall",
+      "dir": "recall",
+      "source": "pstack/skills/recall/SKILL.md",
+      "upstreamFolderHash": "b1a0bf2803b93af37e68cc267e00325c20f0f5c2"
+    },
+    {
+      "name": "reflect",
+      "dir": "reflect",
+      "source": "pstack/skills/reflect/SKILL.md",
+      "upstreamFolderHash": "dbf8e52e18cb63c6c5f873c6e0a054f0bc1918ec"
+    },
+    {
+      "name": "show-me-your-work",
+      "dir": "show-me-your-work",
+      "source": "pstack/skills/show-me-your-work/SKILL.md",
+      "upstreamFolderHash": "bc5101de50dfb902248e7983751947706f6cdf49"
+    },
+    {
+      "name": "swarm",
+      "dir": "swarm",
+      "source": "pstack/skills/swarm/SKILL.md",
+      "upstreamFolderHash": "78b490b8c095ede6d7bea1f5fbdaca0f89019c46"
+    },
+    {
+      "name": "technical-writing",
+      "dir": "technical-writing",
+      "source": "pstack/skills/technical-writing/SKILL.md",
+      "upstreamFolderHash": "08b040cf2ec3e053b51d08ea0a56138483b87697"
+    },
+    {
+      "name": "typescript-best-practices",
+      "dir": "typescript-best-practices",
+      "source": "pstack/skills/typescript-best-practices/SKILL.md",
+      "upstreamFolderHash": "1fb484a7b093b399e4726516f1bcd3370216bc59"
+    },
+    {
+      "name": "unslop",
+      "dir": "unslop",
+      "source": "pstack/skills/unslop/SKILL.md",
+      "upstreamFolderHash": "6161508c5c7959b156ff0e4e10b510863b51f9cc"
+    },
+    {
+      "name": "why",
+      "dir": "why",
+      "source": "pstack/skills/why/SKILL.md",
+      "upstreamFolderHash": "401af6846377c1f6bb712337f28252f003e9cd32"
+    }
+  ]
+}

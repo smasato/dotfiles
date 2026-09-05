@@ -1,0 +1,12 @@
+#!/bin/bash
+set -eu
+
+# package: {{ include "dot_agents/skills/poteto-mode/scripts/package.json" | sha256sum }}
+# lock: {{ include "dot_agents/skills/poteto-mode/scripts/bun.lock" | sha256sum }}
+# ownership: {{ include "dot_agents/skills/pstack-runtime/scripts/detach-cli-lock.mjs" | sha256sum }}
+# manifest: {{ include "dot_agents/skills/pstack-runtime/references/upstream.json" | sha256sum }}
+export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+cd "{{ .chezmoi.homeDir }}/.agents/skills/poteto-mode/scripts"
+eval "$(mise env -s bash)"
+node "{{ .chezmoi.homeDir }}/.agents/skills/pstack-runtime/scripts/detach-cli-lock.mjs"
+bun install --frozen-lockfile
