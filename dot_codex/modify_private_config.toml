@@ -36,6 +36,7 @@ enabled = true
 [features]
 hooks = true
 js_repl = false
+context_management.experimental_mode = true
 
 [mcp_servers.computer-use]
 command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
