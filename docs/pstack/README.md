@@ -1,6 +1,6 @@
 # 共通の作業原則と任意の実行手順
 
-Cursor 由来の 47 スキルと付属リソースを `dot_agents/skills/` で管理する。
+Cursor 由来の 46 スキルと付属リソースを `dot_agents/skills/` で管理する。
 上流の手順を一律に適用せず、必要な原則を既存の作業フローへ取り込む。
 互換性のため `poteto-mode` と `pstack-runtime` の名前と配置は維持する。
 

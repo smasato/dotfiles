@@ -57,12 +57,6 @@
       "upstreamFolderHash": "b7e78173d1cee739737fa2371017a211ebe3fc8c"
     },
     {
-      "name": "bro",
-      "dir": "bro",
-      "source": "pstack/skills/bro/SKILL.md",
-      "upstreamFolderHash": "53c3b2c5dc11fe0ee4156468da27505df9239dc6"
-    },
-    {
       "name": "create-verification-skill",
       "dir": "create-verification-skill",
       "source": "pstack/skills/create-verification-skill/SKILL.md",
