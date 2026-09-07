@@ -53,9 +53,14 @@
 
 - Any command expected to take roughly 2 minutes or more (builds, downloads, batch jobs, full test suites) MUST be enqueued via the pueue skill instead of `run_in_background`, so it survives the session and its logs are collected.
 
-### 2.8 Local Search Tools
+### 2.8 Local Tools
 
 - `ugrep` is installed. Reach for it when the Grep tool (ripgrep) cannot: searching inside compressed files and archives (`-z`), fuzzy matching (`-Z`), boolean multi-pattern queries (`-%`), and hexdump / binary pattern search (`-X`).
+- `ast-grep` (`sg`) is installed. Use it for structural (AST-aware) code search and for same-shape rewrites across many files (`ast-grep --pattern ... --rewrite ...`) instead of grep / sed.
+- `ghq` is installed. Clone repositories with `ghq get <url>`; they land under `ghq root` (`~/dev/src/<host>/<owner>/<repo>`).
+- `shellcheck` is installed. Run it on any shell script you create or edit (`.chezmoiscripts/`, hook scripts, `*.sh`).
+- macOS `sed` / `awk` / `date` are BSD. GNU versions are available with a `g` prefix (`gdate`, `gawk`); there is no `gsed`, so for in-place edits use `sed -i ''` or `perl -pi -e`.
+- `yq` is installed. Use it to read and edit YAML / TOML / JSON structurally instead of sed.
 
 ## 3. Subagent Delegation
 
