@@ -8,4 +8,5 @@
   - design / hard debug / deep review → parent session or `deep-reviewer` on `grok-4.6`
 - Worktrees: use the `wt-worktree-ops` skill (`wt`). Do not use Grok `/new` worktrees.
 - Long commands (≥ ~2 min): enqueue with the `pueue` skill.
+- `ugrep` is installed: use it for compressed files / archives (`-z`), fuzzy matching (`-Z`), boolean queries (`-%`), hexdump / binary search (`-X`).
 - Never `git commit --no-verify`. Conventional commits.

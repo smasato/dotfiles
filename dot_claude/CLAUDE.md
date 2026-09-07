@@ -53,6 +53,10 @@
 
 - Any command expected to take roughly 2 minutes or more (builds, downloads, batch jobs, full test suites) MUST be enqueued via the pueue skill instead of `run_in_background`, so it survives the session and its logs are collected.
 
+### 2.8 Local Search Tools
+
+- `ugrep` is installed. Reach for it when the Grep tool (ripgrep) cannot: searching inside compressed files and archives (`-z`), fuzzy matching (`-Z`), boolean multi-pattern queries (`-%`), and hexdump / binary pattern search (`-X`).
+
 ## 3. Subagent Delegation
 
 ### 3.1 Model-Pinned Agents Over Built-ins
