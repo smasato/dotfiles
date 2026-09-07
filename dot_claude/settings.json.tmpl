@@ -77,6 +77,27 @@
             "async": false
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -99,6 +120,28 @@
             "async": true
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PreToolUse": [
@@ -119,6 +162,16 @@
             "type": "command",
             "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
             "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
           }
         ]
       }
@@ -173,6 +226,15 @@
             "async": true
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "Stop": [
@@ -184,6 +246,59 @@
             "async": true
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
@@ -193,6 +308,15 @@
             "type": "command",
             "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
             "async": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
           }
         ]
       }
