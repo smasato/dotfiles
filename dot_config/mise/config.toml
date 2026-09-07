@@ -48,5 +48,9 @@ env_file = '.env'
 experimental = true
 idiomatic_version_file_enable_tools = []
 
+[settings.ruby]
+# precompiled binaries only; never fetch ruby-build and compile from source
+compile = false
+
 [settings.task]
 output = "prefix"
