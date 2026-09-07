@@ -5,7 +5,9 @@ set -eu
 # Install global agent skills via the mise-managed `skills` CLI.
 # Reruns when this list changes (e.g. when a skill is added below).
 # skills: ChromeDevTools/chrome-devtools-mcp:*
-# skills: JuliusBrussee/caveman:*
+# skills: JuliusBrussee/caveman:explicit list (workflow skills only; the caveman
+#   family comes from the caveman@caveman Claude plugin, and the Caveman Cloud
+#   skills need a gateway account this environment does not have)
 # pstack and control-cli/control-ui/deslop are maintained in dot_agents/skills.
 # skills: emilkowalski/skill:*
 # skills: github/gh-stack:gh-stack
@@ -34,15 +36,19 @@ if ! command -v skills >/dev/null 2>&1; then
   exit 1
 fi
 
-# --skill '*' installs every skill in the repo (caveman family plus
-# investigate-first, lean-build, migration, safe-refactor, surgical-patch,
-# verify-and-stop). Not --all: that implies --agent '*', but only the
-# universal store may be targeted (see above).
+# --skill '*' installs every skill in the repo. Not --all: that implies
+# --agent '*', but only the universal store may be targeted (see above).
 echo "Adding skills: ChromeDevTools/chrome-devtools-mcp (all)"
 skills add ChromeDevTools/chrome-devtools-mcp --skill '*' --agent universal -g -y
 
-echo "Adding skills: JuliusBrussee/caveman (all)"
-skills add JuliusBrussee/caveman --skill '*' --agent universal -g -y
+# Explicit names skip the caveman family (already provided by the caveman@caveman
+# Claude plugin) and the Caveman Cloud skills (caveman-discover/-evidence-review/
+# -learn/-manage/-optimize/-setup), which need a Caveman Cloud gateway account.
+echo "Adding skills: JuliusBrussee/caveman (workflow skills only)"
+skills add JuliusBrussee/caveman \
+  --skill investigate-first --skill lean-build --skill migration \
+  --skill safe-refactor --skill surgical-patch --skill verify-and-stop \
+  --agent universal -g -y
 
 echo "Adding skills: emilkowalski/skill (all)"
 skills add emilkowalski/skill --skill '*' --agent universal -g -y
