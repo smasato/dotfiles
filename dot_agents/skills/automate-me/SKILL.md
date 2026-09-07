@@ -1,6 +1,6 @@
 ---
 name: automate-me
-description: 'Use for "automate me", "create/update/refresh my -mode skill", "turn/capture my preferences or working style into a skill", or wanting agents to follow how the user works. Drafts or revises a personal -mode skill via skill-creator + unslop, optionally pulling fresh evidence from recent transcripts.'
+description: 'Use for "automate me", "create/update/refresh my -mode skill", "turn/capture my preferences or working style into a skill", or wanting agents to follow how the user works. Drafts or revises a personal -mode skill with optional authoring helpers, optionally pulling fresh evidence from recent transcripts.'
 disable-model-invocation: true
 ---
 
@@ -10,7 +10,7 @@ Follow the [execution contract](../pstack-runtime/SKILL.md) for scope and author
 
 A guided flow for turning the user's working conventions into a skill agents will follow. The output is one `-mode` skill tailored to them (e.g. `jay-mode`, `priya-mode`).
 
-This skill orchestrates three others: an inline mining pass (see step 1), the installed `skill-creator` (authoring), and the **unslop** skill (prose discipline). It sequences them; it doesn't replace them.
+Mine evidence, draft the conventions, then apply **unslop**. For authoring, follow the [skill-authoring guide](../pstack-runtime/references/skill-authoring.md), which works with or without installed helpers.
 
 ## Flow
 
@@ -67,17 +67,17 @@ The **poteto-mode** skill shows the shape. Read it for granularity. Don't copy i
 
 ### 4. Draft the skill
 
-Use the installed `skill-creator` skill to author the skill. Placement:
+Follow the skill-authoring guide. Prefer installed `writing-for-agents`; `skill-creator` is optional. Placement:
 
 - Path: preserve an existing mode skill's category. For a new mode, use `.agents/skills/<handle>/<handle>-mode/SKILL.md` when the repo has an established personal category for that handle; otherwise default to `.agents/skills/<handle>-mode/SKILL.md` in the project (or `~/.agents/skills/<handle>-mode/` if the user prefers a personal skill).
 - Handle: the user's first name or chosen identifier.
 - Frontmatter: use one YAML scalar for the description. Preserve the intended invocation policy. If the user chooses explicit-only invocation, write `disable-model-invocation: true` for Claude and `agents/openai.yaml` with `policy.allow_implicit_invocation: false` for Codex.
-- Frontmatter formatting: follow `skill-creator`'s YAML rules. Keep `description` as one YAML scalar; quote it or use `description: >-` with indented continuation lines when punctuation or wrapping requires it.
-- Preserve an existing mode's invocation policy. For a new mode, ask whether it should be explicit-only when that preference is not clear; otherwise follow the host's skill-creator defaults. Keep the Claude and Codex policy files consistent.
+- Frontmatter formatting: follow the skill-authoring guide's YAML rules. Keep `description` as one YAML scalar; quote it or use `description: >-` with indented continuation lines when punctuation or wrapping requires it.
+- Preserve an existing mode's invocation policy. For a new mode, ask whether it should be explicit-only when that preference is not clear; choose model invocation only when autonomous discovery is intended. Keep the Claude and Codex policy files consistent.
 
 ### 5. Iterate on prose
 
-Apply the **unslop** skill and `skill-creator`'s writing guidelines to every line. Both apply to any agent-read prose, not just skills.
+Apply **unslop** and the authoring guidance to every line. Validate touched files through the skill-authoring guide before declaring the draft ready.
 
 Show the draft to the user and take feedback. Expect multiple iterations. Cut ruthlessly; a mode skill is not a manual.
 
@@ -102,11 +102,11 @@ Run a description-optimization loop only if the skill's trigger accuracy turns o
 
 ## When not to use
 
-- User wants a task-specific skill (not working conventions): `skill-creator` alone, no mining required.
+- User wants a task-specific skill, not working conventions: use the skill-authoring guide without mining history.
 - User wants to capture one narrow workflow (e.g. "how I write commit messages"): that's a regular skill, not a mode skill.
 
 ## Reference files
 
 - The **poteto-mode** skill: example of the output shape.
 - The **unslop** skill: prose discipline for every line.
-- the installed `skill-creator` skill: skill authoring process and writing guidelines.
+- [Skill-authoring guide](../pstack-runtime/references/skill-authoring.md): helper selection, fallback rules, and validation.

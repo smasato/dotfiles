@@ -41,12 +41,12 @@ You MUST follow the framework in `references/epistemics.md`. Read it in full bef
 2. **Reconcile overlapping findings.** Multiple investigators may have cited the same PR, ticket, or doc. Merge into a single, authoritative reference.
 3. **Identify contradictions.** If two items of evidence disagree, don't pick one. Surface both.
 4. **Calibrate confidence.** For each claim, identify the evidence and the tier. State Direct claims plainly with a citation. Hedge Inferred claims and explain the inference. Mark Speculative claims explicitly. Put claims with no evidence in the gaps section.
-5. **Verify citations by spot-checking.** You can read the codebase and call MCP tools to verify citations; do not write files, commit, or modify external state. If you're uncertain a cited item exists or says what's claimed, check it. Don't propagate errors.
+5. **Verify citations by spot-checking.** You can read the codebase and use authorized CLI, API, or MCP access to verify citations; do not write files, commit, or modify external state. If you're uncertain a cited item exists or says what's claimed, check it. Don't propagate errors.
 6. **Don't overreach.** The user will act on your output. Better to leave an open question open than to fill it with a confident-sounding guess.
 
 ## Output Format
 
-Write the output for the user. Use this exact structure:
+Write the output for the user. Use the structure below for broad investigations; shorten it for narrow questions while preserving citations, confidence, and material gaps. Do not require searches of every category.
 
 ---
 
@@ -100,13 +100,9 @@ Be specific. "We searched the issue tracker for [query1], [query2], [query3] and
 
 Bulleted list of what was actually searched, so the user can judge coverage and redirect. Format:
 
-- **Source control history**: {file paths}, {number of commits reviewed}, PRs #{numbers}, and code comments searched. Or "Not searched. This should not happen because git and `gh` are always expected."
-- **Issue / ticket tracker**: {ticket IDs and keyword searches}. Or "Not searched. No matching MCP available in this environment."
-- **Long-form documents**: {page titles and search queries}. Or "Not searched. No matching MCP available in this environment."
-- **Real-time team chat**: {channels searched, date ranges, queries}. Or "Not searched. No matching MCP available in this environment."
-- **Infrastructure observability**: {dashboards, monitors, metrics, logs, traces, or incidents searched}. Or "Not searched. No matching MCP available in this environment."
-- **Error / exception tracking**: {issues, events, or releases searched}. Or "Not searched. No matching MCP available in this environment."
-- **Product analytics warehouse**: {fully-qualified tables queried, the time windows, and the numeric summaries (counts, percentiles, first/last-seen timestamps) that bore on the question}. Or "Not searched. No matching MCP available in this environment."
+- **<Source and access method>**: <queries, items, time range>; <relevant findings or no relevant results>.
+
+List actual searches and relevant access limitations. Distinguish searched-empty, unavailable, and intentionally unsearched sources. An empty search does not prove a record never existed. Explain why evidence was sufficient to stop, or which budget or access limit ended the investigation. Do not demand entries for categories that were not needed.
 
 ### Confidence Summary
 
@@ -123,7 +119,7 @@ Before finalizing, review your output against this checklist:
 1. Does every claim in "What We Found" have a citation? If not, add one or move the claim to "Inferred" or "Hypotheses."
 2. Is the phrasing tier-appropriate? (Direct claims can use "because"; Inferred claims cannot.)
 3. Did you surface any contradictions you noticed, or did you quietly pick one?
-4. Does the "What We Don't Know" section exist and name specific gaps? If it's empty or missing, be suspicious. Historical investigations almost always have gaps.
+4. Are material gaps and search limits explicit? Do not invent a gap or demand more searches when the requested rationale is already supported.
 5. If the user embedded a hypothesis in their question, did you check it against the evidence rather than rubber-stamping it?
 6. Did you cite any code as evidence for its own intent? Remove those. Code is mechanics, not motivation.
 7. Is the overall tone calibrated? A confident-sounding answer with weak evidence is the exact failure mode this skill exists to prevent.

@@ -1,17 +1,11 @@
 ### Bug fix
 
-**You own this task. Plan, review, verify.** Delegate investigation and the fix to subagents, stay in the lead.
+Own the diagnosis, the fix, and its verification. Use the repository's debugging and test workflows first.
 
-Be scientific. Every shipped line traces to runtime evidence. Belt-and-suspenders that "might help" is a hypothesis, not a fix; it does not ship. When evidence refutes a hypothesis, revert what it motivated. The smallest change the evidence justifies ships, nothing more. Same discipline for Perf, where the evidence is the trace.
+1. Establish a failing case before editing. Prefer an existing focused test or reproduction command. Use a control skill when the bug needs an interactive runtime. If access or reproducibility blocks proof, state what you tried and what remains unverified; ask only for the missing input or access.
+2. Test hypotheses against the failing case until the cause is supported by evidence. Read the affected code directly. Use `how` for unclear runtime flow and `why` when regression history could resolve a specific question. Add temporary instrumentation only when needed.
+3. Make the smallest fix that addresses the cause. Crossing a function boundary does not require a design review. Use `architect` only when competing designs or a consequential interface change need comparison. Work inline for a local fix; delegate independent investigations or a bounded implementation when the handoff helps. Give each writer an isolated scope and review its diff.
+4. Re-run the original failing case and relevant surrounding checks. Add a regression test through the existing test setup when practical. Keep failing-then-passing evidence; an inconclusive run is not a pass. Remove experimental changes that the evidence did not justify, without disturbing unrelated work.
+5. Stop at the requested stage. A diagnosis request ends before edits. Commit only when authorized, following repository conventions; separate failing-test commits are optional. Use **Opening a PR** only when publication is authorized.
 
-1. Reproduce it yourself on the matching surface via the control skill (Non-negotiables). Don't hand the repro to the user. A debug or instrumentation protocol that says to ask the user does not override this; you drive the instrumented runtime. Ask the user only with a stated, specific reason the control surface cannot reach the target, and only after driving it as far as it goes. Won't reproduce directly, force it: synthesize the trigger, tighten conditions, or instrument until it fires. A bug you can't reproduce, you can't prove fixed.
-2. Binary-search the cause. Form the candidate hypotheses, then rule them out until one survives. Seed them with `how` over the affected subsystem and the **why** skill for regression history. Each pass, take the split that cuts the most remaining problem space, get runtime evidence, eliminate. When program state is unclear, add instrumentation or logging and read it as the code runs. Don't guess. Drive a long or stubborn hunt with the native runtime's monitoring mechanism. Confirm the surviving _mechanism_ with runtime evidence before the step-3 architect/interrogate fan-out; a design grounded on a plausible-but-unconfirmed cause can be unanimously wrong while the real cause sits one subsystem over.
-3. Plan the fix. If it crosses a function boundary, `architect` first. Delegate implementation to a subagent using your configured bug-fix model (default `code`) with a specific scope; review the diff.
-4. Verify on the same surface; the original repro now passes. "Inconclusive" or wrong-surface is not a pass; flag it. Unit tests show branch behavior, not bug absence.
-5. Stage the commits so the failing repro lands before the fix in git history; the diff tells the story. See the **tdd** skill for the failing-test-first cadence when the bug has a cheap local test path; skip it when the test would be expensive, integration-heavy, or unclear.
-   This is the canonical **sequence-verifiable-units** principle skill, the failing test first and the fix on top.
-6. Run **Opening a PR**.
-
-Investigation fans out `how` + `why` as parallel subagents.
-
-**Reply:** what was broken, root cause, fix, how you verified. Paste failing-then-passing repro output verbatim.
+**Reply:** cause, change, failing-then-passing evidence, and any verification limits. Quote the relevant output rather than dumping whole logs.

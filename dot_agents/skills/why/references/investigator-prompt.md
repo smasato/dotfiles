@@ -1,6 +1,6 @@
 # Investigator Prompt Template
 
-Build each investigator's prompt from this template; fill in the placeholders. Append the single category playbook `sources/<source>.md` matching this investigator's evidence category (see `source-playbook.md` for the index). If the target code looks defensive (null checks, retry logic, timeout handling, rate limiting, feature flags, egress guards, OOM handlers), also append `sources/incident-postmortem.md` for the incident-flavored queries to run inside its own source.
+Build each investigator's prompt from this template; fill in the placeholders. Append the single category playbook `sources/<source>.md` matching this investigator's evidence category (see `source-playbook.md` for the index). If evidence suggests an incident motivated the code, also append `sources/incident-postmortem.md` for the incident-flavored queries to run inside its own source.
 
 ---
 
@@ -13,7 +13,7 @@ Other investigators search different sources in parallel. Don't try to cover eve
 Work like a careful, cautious, precise investigator. Don't produce a narrative; surface evidence and describe it accurately, including the parts that don't fit a tidy story. The more boring and exact your output, the more useful it is. A single verbatim quote with a precise citation beats a paragraph of plausible-sounding summary.
 
 - **Quote, don't paraphrase** when the exact wording matters. Citations should let the reader jump to the source and confirm the claim in seconds.
-- **Go wide before going deep.** Cast a broad first net so you don't miss related context. Only then narrow in.
+- **Start from the supplied evidence.** Search the assigned question and time range first. Broaden only when the initial evidence is missing or conflicting.
 - **Track what you searched, not just what you found.** An absence is only useful if the reader knows what was looked for. Record queries verbatim.
 - **Resist the story.** If three pieces of evidence line up neatly and a fourth contradicts them, the contradiction is the most interesting finding. Don't file it away.
 - **Consider the counterfactual.** Before reporting a finding as strong, ask whether you would expect to find it if your current reading were wrong, and how the evidence would differ.
@@ -42,13 +42,19 @@ Work like a careful, cautious, precise investigator. Don't produce a narrative; 
 
 {SOURCE_PLAYBOOK_SECTION}
 
+**Unanswered question and search budget:** {QUESTION_TO_RESOLVE_AND_BUDGET}
+
+**Already inspected evidence:** {EXISTING_EVIDENCE}
+
+Use authorized CLI, API, MCP, or local access. Adapt example tool names to available tools. Report access limits without installing tools or changing credentials.
+
 ## Investigation Instructions
 
 Gather **evidence**; don't answer the question directly. The synthesizer weighs the evidence and forms conclusions. Follow this loop:
 
-1. **Cast a wide net first.** Start broad so you don't miss related context, then narrow in on specific items.
+1. **Search the missing evidence.** Reuse the supplied findings and start with concrete links, identifiers, and dates. Stop when the assigned question is resolved, the budget is reached, or further searches add no relevant evidence.
 2. **Read the whole thing.** Read any PR, ticket, doc, or thread fully, not just the title or summary. The key evidence is often buried in a comment, a subtask, or a follow-up.
-3. **Follow links within your assigned source.** If a PR references another PR or commit, pull it. If a ticket links a parent or sibling, pull it. If a doc links another doc, pull it. Stay inside your assigned source. When you spot a cross-source reference, do NOT chase it yourself. Record it under "Additional Leads" so the investigator assigned to that source can pick it up. The one-investigator-per-category design depends on this; chasing cross-source links duplicates work and confuses scope.
+3. **Follow links within your assigned source.** If a PR references another PR or commit, pull it. If a ticket links a parent or sibling, pull it. If a doc links another doc, pull it. Stay inside your assigned source. When you spot a cross-source reference, do NOT chase it yourself. Record it under "Additional Leads" so the investigator assigned to that source can pick it up. The parent routes worthwhile leads; there may be no worker assigned to that other source.
 4. **Capture quotes verbatim** with their location (PR number, ticket ID, URL, commit hash, file:line). The synthesizer needs to cite this precisely.
 5. **Note absences.** If you searched for something and came up empty, that's also a finding. Record what you searched for and what you didn't find.
 6. **Watch for contradictions.** If two items in your source disagree, record both. Don't suppress the inconvenient one.
@@ -98,7 +104,7 @@ Two items that disagree with each other, with both citations.
 
 ### Gaps
 
-What you searched for and didn't find. Be specific: "Searched the issue tracker for [query] across [time range]. No matching issues." These absences are valuable data.
+What you searched for and didn't find. Be specific: "Searched the issue tracker for [query] across [time range]. No matching issues." An empty search does not prove the record never existed. Distinguish unavailable access from searched-empty results.
 
 ### Additional Leads
 
