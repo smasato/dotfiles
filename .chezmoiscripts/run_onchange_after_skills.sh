@@ -9,11 +9,11 @@ set -eu
 #   family comes from the caveman@caveman Claude plugin, and the Caveman Cloud
 #   skills need a gateway account this environment does not have)
 # pstack and control-cli/control-ui/deslop are maintained in dot_agents/skills.
-# skills: emilkowalski/skill:*
+# skills: emilkowalski/skill:explicit list (no write-swift / animate-expo: no Swift or Expo work here)
 # skills: github/gh-stack:gh-stack
 # skills: mattpocock/skills:explicit list (tdd/teach are locally maintained pstack ports)
 # skills: shadcn/improve:improve
-# skills: shadcn/ui:*
+# skills: shadcn/ui:shadcn (no migrate-radix-to-base: no Radix project to migrate)
 # skills: vercel-labs/agent-browser:agent-browser
 # skills: vercel-labs/skills:find-skills
 # herdr skills are written by run_onchange_after_herdr-plugins.sh from the
@@ -50,8 +50,12 @@ skills add JuliusBrussee/caveman \
   --skill safe-refactor --skill surgical-patch --skill verify-and-stop \
   --agent universal -g -y
 
-echo "Adding skills: emilkowalski/skill (all)"
-skills add emilkowalski/skill --skill '*' --agent universal -g -y
+echo "Adding skills: emilkowalski/skill (web design skills only)"
+skills add emilkowalski/skill \
+  --skill animate --skill animation-vocabulary --skill apple-design --skill ask-sonner \
+  --skill emil-design-eng --skill find-animation-opportunities --skill improve-animations \
+  --skill pick-ui-library --skill review-animations \
+  --agent universal -g -y
 
 echo "Adding skills: github/gh-stack (gh-stack)"
 skills add github/gh-stack --skill gh-stack --agent universal -g -y
@@ -76,8 +80,8 @@ skills add mattpocock/skills \
 echo "Adding skills: shadcn/improve (improve)"
 skills add shadcn/improve --skill improve --agent universal -g -y
 
-echo "Adding skills: shadcn/ui (all)"
-skills add shadcn/ui --skill '*' --agent universal -g -y
+echo "Adding skills: shadcn/ui (shadcn)"
+skills add shadcn/ui --skill shadcn --agent universal -g -y
 
 echo "Adding skills: vercel-labs/agent-browser (agent-browser)"
 skills add vercel-labs/agent-browser --skill agent-browser --agent universal -g -y
