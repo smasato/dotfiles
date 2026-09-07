@@ -3,6 +3,7 @@ packages:
     taps:
       base:
         - rjyo/moshi
+        - stablyai/orca
       personal: []
       work: []
     brews:
@@ -142,6 +143,7 @@ packages:
         - setapp
         - slack
         - spotify
+        - stablyai/orca/orca
         - sunsama
         - tailscale-app
         - zoom
