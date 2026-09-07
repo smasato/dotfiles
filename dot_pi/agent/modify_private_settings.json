@@ -13,6 +13,8 @@
 {{- $enforced := dict
       "theme" "catppuccin-mocha"
       "defaultThinkingLevel" "medium"
+      "modelThinkingLevels" (dict "openai-codex/gpt-6-astra" "low")
+      "showCacheMissNotices" true
       "showHardwareCursor" true
       "enableInstallTelemetry" false
       "quietStartup" true
