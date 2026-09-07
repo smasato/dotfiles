@@ -11,7 +11,9 @@ set -eu
 # pstack and control-cli/control-ui/deslop are maintained in dot_agents/skills.
 # skills: emilkowalski/skill:explicit list (no write-swift / animate-expo: no Swift or Expo work here)
 # skills: github/gh-stack:gh-stack
-# skills: mattpocock/skills:explicit list (tdd/teach are locally maintained pstack ports)
+# skills: mattpocock/skills:explicit list (tdd/teach are locally maintained pstack ports;
+#   no grill-me / grill-with-docs: aliases for grilling; no setup-pre-commit: Husky, this
+#   environment standardizes on hk)
 # skills: shadcn/improve:improve
 # skills: shadcn/ui:shadcn (no migrate-radix-to-base: no Radix project to migrate)
 # skills: vercel-labs/agent-browser:agent-browser
@@ -64,14 +66,14 @@ skills add github/gh-stack --skill gh-stack --agent universal -g -y
 echo "Adding skills: mattpocock/skills (excluding managed pstack names)"
 skills add mattpocock/skills \
   --skill prototype --skill ask-matt --skill code-review --skill codebase-design \
-  --skill diagnosing-bugs --skill domain-modeling --skill grill-with-docs \
+  --skill diagnosing-bugs --skill domain-modeling \
   --skill implement --skill improve-codebase-architecture --skill research \
   --skill resolving-merge-conflicts --skill setup-matt-pocock-skills \
   --skill to-spec --skill to-tickets --skill triage --skill wayfinder --skill wizard \
   --skill claude-handoff --skill implement-spec --skill loop-me --skill retro \
   --skill setup-ts-deep-modules --skill writing-beats --skill writing-fragments \
   --skill writing-shape --skill git-guardrails-claude-code --skill migrate-to-shoehorn \
-  --skill scaffold-exercises --skill setup-pre-commit --skill grill-me --skill grilling \
+  --skill scaffold-exercises --skill grilling \
   --skill handoff --skill to-questionnaire --skill wait-what --skill writing-for-agents \
   --agent universal -g -y
 
