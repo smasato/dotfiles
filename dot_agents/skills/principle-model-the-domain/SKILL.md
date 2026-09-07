@@ -4,8 +4,6 @@ description: 'Apply when writing stateful logic, or when code branches a lot or 
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Model the Domain
 
 Encode the real domain in a data structure instead of scattering it across conditionals.

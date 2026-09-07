@@ -4,8 +4,6 @@ description: 'Apply when you catch yourself writing the same instruction a secon
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Encode Lessons in Structure
 
 Encode recurring fixes in mechanisms (tools, code, metadata, automation) instead of textual instructions. Every error, human correction, and unexpected outcome is a learning signal. Capture it, route it, and close the loop.

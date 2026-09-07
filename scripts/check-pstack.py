@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the managed pstack port and optionally stage its deployed layout."""
+"""Validate managed skills and optionally stage their deployed layout."""
 
 import argparse
 import json
@@ -14,7 +14,8 @@ NAMES = [entry["dir"] for entry in MANIFEST["skills"]] + ["pstack-runtime"]
 FORBIDDEN = re.compile(
     r"\.cursor/|generalPurpose|cloud_base_branch|allow_multiple|claude-\S*-thinking|grok-4\.6|gpt-5\.6-sol-max|"
     r"git show origin/main:pstack|cloud-sleeper|readonly strips MCP|"
-    r"\bCursor dashboard\b|\bcreate-skill\b|\bgt (?:submit|track|restack|sync)"
+    r"\bCursor dashboard\b|\bcreate-skill\b|\bgt (?:submit|track|restack|sync)|"
+    r"before executing this workflow\. It defines native delegation"
 )
 
 
@@ -44,8 +45,6 @@ def check():
             errors.append(f"{name}: name does not match directory")
         if not re.search(r"^description: .+", fields, re.M):
             errors.append(f"{name}: missing description")
-        if name != "pstack-runtime" and "../pstack-runtime/SKILL.md" not in entry:
-            errors.append(f"{name}: missing native runtime routing")
         if "disable-model-invocation: true" in fields:
             policy = contents.get(f"{name}/agents/openai.yaml", "")
             if "allow_implicit_invocation: false" not in policy:
@@ -75,7 +74,7 @@ def check():
                 errors.append(f"{relative}: missing link {target}")
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"PASS: {len(NAMES)} skills, {len(contents)} resources; native paths, links, invocation policies")
+    print(f"PASS: {len(NAMES)} skills, {len(contents)} resources; paths, links, invocation policies, legacy dependencies")
 
 
 def stage(directory):

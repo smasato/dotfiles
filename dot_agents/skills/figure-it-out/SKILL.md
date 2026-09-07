@@ -4,7 +4,7 @@ description: "Design an auditable playbook when no narrower one fits: a large mi
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
+Follow the [execution contract](../pstack-runtime/SKILL.md) for scope and authority. Load its capability references only when the task needs them.
 
 # Figure it out
 
@@ -14,7 +14,7 @@ Don't reinvent a playbook you already have. A focused single-unit task that matc
 
 ## Start
 
-Open a todolist whose first item is to read the Principles section of the **poteto-mode** skill. Then add the phases below as todos.
+Track the phases below in a short checklist. Consult the **poteto-mode** principles only when they help resolve a concrete decision; reading them is not a separate work phase.
 
 ## Phase A: Frame
 

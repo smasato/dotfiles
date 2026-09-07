@@ -4,8 +4,6 @@ description: 'Layered technical-writing standard: Diátaxis structure, Google de
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Technical writing
 
 The goal is writing a tired engineer understands on the first read. Four layers get you there, one question each: what kind of document is this, how do sentences address the reader, how much does each sentence carry, and can any sentence be read two ways. Apply all four.

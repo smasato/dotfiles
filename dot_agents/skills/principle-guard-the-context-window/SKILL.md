@@ -4,8 +4,6 @@ description: 'Apply when context is filling up: large outputs, long files, repea
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Guard the Context Window
 
 The context window is finite and non-renewable within a session. Every token that enters should earn its place.

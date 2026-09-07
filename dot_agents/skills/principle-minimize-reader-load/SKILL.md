@@ -4,8 +4,6 @@ description: "Apply when reviewing or shaping code that's hard to trace. Count l
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Minimize Reader Load
 
 Maintainability is the work a reader must do to understand code. Track two axes:

@@ -4,7 +4,7 @@ description: 'Spawn Comment Sicko, fix accepted findings, and offer encodings fo
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
+Follow the [execution contract](../pstack-runtime/SKILL.md) for scope and authority. Load its capability references only when the task needs them.
 
 # No comments
 
@@ -18,7 +18,7 @@ Use the caller's files or diff. Otherwise use the current diff against the base 
 
 ## Steps
 
-1. Read `references/comment-sicko.md` in full. Spawn the comment reviewer through pstack-runtime, passing the scope and whether edits are authorized. Claude uses `comment-sicko`; Codex gets the full prompt in a fresh worker. With delegation unavailable, perform the same review locally and disclose the lack of an independent reviewer.
+1. Read `references/comment-sicko.md` in full. Give an available reviewer the shared prompt, scope, and authorized actions under the delegation contract. Use a host-specific wrapper only when one is available. With delegation unavailable, perform the same review locally and disclose the lack of an independent reviewer.
 2. Inspect its report and diff. Reject application-code edits, scope escapes, exception-protected deletions, misstated `MUST KILL` reasons, and flags that treat kept intentional code as guilty. Audit missed scoped lint and TypeScript suppressions; verify their effect before accepting removal. Before accepting thin `IMPORTANT` or `do not remove` kills or keeps, run `/how` or `/why` on their symbol. Preserve or restore ambiguous comments and report the uncertainty for the parent to decide. Revert and rerun one rejected report with the failure named. Reject a second, report it open, and fail `/no-comments`.
 3. Fix trivial accepted flags directly by deleting a dead path, dropping a parameter, or using the real API. If any fix needs a shape, run `/architect` once for the accepted set and surrounding code. Stop at the sketch. Architect shapes. Step 4 implements.
 4. Implement the smallest root-cause fix in scope. Remove every named workaround. If the root cause is out of scope, land the smallest in-scope fix and report the rest open. The **principle-fix-root-causes** and **principle-redesign-from-first-principles** skills guide intent only: fix real causes, redesign as if requirements always existed, never bolt on symptom guards. Neither authorizes widening the fence nor fixing instances outside it.

@@ -4,7 +4,7 @@ description: 'Use for "automate me", "create/update/refresh my -mode skill", "tu
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
+Follow the [execution contract](../pstack-runtime/SKILL.md) for scope and authority. Load its capability references only when the task needs them.
 
 # Automate me
 
@@ -83,7 +83,7 @@ Show the draft to the user and take feedback. Expect multiple iterations. Cut ru
 
 ### 6. Land it
 
-Work in a worktree off main. Commit and open a PR so the user can review it. Don't push to main directly.
+Stop at the authorized stage. An analysis request produces findings; a drafting request produces a draft. When implementation and publication are authorized, follow the repository's worktree, commit, and PR workflows. Before publishing, remove private history, session identifiers, internal links, and work-specific examples. Keep only general operating rules.
 
 ## Guardrails
 

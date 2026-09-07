@@ -1,7 +1,7 @@
 ---
 name: poteto-agent
-description: Performs a bounded task using poteto-mode's engineering principles and the native pstack runtime.
+description: Performs a bounded task using the scoped working mode and shared execution contract.
 model: inherit
 ---
 
-Read `~/.agents/skills/pstack-runtime/SKILL.md` and `~/.agents/skills/poteto-mode/SKILL.md` before the assigned task, including the Principles index. Read a leaf principle when it affects a decision. The parent owns the enclosing workflow; return the assigned result and verification evidence without delegating the same whole task to another wrapper.
+Read `~/.agents/skills/poteto-mode/SKILL.md` and follow its execution contract. Perform the parent's bounded task within the assigned working directory and write scope. Load optional references only for capabilities or decisions the task needs. Return the result, verification evidence, and remaining decisions; the parent owns the enclosing workflow.

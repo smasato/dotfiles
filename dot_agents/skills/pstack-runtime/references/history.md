@@ -1,11 +1,15 @@
 # Scoped history
 
-Prefer the active conversation, an exact transcript path supplied by the host, or its native history search. For a retrospective, establish the workspace, time range, topic, and excluded current session first.
+Establish the workspace, time range, topic, and excluded sessions before reading history. Prefer the active conversation, an exact transcript path supplied by the host, or a native history search. Use a host adapter only when locating local logs or interpreting its event format.
 
-- Claude Code stores sessions below `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/`. Use only the project directory matching the requested workspace, confirm `cwd` in the records, and include subagent records only when auditing that session. pclaude has a separate projects directory; do not silently combine accounts.
-- Codex clients may keep JSONL sessions under `${CODEX_HOME:-$HOME/.codex}/sessions/` and `archived_sessions/`. Filter session metadata by the exact workspace before reading conversation bodies. Prefer host history search when local logs are not available. Do not recursively search other projects' message bodies to discover a session.
-- Claude JSONL tool events generally appear as message content blocks with `type: "tool_use"`, plus tool results. Codex rollout records use typed envelopes such as `session_meta`, `response_item`, and `event_msg`; function calls can appear as response items. Inspect the actual format before parsing. Both shell-based file reads and dedicated Read calls can be evidence of a skill read.
-- For an active transcript, verify session identity with metadata and the opening task. Do not assume the first line is a user message or that each line is a chat message.
-- If history is unavailable, give workers a digest of observed work. Mark transcript-dependent evaluation INCONCLUSIVE; a digest is not evidence of tool execution. For resuming work, use repository state, PRs, task ledgers, and the digest to proceed.
+1. Select candidates using workspace and session metadata before reading message bodies. Include related worktrees only after confirming their repository. Keep separate accounts separate unless explicitly included.
+2. Check the actual task as well as the working directory. A session launched in a repository may concern unrelated work. Exclude local command-only sessions, generated worker prompts, and injected instructions from preference analysis.
+3. Deduplicate retries, copied history, and parent/child reports. Count independent tasks, not repeated copies, before treating a pattern as a preference.
+4. Read the relevant user messages and surrounding responses. Claims about tool execution require the actual calls and results, not just the assistant's summary. Inspect child logs only for the session being audited.
+5. Distinguish repeated preferences, one-task decisions, agent suggestions, and observed failures. State sample bias and uncertainty. Do not infer a permanent rule from one correction.
+
+If history is unavailable, use a digest of observed work for continuity and mark transcript-dependent claims unverified. Repository state and task artifacts can support a handoff, but a digest is not proof of unobserved execution.
+
+When turning findings into shared instructions, keep evidence local and publish only general rules. Follow the [workspace privacy boundary](workspace.md). Remove temporary transcript extracts after analysis unless the user asks to retain them.
 
 The worktree audit accepts an explicit scoped transcript directory as its second argument. Missing history is unknown, never proof that a worktree is abandoned.

@@ -3,7 +3,7 @@ name: how
 description: 'Use for "how does X work", code walkthroughs before changing something, and placement / ownership / layering questions ("where should this live", "which package owns this", "is this the right layer"). Explains subsystem architecture, runtime flow, onboarding mental models. Can critique architecture. Use why for motivation.'
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
+Follow the [execution contract](../pstack-runtime/SKILL.md) for scope and authority. Load its capability references only when the task needs them.
 
 # How
 

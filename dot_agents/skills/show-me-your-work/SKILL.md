@@ -4,7 +4,7 @@ description: 'Keep a reviewable decision trail for long-running or unattended wo
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
+Follow the [execution contract](../pstack-runtime/SKILL.md) for scope and authority. Load its capability references only when the task needs them.
 
 # Show me your work
 
@@ -45,7 +45,7 @@ Log decision points and checkpoints, not every action: a fork chosen, a unit com
 
 By default the log is a working artifact, not committed. Keep it at `decisions.tsv` in the work dir, or `.audit/<task-slug>.tsv` when several efforts run at once, and leave it out of git. Most work doesn't need a committed trail; the local log still keeps the run honest and can be discarded after.
 
-Commit it only when the work is ambitious enough that a reviewer needs the trail to trust the result: a large cross-language port, a multi-week migration, anything where confidence has to be shown rather than assumed. A committed log renders as a table in the PR.
+Publish a trail only when authorized and needed for review. Before including it in a public repository, remove private history, session identifiers, internal links, and unrelated work details. A request for a reusable skill does not authorize publishing the evidence used to design it.
 
 ## Rules
 
@@ -66,14 +66,14 @@ Fix the log, not the story. If the work diverged from what a row claims, the row
 
 ## Cross-model review of the trail
 
-Before handing back, you must spawn a subagent on a different model family from the one that did the work. Self-review is not a substitute; the point is fresh eyes you cannot bring yourself. The subagent reads the audit trail and the run's transcript, then flags what the user should pay attention to. Not a redo of the work, a scan for what's suboptimal or risky.
+Use an independent reviewer for a consequential trail when available. Prefer another model when the host supports it. If no independent reviewer is available, self-audit and state that limitation rather than claiming cross-model review. Give the reviewer only the scoped trail and history needed to assess risk, not unrelated transcripts.
 
 - Decisions logged with weak or absent evidence.
 - Verification steps skipped or claimed without proof in the transcript.
 - Choices that look risky in hindsight (premature, scope-creeping, papering over a symptom).
 - Gaps the user would otherwise miss on a casual skim.
 
-Every reply for a run that produced a trail ends with an "Attention" section. Lead with the reviewer's model on its own line (`reviewed by <model>`), then list each flag pointing to specific rows or moments. "No flags" is a valid value; the model name is not. The self-audit asks if the log told the truth; this asks what the user should still scrutinize even when it did.
+At handoff, report material flags with their evidence and say whether review was independent or self-review. Name the actual reviewer model only when known. The self-audit asks whether the log matches observed work; the independent review asks what still deserves scrutiny.
 
 ## Reviewing the trail
 

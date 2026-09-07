@@ -3,8 +3,6 @@ name: typescript-best-practices
 description: TypeScript best practices. Use when reading or editing any .ts or .tsx file.
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # TypeScript best practices
 
 Apply the **type-system-discipline** principle skill first; this skill grounds it in TypeScript syntax.

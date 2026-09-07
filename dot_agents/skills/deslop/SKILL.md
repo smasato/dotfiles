@@ -3,8 +3,6 @@ name: deslop
 description: Remove AI-generated code slop and clean up code style
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Remove AI code slop
 
 Check the diff against main and remove AI-generated slop introduced in the branch.

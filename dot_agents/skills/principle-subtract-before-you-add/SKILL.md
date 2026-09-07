@@ -4,8 +4,6 @@ description: 'Apply when sequencing an addition, refactor, or rewrite. Remove de
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Subtract Before You Add
 
 When evolving a system, remove complexity first, then build. Deletion gives you a simpler base, which makes the next addition smaller and less brittle.

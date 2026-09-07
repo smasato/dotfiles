@@ -4,8 +4,6 @@ description: 'Apply when debugging. Trace each symptom to its root cause and fix
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Fix Root Causes
 
 When debugging, do not paper over symptoms. Trace every problem to its root cause and fix it there.

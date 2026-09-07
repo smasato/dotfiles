@@ -1,27 +1,15 @@
 ---
 name: principle-never-block-on-the-human
-description: "Apply when tempted to ask 'should I do X?' on reversible work. Proceed, present the result, let the human course-correct after the fact; reserve confirmation for irreversible actions."
+description: 'Proceed with work already covered by the request. Ask about product choices, missing information, or scope changes rather than repeatedly seeking permission for agreed steps.'
 disable-model-invocation: true
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
+# Proceed within agreed scope
 
-# Never Block on the Human
+Investigate observable facts and carry out authorized steps without repeatedly asking whether to continue. Reversibility alone does not authorize a new task or an external action.
 
-The human supervises asynchronously. Agents must stay unblocked: make reasonable decisions, proceed, and let the human course-correct after the fact. Code is cheap. Waiting is expensive.
-
-**Why:** Every permission pause stalls the pipeline and makes the human the bottleneck. Since code changes are reversible and reviewable, a wrong decision usually costs less than blocking.
-
-**Pattern:**
-
-- **Proceed, then present.** Do the work, show the result. Don't ask "should I do X?" Do X, explain why.
-- **Reserve questions for genuine ambiguity.** Ask only when you truly cannot infer intent from context.
-- **Make the system self-healing.** When you notice a problem, log it and fix it in the next round.
-- **Supervision is async.** The human reviews plans, diffs, and changes on their own schedule. Design workflows for review-after-the-fact.
-- **Code is cheap, attention is scarce.** A wrong implementation costs minutes to fix. A blocked agent costs the human's attention to unblock.
-
-**Boundaries:**
-
-- **Irreversible actions** (force-push, delete production data, send external messages) still require confirmation.
-- **Reversible actions** (write code, edit notes, split tasks) should proceed without blocking.
-- **Product direction** comes from the human; _execution_ should not block.
+- Establish the outcome and the stage at which to stop. Investigation, editing, committing, publishing, and merging are separate actions unless the request includes them together.
+- Make ordinary implementation choices within that scope. Ask about product direction, preferences, missing access, or material scope changes with a recommended option and its trade-off.
+- Keep unrelated findings as follow-up items. A discovered problem does not automatically become part of the current task.
+- Honor pause and stop requests, including the distinction between interrupting now and finishing active workers first.
+- Report the result and evidence at the agreed boundary. Let the user decide whether to authorize the next stage.

@@ -1,14 +1,66 @@
 #!/usr/bin/env python3
 """Exercise ownership migration and deployment staging without touching live settings."""
 
+import contextlib
+import importlib.util
+import io
 import json
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / "dot_agents/skills/pstack-runtime"
+
+
+class SkillValidationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location("check_pstack", ROOT / "scripts/check-pstack.py")
+        cls.checker = importlib.util.module_from_spec(spec)
+        with patch("sys.dont_write_bytecode", True):
+            spec.loader.exec_module(cls.checker)
+
+    def validate(self, resources):
+        with tempfile.TemporaryDirectory(prefix="skill-contract-test-") as directory:
+            skills = Path(directory)
+            for relative, content in resources.items():
+                target = skills / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(content)
+            names = sorted({relative.split("/")[0] for relative in resources})
+            with patch.object(self.checker, "SKILLS", skills), patch.object(self.checker, "NAMES", names):
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.checker.check()
+
+    def test_standalone_skill_does_not_require_runtime(self):
+        self.validate({"plain/SKILL.md": "---\nname: plain\ndescription: Plain writing.\n---\n\nWrite clearly.\n"})
+
+    def test_optional_runtime_link_is_validated(self):
+        self.validate({
+            "plain/SKILL.md": "---\nname: plain\ndescription: Scoped work.\n---\n\nFor delegation, read [runtime](../pstack-runtime/SKILL.md).\n",
+            "pstack-runtime/SKILL.md": "---\nname: pstack-runtime\ndescription: Execution contract.\n---\n",
+        })
+
+    def test_missing_reference_is_rejected(self):
+        with self.assertRaisesRegex(SystemExit, "missing link"):
+            self.validate({"plain/SKILL.md": "---\nname: plain\ndescription: Scoped work.\n---\n\nRead [missing](references/missing.md).\n"})
+
+    def test_legacy_unconditional_runtime_preamble_is_rejected(self):
+        with self.assertRaisesRegex(SystemExit, "unported host dependency"):
+            self.validate({"plain/SKILL.md": "---\nname: plain\ndescription: Plain writing.\n---\n\nRead runtime before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.\n"})
+
+    def test_explicit_invocation_still_requires_host_policy(self):
+        entry = "---\nname: plain\ndescription: Explicit writing.\ndisable-model-invocation: true\n---\n"
+        with self.assertRaisesRegex(SystemExit, "explicit-invocation policy missing"):
+            self.validate({"plain/SKILL.md": entry})
+        self.validate({"plain/SKILL.md": entry, "plain/agents/openai.yaml": "policy:\n  allow_implicit_invocation: false\n"})
+
+    def test_unported_tool_arguments_are_rejected(self):
+        with self.assertRaisesRegex(SystemExit, "unported host dependency"):
+            self.validate({"plain/SKILL.md": "---\nname: plain\ndescription: Scoped work.\n---\n\nSpawn with cloud_base_branch.\n"})
 
 
 class PortTests(unittest.TestCase):

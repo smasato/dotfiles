@@ -1,5 +1,7 @@
-# pstack execution
+# Shared execution contract
 
-When a pstack workflow delegates, read `~/.agents/skills/pstack-runtime/SKILL.md`
-and its Claude reference. That file owns model roles and tool mappings.
-Use `pstack-worker` for inherited-model work and `comment-sicko` for comment review.
+When delegating a pstack task, read `~/.agents/skills/pstack-runtime/SKILL.md`
+and its delegation reference. The contract owns scope, ownership, and verification.
+Use the Claude adapter only for tool mapping. `pstack-worker` supports inherited-model
+work; choose available specialized agents or model overrides for other roles.
+`comment-sicko` is for an explicitly requested comment audit, not every review.

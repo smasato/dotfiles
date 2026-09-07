@@ -3,8 +3,6 @@ name: unslop
 description: Cut AI tells from any writing. Must always apply.
 ---
 
-Read [pstack runtime](../pstack-runtime/SKILL.md) before executing this workflow. It defines native delegation, model roles, history, and monitoring for Claude Code and Codex.
-
 # Unslop
 
 Edit text to remove AI patterns and add human voice.
