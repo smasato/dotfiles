@@ -1,7 +1,7 @@
 {{- /* chezmoi:modify-template */ -}}
-notify = ["{{ .chezmoi.homeDir }}/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
-model = "gpt-5.6-sol"
+model = "gpt-6-astra"
 model_reasoning_effort = "medium"
+service_tier = "fast"
 
 # Codex manages marketplaces, node_repl, and TUI state per machine.
 # Trusted projects, hook trust hashes, and the NUX counter are Codex-written
@@ -35,7 +35,6 @@ enabled = true
 
 [features]
 hooks = true
-js_repl = false
 context_management.experimental_mode = true
 
 [mcp_servers.computer-use]
