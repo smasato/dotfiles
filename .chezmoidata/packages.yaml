@@ -1,7 +1,8 @@
 packages:
   darwin:
     taps:
-      base: []
+      base:
+        - rjyo/moshi
       personal: []
       work: []
     brews:
@@ -69,6 +70,7 @@ packages:
         llvm:
         mise:
         mosh:
+        moshi-hook:
         msgpack:
         ncurses:
         nss:
