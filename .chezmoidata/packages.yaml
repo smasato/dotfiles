@@ -17,6 +17,7 @@ packages:
         bash:
         bdw-gc:
         boost:
+        btop:
         bzip2:
         cabextract:
         cairo:
@@ -69,6 +70,7 @@ packages:
         libzip:
         little-cms2:
         llvm:
+        macmon:
         mise:
         mosh:
         moshi-hook:
