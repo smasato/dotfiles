@@ -33,6 +33,9 @@ selection_bg = "#414559"
 accent = "#8caaee"
 {{ end }}
 [terminal]
+# Pane images are enabled by default in compatible terminals since v0.9.0.
+# kitty_graphics = false
+
 # Executable used for new interactive panes.
 # Empty means $SHELL, then /bin/sh.
 # default_shell = ""
@@ -261,9 +264,8 @@ description = "hunk: branch diff (tab)"
 # Pane apps like lazygit and btop can still receive mouse when they request it.
 # mouse_capture = true
 
-# Copy text selected by mouse drag or double-click.
-# Set false to disable mouse text selection and copying.
-# copy_on_select = true
+# Keep mouse selections without overwriting the clipboard; copy with Cmd+C.
+copy_on_select = false
 
 # Host cursor policy: "auto", "native", or "drawn".
 # "auto" draws Herdr's own cursor on native Windows builds and WSL to avoid ConPTY cursor flicker, and uses the native terminal cursor elsewhere.
@@ -296,8 +298,9 @@ prompt_new_tab_name = false
 # Set false to reclaim the scrollbar column and keep it out of terminal-native selections.
 pane_scrollbars = false
 
-# Draw borders around split panes.
-# pane_borders = true
+# "auto" frames split panes, "always" also frames a lone pane when
+# pane_outer_borders is enabled, and "off" hides borders.
+# pane_borders = "auto"
 
 # Keep split panes visually separated instead of sharing divider borders.
 # pane_gaps = true
@@ -337,7 +340,7 @@ agent_panel_sort = "priority"
 # distinct static glyphs for blocked, working, done, idle, and unknown states.
 status_indicators = "symbols"
 
-# Expanded agent rows. Built-ins are state_icon, state_text, workspace, tab, pane, agent,
+# Expanded agent rows. Built-ins are state_icon, state_text, machine, workspace, tab, pane, agent,
 # terminal_title, and terminal_title_stripped.
 # Custom values reported through pane metadata use a $name token.
 # [ui.sidebar.agents]
@@ -352,8 +355,13 @@ status_indicators = "symbols"
 # $account is the Claude account type (Team/Max) reported by the
 # herdr-claude-account.sh SessionStart hook.
 [ui.sidebar.agents.rows_by_agent]
-claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent", "$account"]]
-grok = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
+# Custom rows must include machine explicitly for multi-machine navigation.
+claude = [
+  ["state_icon", "machine", "workspace", "tab"],
+  ["terminal_title_stripped"],
+  ["agent", { token = "$account", rules = [{ equals = "Team", fg = "#89b4fa", bold = true }, { equals = "Max", fg = "#cba6f7", bold = true }] }],
+]
+grok = [["state_icon", "machine", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
 
 # Expanded space rows. Built-ins are state_icon, state_text, workspace, branch, and git_status.
 # Custom values reported through workspace metadata use a $name token, for example $jj_status.
@@ -418,9 +426,6 @@ resume_agents_on_restore = true
 [experimental]
 # Allow launching herdr from inside a herdr-managed pane.
 # allow_nested = false
-# Experimental local Kitty graphics rendering for attached clients.
-# Requires a Kitty graphics-compatible outer terminal.
-# kitty_graphics = false
 # Save recent pane screen history across full server restarts.
 pane_history = true
 # While prefix mode is active, temporarily switch the macOS host input

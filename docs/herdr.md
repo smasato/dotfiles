@@ -7,6 +7,84 @@ macOS では prefix モード中に ASCII 入力ソースへ自動切り替え�
 （`switch_ascii_input_source_in_prefix = true`）を有効化しているため、
 日本語 IME が ON でも prefix コマンドはそのまま効く。
 
+## v0.9.0 での運用
+
+サイドバーは `agent_panel_sort = "priority"` で確認待ちのエージェントを優先表示する。
+通知が来たら `prefix+o` で通知元へ移動し、`prefix+space` で直前のペインへ戻る。
+順に確認するときは `prefix+a` / `prefix+shift+a`、番号が分かる場合は `prefix+alt+1..9` を使う。
+
+Claude のアカウント表示は **Team が青、Max が紫**。SessionStart hook が報告した値を色分けする。
+Claude/Grok の独自行にも `machine` を含め、複数マシン接続時に実行先を確認できるようにしている。
+
+### 明示コピー
+
+`copy_on_select = false` に設定している。マウスでドラッグ・ダブルクリックしても
+クリップボードは上書きせず、選択後に `Cmd+C` でコピーする。
+ペインの出力が続いていても選択は保持される。
+
+### エージェントへの依頼と待機
+
+Herdr 経由でエージェントへ依頼するときは `agent prompt --wait` を使う。
+インストール済みの Herdr スキルもこの手順を標準としている。
+対象マシンの Herdr ペイン内で `herdr agent list` を実行し、対象の名前またはペイン ID と状態を確認する。
+以下の `AGENT_TARGET` は、依頼を受け付けられる `idle` / `done` の対象に置き換える。
+
+```sh
+herdr agent prompt AGENT_TARGET "現在の差分をレビューして、修正が必要な点を報告してください。" --wait --timeout 60000
+herdr agent read AGENT_TARGET --source recent-unwrapped --lines 120
+```
+
+`--timeout` の単位はミリ秒。`--wait` は作業開始を観測してから、
+`idle` / `done` / `blocked` のいずれかで戻る。`blocked` は承認・質問待ちなので、
+待機が終わっただけで作業完了とは判断せず、出力を確認する。
+作業中の対象への送信は、その時点の作業終了で待機が終わる場合があるため、完了待ちには次を使う。
+
+```sh
+herdr agent wait AGENT_TARGET --timeout 60000
+```
+
+タイムアウトはエージェントの作業を停止しない。
+`timeout` / `agent_prompt_stalled` が返ったら `agent get` と `agent read` で確認し、
+送信済みの依頼を重複送信しない。まだ作業中なら `agent wait` で待機を続ける。
+worker の対象を操作するときは worker 内で実行する。UI のマシン切り替えだけでは CLI の接続先は変わらない。
+
+### worker マシンを同じウィンドウにまとめる
+
+接続先の SSH 設定を確認したうえで、対話シェルから一度登録する。
+以下の `SSH_HOST` は実際の SSH ホスト名に置き換える。
+
+```sh
+herdr machine add SSH_HOST --label worker
+herdr machine list
+```
+
+既定では接続先の default セッションを使う。名前付きセッションを使っている場合は
+登録時に `--remote-session SESSION_NAME` を指定する。
+登録したマシンは開いているローカルクライアントにも反映され、エージェント一覧と通知が統合される。
+マシンやワークスペースの切り替えはサイドバーで行う。
+
+表示テーマとキーバインドはローカルクライアントの設定を使うため、worker 側の Frappé 設定だけでは
+統合ウィンドウの色は切り替わらない。実行先はサイドバーのマシン名とタブ右端の hostname で確認する。
+worktrunk、hunk、lazygit などのコマンドとプラグインは実行先にもインストールしておく。
+UI でマシンを切り替えても、既存ペイン内の `herdr` CLI の接続先は変わらない。
+
+同じサーバーに複数クライアントを接続して、別々のタブを表示できる。
+操作用と監視用に分ける場合は別タブを開く。同じタブを表示すると、最後に操作したクライアントがサイズを決める。
+
+### 設定反映と終了
+
+設定を適用したら `prefix+shift+r` でリロードする。v0.9.0 の UI リロードは、
+ローカルの表示設定と選択中サーバーの設定を両方読み直す。
+`herdr status` でクライアントとサーバーの互換性を確認できる。
+離席・ウィンドウを閉じる際は `prefix+q` でデタッチするとペイン内の処理が継続する。
+
+子 worktree が開いている親ワークスペースを CLI で閉じるには明示的な `--group` が必要になった。
+通常の `wt remove` 後の hook は該当する子だけを閉じるため、`--group` は付けない。
+
+仕様の参照先: [v0.9.0 リリース](https://github.com/herdrdev/herdr/releases/tag/v0.9.0)、
+[マシン接続](https://github.com/herdrdev/herdr/blob/v0.9.0/docs/next/website/src/content/docs/connecting-machines.mdx)、
+[表示設定・リロード](https://github.com/herdrdev/herdr/blob/v0.9.0/docs/next/website/src/content/docs/configuration.mdx)。
+
 ## 独自ショートカット（config.toml の `[keys]` 上書きと `[[keys.command]]`）
 
 `[[keys.command]]` には `description` を付けているので、`prefix+?` のヘルプでも同じラベルが出る。
