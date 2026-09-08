@@ -77,7 +77,6 @@ packages:
         nss:
         numpy:
         openjdk:
-        openssh:
         openssl@3:
         pango:
         pipx:
