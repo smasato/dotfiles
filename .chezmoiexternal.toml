@@ -22,6 +22,10 @@
     type = "file"
     url = "https://raw.githubusercontent.com/catppuccin/delta/refs/heads/main/catppuccin.gitconfig"
     refreshPeriod = "168h"
+[".config/btop/themes/catppuccin_mocha.theme"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/catppuccin/btop/refs/heads/main/themes/catppuccin_mocha.theme"
+    refreshPeriod = "168h"
 [".config/lazygit/themes/catppuccin-mocha-sky.yml"]
     type = "file"
     url = "https://raw.githubusercontent.com/catppuccin/lazygit/refs/heads/main/themes-mergable/mocha/sky.yml"
