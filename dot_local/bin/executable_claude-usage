@@ -1,0 +1,125 @@
+#!/bin/bash
+# Claude subscription usage (5h session / 7d week / model-scoped week) as one line.
+# Shared backend for the Raycast scripts and the herdr tab bar entry.
+#
+# Reads the Claude Code OAuth token from the login Keychain (fallback:
+# <config-dir>/.credentials.json) and calls the same endpoint Claude Code's
+# /usage uses. ~1s instead of the 10s+ of `claude -p /usage`.
+#
+# Usage: claude-usage [--config-dir DIR] [--compact]
+#   --config-dir DIR  Claude Code config dir (default: ~/.claude). Selects the
+#                     Keychain entry: "Claude Code-credentials" for the default
+#                     dir, "Claude Code-credentials-<sha256(dir)[0:8]>" otherwise.
+#   --compact         tab-bar format: no padding, space separator.
+#
+# The last successful API response is cached under ~/.cache/claude-usage/. When
+# a fetch fails (429 from sharing the rate-limit bucket with moshi's 1-minute
+# poller, expired token, offline) the cached value is shown with a ⚠ HH:MM
+# marker (fetch time) and exit 0, so Raycast/herdr keep showing something.
+# Exit 1 only when there is nothing to show. Cache older than 24h is ignored.
+#
+# Note: unlike `claude -p /usage`, this never refreshes the token. If Claude Code
+# has not run for a while the token expires until Claude Code runs again.
+set -euo pipefail
+
+# Raycast runs with a minimal PATH; jq lives in Homebrew.
+export PATH="/opt/homebrew/bin:$PATH"
+
+config_dir="$HOME/.claude"
+compact=0
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --config-dir) config_dir="$2"; shift 2 ;;
+        --compact) compact=1; shift ;;
+        *) echo "unknown option: $1" >&2; exit 1 ;;
+    esac
+done
+config_dir="${config_dir%/}"
+
+dir_hash=$(printf '%s' "$config_dir" | shasum -a 256 | cut -c1-8)
+if [ "$config_dir" = "$HOME/.claude" ]; then
+    service="Claude Code-credentials"
+else
+    service="Claude Code-credentials-$dir_hash"
+fi
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/claude-usage"
+cache_file="$cache_dir/$dir_hash.json"
+cache_max_age=$((24 * 60 * 60))
+
+# render BODY [FETCHED_EPOCH]: print the one-liner. With FETCHED_EPOCH the line is
+# marked as cached. limits[]: kind=session|weekly_all|weekly_scoped, percent,
+# resets_at (UTC ISO), scope.model.display_name for weekly_scoped (e.g. "Fable").
+render() {
+    printf '%s' "$1" | jq -r --argjson compact "$compact" --argjson fetched "${2:-0}" '
+        def name: if .kind == "session" then "S"
+            elif .kind == "weekly_all" then "W"
+            else (.scope.model.display_name // .kind) end;
+        def emoji: if .percent >= 90 then "🔴" elif .percent >= 75 then "🟡" else "🔵" end;
+        # resets_at can be a hair before the minute (…:59:59.9); round to the nearest minute.
+        def resets: .resets_at | sub("\\.[0-9]+"; "") | sub("\\+00:00$"; "Z")
+            | fromdateiso8601 + 30 | strflocaltime("%m/%d %H:%M");
+        def pct: (.percent | tostring) as $p
+            | if $compact == 1 then $p else " " + (" " * (3 - ($p | length))) + $p end;
+        def stale: if $fetched == 0 then [] else
+            [(if $compact == 1 then "⚠" else "⚠ cached " end) + ($fetched | strflocaltime("%H:%M"))] end;
+        ([.limits[] | select(.resets_at != null)
+            | name + (if $compact == 1 then "" else " " end) + emoji + pct + "% (" + resets + ")"]
+            + stale)
+        | join(if $compact == 1 then " " else " · " end)
+    '
+}
+
+# Print the cached line if a recent cache exists; exit 0 either way when shown.
+show_cached_or_fail() {
+    echo "$1" >&2
+    if [ -r "$cache_file" ]; then
+        # /usr/bin: PATH puts Homebrew first, where a GNU stat may shadow the BSD one.
+        fetched=$(/usr/bin/stat -f %m "$cache_file")
+        if [ $(($(date +%s) - fetched)) -le "$cache_max_age" ]; then
+            line=$(render "$(cat "$cache_file")" "$fetched")
+            if [ -n "$line" ]; then
+                echo "$line"
+                exit 0
+            fi
+        fi
+    fi
+    exit 1
+}
+
+creds=$(security find-generic-password -s "$service" -w 2>/dev/null || true)
+if [ -z "$creds" ] && [ -r "$config_dir/.credentials.json" ]; then
+    creds=$(cat "$config_dir/.credentials.json")
+fi
+if [ -z "$creds" ]; then
+    show_cached_or_fail "no Claude credentials for $config_dir (keychain: $service)"
+fi
+
+token=$(printf '%s' "$creds" | jq -r '.claudeAiOauth.accessToken // empty')
+expires_at=$(printf '%s' "$creds" | jq -r '.claudeAiOauth.expiresAt // 0')
+if [ -z "$token" ]; then
+    show_cached_or_fail "no accessToken in credentials for $config_dir"
+fi
+if [ "$expires_at" != "0" ] && [ "$((expires_at / 1000))" -le "$(date +%s)" ]; then
+    show_cached_or_fail "Claude token expired; run claude once to refresh"
+fi
+
+response=$(curl -sS -m 20 -w '\n%{http_code}' \
+    -H "Authorization: Bearer $token" \
+    -H 'anthropic-beta: oauth-2025-04-20' \
+    -H 'User-Agent: claude-code/2.0.27' \
+    -H 'Accept: application/json' \
+    https://api.anthropic.com/api/oauth/usage) || show_cached_or_fail "usage API request failed"
+status=${response##*$'\n'}
+body=${response%$'\n'*}
+if [ "$status" != "200" ]; then
+    show_cached_or_fail "usage API HTTP $status"
+fi
+
+parsed=$(render "$body")
+if [ -z "$parsed" ]; then
+    show_cached_or_fail "usage unavailable (no limits in response)"
+fi
+
+mkdir -p "$cache_dir"
+printf '%s' "$body" > "$cache_file.tmp" && mv "$cache_file.tmp" "$cache_file"
+echo "$parsed"

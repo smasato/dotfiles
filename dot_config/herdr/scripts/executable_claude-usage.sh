@@ -1,28 +1,8 @@
 #!/bin/bash
 
 # Compact Claude usage line for the herdr tab bar (ui.tab_bar_right command entry).
-# Same /usage source and reset-time format as the Raycast scripts, but drops the
-# alignment padding to fit the tab bar. Exit non-zero on failure so herdr hides
-# the entry.
+# Fetch + format live in ~/.local/bin/claude-usage (shared with the Raycast
+# scripts); --compact drops the alignment padding to fit the tab bar. Exits
+# non-zero on failure so herdr hides the entry.
 
-CLAUDE="$HOME/.local/share/mise/installs/claude-code/latest/claude"
-
-if [ ! -x "$CLAUDE" ]; then
-    exit 1
-fi
-
-output=$(env -u CLAUDE_CONFIG_DIR "$CLAUDE" -p /usage 2>&1)
-
-parsed=$(echo "$output" | grep '^Current' | sed -E \
-    -e 's/^Current session: ([0-9]+%) used · resets (.+) \(.*\)$/S \1 (\2)/' \
-    -e 's/^Current week \(all models\): ([0-9]+%) used · resets (.+) \(.*\)$/W \1 (\2)/' \
-    -e 's/^Current week \(([^)]+)\): ([0-9]+%) used · resets (.+) \(.*\)$/\1 \2 (\3)/' \
-    -e 's/ at / /g' \
-    | perl -pe 'BEGIN{%m=(Jan=>1,Feb=>2,Mar=>3,Apr=>4,May=>5,Jun=>6,Jul=>7,Aug=>8,Sep=>9,Oct=>10,Nov=>11,Dec=>12)} s{\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b}{sprintf("%02d/%02d", $m{$1}, $2)}ge; s{\b(\d{1,2})(?::(\d{2}))?(am|pm)\b}{sprintf("%02d:%02d", ($1 % 12) + ($3 eq "pm" ? 12 : 0), defined $2 ? $2 : 0)}ge; s{ (\d+)%}{($1 >= 90 ? "🔴" : $1 >= 75 ? "🟡" : "🔵") . "$1%"}ge' \
-    | awk '{printf "%s%s", sep, $0; sep=" "} END {print ""}')
-
-if [ -z "$parsed" ]; then
-    exit 1
-fi
-
-echo "$parsed"
+exec "$HOME/.local/bin/claude-usage" --config-dir "$HOME/.claude" --compact
