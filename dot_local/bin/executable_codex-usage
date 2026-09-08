@@ -1,0 +1,119 @@
+#!/bin/bash
+# Codex subscription usage (5h session / 7d week, whichever the plan has) as one line.
+# Shared backend for the Raycast script; same shape as claude-usage.
+#
+# Reads the ChatGPT OAuth token from <codex-home>/auth.json and calls the
+# endpoint Codex's /status uses (chatgpt.com/backend-api/wham/usage), the same
+# one moshi-hook polls for its usage snapshots.
+#
+# Usage: codex-usage [--codex-home DIR] [--compact]
+#   --codex-home DIR  Codex config dir (default: $CODEX_HOME or ~/.codex).
+#   --compact         tab-bar format: no padding, space separator.
+#
+# The last successful API response is cached under ~/.cache/codex-usage/. When
+# a fetch fails (429, expired token, offline) the cached value is shown with a
+# ⚠ HH:MM marker (fetch time) and exit 0. Exit 1 only when there is nothing to
+# show. Cache older than 24h is ignored.
+#
+# Only rate_limit.primary_window / secondary_window are shown; credits and
+# additional_rate_limits are ignored. Windows are labelled by length:
+# 18000s -> S, 604800s -> W (a business plan may have only the weekly one).
+#
+# Note: this never refreshes the token. If Codex has not run for a while the
+# token expires until Codex runs again.
+set -euo pipefail
+
+# Raycast runs with a minimal PATH; jq lives in Homebrew.
+export PATH="/opt/homebrew/bin:$PATH"
+
+codex_home="${CODEX_HOME:-$HOME/.codex}"
+compact=0
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --codex-home) codex_home="$2"; shift 2 ;;
+        --compact) compact=1; shift ;;
+        *) echo "unknown option: $1" >&2; exit 1 ;;
+    esac
+done
+codex_home="${codex_home%/}"
+
+dir_hash=$(printf '%s' "$codex_home" | shasum -a 256 | cut -c1-8)
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/codex-usage"
+cache_file="$cache_dir/$dir_hash.json"
+cache_max_age=$((24 * 60 * 60))
+
+# render BODY [FETCHED_EPOCH]: print the one-liner. With FETCHED_EPOCH the line is
+# marked as cached. rate_limit.{primary,secondary}_window: used_percent,
+# limit_window_seconds, reset_at (unix epoch); either window may be null.
+render() {
+    printf '%s' "$1" | jq -r --argjson compact "$compact" --argjson fetched "${2:-0}" '
+        def name: if .limit_window_seconds == 18000 then "S"
+            elif .limit_window_seconds == 604800 then "W"
+            else ((.limit_window_seconds / 3600 | floor | tostring) + "h") end;
+        def emoji: if .used_percent >= 90 then "🔴" elif .used_percent >= 75 then "🟡" else "🔵" end;
+        def resets: .reset_at | strflocaltime("%m/%d %H:%M");
+        def pct: (.used_percent | floor | tostring) as $p
+            | if $compact == 1 then $p else " " + (" " * (3 - ($p | length))) + $p end;
+        def stale: if $fetched == 0 then [] else
+            [(if $compact == 1 then "⚠" else "⚠ cached " end) + ($fetched | strflocaltime("%H:%M"))] end;
+        ([.rate_limit.primary_window, .rate_limit.secondary_window]
+            | map(select(. != null and .reset_at != null))
+            | map(name + (if $compact == 1 then "" else " " end) + emoji + pct + "% (" + resets + ")"))
+            + stale
+        | join(if $compact == 1 then " " else " · " end)
+    '
+}
+
+# Print the cached line if a recent cache exists; exit 0 either way when shown.
+show_cached_or_fail() {
+    echo "$1" >&2
+    if [ -r "$cache_file" ]; then
+        # /usr/bin: PATH puts Homebrew first, where a GNU stat may shadow the BSD one.
+        fetched=$(/usr/bin/stat -f %m "$cache_file")
+        if [ $(($(date +%s) - fetched)) -le "$cache_max_age" ]; then
+            line=$(render "$(cat "$cache_file")" "$fetched")
+            if [ -n "$line" ]; then
+                echo "$line"
+                exit 0
+            fi
+        fi
+    fi
+    exit 1
+}
+
+auth_file="$codex_home/auth.json"
+if [ ! -r "$auth_file" ]; then
+    show_cached_or_fail "no Codex credentials at $auth_file"
+fi
+token=$(jq -r '.tokens.access_token // empty' "$auth_file")
+account_id=$(jq -r '.tokens.account_id // empty' "$auth_file")
+if [ -z "$token" ]; then
+    show_cached_or_fail "no access_token in $auth_file (API-key login has no subscription quota)"
+fi
+
+account_header=()
+if [ -n "$account_id" ]; then
+    account_header=(-H "ChatGPT-Account-Id: $account_id")
+fi
+response=$(curl -sS -m 20 -w '\n%{http_code}' \
+    -H "Authorization: Bearer $token" \
+    "${account_header[@]}" \
+    -H 'User-Agent: codex_cli_rs/0.153.4' \
+    -H 'Accept: application/json' \
+    https://chatgpt.com/backend-api/wham/usage) || show_cached_or_fail "usage API request failed"
+status=${response##*$'\n'}
+body=${response%$'\n'*}
+case "$status" in
+    200) ;;
+    401|403) show_cached_or_fail "Codex token rejected (HTTP $status); run codex once to refresh" ;;
+    *) show_cached_or_fail "usage API HTTP $status" ;;
+esac
+
+parsed=$(render "$body")
+if [ -z "$parsed" ]; then
+    show_cached_or_fail "usage unavailable (no rate_limit windows in response)"
+fi
+
+mkdir -p "$cache_dir"
+printf '%s' "$body" > "$cache_file.tmp" && mv "$cache_file.tmp" "$cache_file"
+echo "$parsed"
