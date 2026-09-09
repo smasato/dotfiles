@@ -102,6 +102,11 @@ zstyle ':completion:*' insert-tab false
 alias reload="exec zsh"
 alias gs='git status'
 alias pclaude='CLAUDE_CONFIG_DIR="$HOME/.claude_personal_home" claude'
+{{- if .work }}
+# Work Business seats; ~/.codex (plain `codex`) is the personal account.
+alias wcodex1='CODEX_HOME="$HOME/.codex_work1" codex'
+alias wcodex2='CODEX_HOME="$HOME/.codex_work2" codex'
+{{- end }}
 
 {{- if lookPath "eza" }}
 alias ls='eza --icons --time-style=long-iso'

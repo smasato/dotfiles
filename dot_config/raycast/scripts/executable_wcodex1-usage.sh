@@ -7,16 +7,16 @@
 # @raycast.refreshTime 5m
 
 # Optional parameters:
-# @raycast.icon 🏠
+# @raycast.icon 1️⃣
 # @raycast.packageName Codex
 
 # Documentation:
-# @raycast.description Show Codex (ChatGPT) subscription usage limits (personal account, ~/.codex).
+# @raycast.description Show Codex (ChatGPT) subscription usage limits (work seat 1, wcodex1).
 # @raycast.author smasato
 # @raycast.authorURL https://raycast.com/smasato
 
-# Fetch + format live in ~/.local/bin/codex-usage (shared with wcodex*-usage and herdr).
-"$HOME/.local/bin/codex-usage" || {
+# Fetch + format live in ~/.local/bin/codex-usage (shared with codex-usage and herdr).
+"$HOME/.local/bin/codex-usage" --codex-home "$HOME/.codex_work1" || {
     echo "usage unavailable"
     exit 1
 }

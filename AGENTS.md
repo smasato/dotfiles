@@ -38,6 +38,8 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - `/dot_config/`: Deployed to `~/.config` - bat, ghostty, herdr, hunk, mise, nvim, atuin, karabiner, raycast, starship.toml
 - `/dot_claude/`: Claude Code configuration - global CLAUDE.md, settings template, and a `skills` symlink to `~/.agents/skills`
 - `/dot_claude_personal_home/`: Symlinks into `~/.claude` (settings, CLAUDE.md, agents, hooks, skills) so the `pclaude` alias (`CLAUDE_CONFIG_DIR=~/.claude_personal_home`, personal account) shares config while keeping its own `.claude.json` / sessions
+- `/dot_codex/`: Codex CLI configuration for the personal account (`~/.codex`) - global AGENTS.md overlay and `config.toml` (modify-template; Codex writes trust and hook state). The modify-template is copied byte-identical into `dot_codex_work1` / `dot_codex_work2` because chezmoi modify-templates cannot include `.chezmoitemplates`
+- `/dot_codex_work1/`, `/dot_codex_work2/`: Work-only (`.work`) Codex homes for the two Business seats. Symlinks into `~/.codex` (AGENTS.md, rules, skills, plugins, hooks.json) plus their own `config.toml` so the `wcodex1` / `wcodex2` aliases (`CODEX_HOME`) share config while keeping separate `auth.json` / sessions
 - `/dot_grok/`: Grok Build configuration — global AGENTS.md overlay and `config.toml` (modify-template; Grok writes marketplace state)
 - `/dot_agents/`: Deployed to `~/.agents` - canonical agent skills store (e.g. create-pr), shared across agents
 - `/.chezmoidata/`: Data files for templates - `packages.yaml` (Homebrew packages)

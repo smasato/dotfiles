@@ -9,3 +9,10 @@ mise.toml
 hk.pkl
 .prettierrc
 .prettierignore
+{{- if not .work }}
+# Work-only Codex homes (wcodex1 / wcodex2) and their Raycast usage widgets.
+.codex_work1
+.codex_work2
+.config/raycast/scripts/wcodex1-usage.sh
+.config/raycast/scripts/wcodex2-usage.sh
+{{- end }}
