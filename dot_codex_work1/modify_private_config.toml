@@ -1,16 +1,12 @@
 {{- /* chezmoi:modify-template */ -}}
-{{- /* Kept byte-identical across dot_codex, dot_codex_work1, and dot_codex_work2:
+{{- /* Kept byte-identical across dot_codex and dot_codex_work1/2/3:
 chezmoi modify-templates cannot include .chezmoitemplates, so each Codex home
-carries its own copy. Per-home differences (e.g. model) are edited here. */ -}}
+carries its own copy. These defaults only fill missing settings; existing
+per-home values and additional settings take precedence. */ -}}
+{{- $defaults := fromToml `
 model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 service_tier = "fast"
-
-# Codex manages marketplaces, node_repl, and TUI state per machine.
-# Trusted projects, hook trust hashes, and the NUX counter are Codex-written
-# machine state, so the current values are passed through from the live file.
-{{- $cur := dict }}
-{{- if .chezmoi.stdin }}{{ $cur = fromToml .chezmoi.stdin }}{{ end }}
 
 [plugins."visualize@openai-bundled"]
 enabled = true
@@ -52,27 +48,18 @@ url = "https://developers.openai.com/mcp"
 [desktop]
 conversationDetailMode = "STEPS_COMMANDS"
 ambient-suggestions-enabled = false
-{{- $projects := dict .chezmoi.sourceDir (dict "trust_level" "trusted") }}
-{{- range $k, $v := dig "projects" (dict) $cur }}{{ $_ := set $projects $k $v }}{{ end }}
-{{- range $k, $v := $projects }}
-
-[projects.{{ printf "%q" $k }}]
-{{- range $fk, $fv := $v }}
-{{ $fk }} = {{ if kindIs "string" $fv }}{{ printf "%q" $fv }}{{ else }}{{ $fv }}{{ end }}
-{{- end }}
-{{- end }}
 
 [hooks.state]
-{{- range $k, $v := dig "hooks" "state" (dict) $cur }}
-
-[hooks.state.{{ printf "%q" $k }}]
-{{- range $fk, $fv := $v }}
-{{ $fk }} = {{ if kindIs "string" $fv }}{{ printf "%q" $fv }}{{ else }}{{ $fv }}{{ end }}
-{{- end }}
-{{- end }}
 
 [tui.model_availability_nux]
-{{- $nux := dig "tui" "model_availability_nux" (dict "gpt-5.6-sol" 1) $cur }}
-{{- range $k, $v := $nux }}
-{{ if regexMatch "^[A-Za-z0-9_-]+$" $k }}{{ $k }}{{ else }}{{ printf "%q" $k }}{{ end }} = {{ $v }}
-{{- end }}
+"gpt-5.6-sol" = 1
+` -}}
+{{- $_ := set $defaults "projects" (dict .chezmoi.sourceDir (dict "trust_level" "trusted")) -}}
+{{- $cur := dict -}}
+{{- if .chezmoi.stdin }}{{ $cur = fromToml .chezmoi.stdin }}{{ end -}}
+{{- $merged := mergeOverwrite $defaults $cur -}}
+{{- if deepEqual $cur $merged -}}
+{{- .chezmoi.stdin -}}
+{{- else -}}
+{{- $merged | toToml -}}
+{{- end -}}
