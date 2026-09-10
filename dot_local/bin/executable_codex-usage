@@ -18,6 +18,11 @@
 # Only rate_limit.primary_window / secondary_window are shown; credits and
 # additional_rate_limits are ignored. Windows are labelled by length:
 # 18000s -> S, 604800s -> W (a business plan may have only the weekly one).
+# The full format is prefixed with the plan (plan_type mapped to its ChatGPT
+# name; unknown values are shown raw). Any home other than the default
+# ~/.codex (the wcodexN work seats) also gets the account email so the seats
+# can be told apart; the default home is the personal login and skips it.
+# --compact omits both to save tab-bar width.
 #
 # Note: this never refreshes the token. If Codex has not run for a while the
 # token expires until Codex runs again.
@@ -36,6 +41,10 @@ while [ $# -gt 0 ]; do
     esac
 done
 codex_home="${codex_home%/}"
+show_email=1
+if [ "$codex_home" = "$HOME/.codex" ]; then
+    show_email=0
+fi
 
 dir_hash=$(printf '%s' "$codex_home" | shasum -a 256 | cut -c1-8)
 cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/codex-usage"
@@ -46,7 +55,7 @@ cache_max_age=$((24 * 60 * 60))
 # marked as cached. rate_limit.{primary,secondary}_window: used_percent,
 # limit_window_seconds, reset_at (unix epoch); either window may be null.
 render() {
-    printf '%s' "$1" | jq -r --argjson compact "$compact" --argjson fetched "${2:-0}" '
+    printf '%s' "$1" | jq -r --argjson compact "$compact" --argjson email "$show_email" --argjson fetched "${2:-0}" '
         def name: if .limit_window_seconds == 18000 then "S"
             elif .limit_window_seconds == 604800 then "W"
             else ((.limit_window_seconds / 3600 | floor | tostring) + "h") end;
@@ -56,11 +65,15 @@ render() {
             | if $compact == 1 then $p else " " + (" " * (3 - ($p | length))) + $p end;
         def stale: if $fetched == 0 then [] else
             [(if $compact == 1 then "⚠" else "⚠ cached " end) + ($fetched | strflocaltime("%H:%M"))] end;
+        def plan: if $compact == 1 or .plan_type == null then [] else
+            [({prolite: "Pro 5x", self_serve_business_prolite: "Business Premium"}[.plan_type] // .plan_type)
+                + (if $email == 1 and .email != null then " (" + .email + ")" else "" end)] end;
         ([.rate_limit.primary_window, .rate_limit.secondary_window]
-            | map(select(. != null and .reset_at != null))
-            | map(name + (if $compact == 1 then "" else " " end) + emoji + pct + "% (" + resets + ")"))
+            | map(select(. != null and .reset_at != null))) as $windows
+        | if ($windows | length) == 0 then empty else
+            plan + ($windows | map(name + (if $compact == 1 then "" else " " end) + emoji + pct + "% (" + resets + ")"))
             + stale
-        | join(if $compact == 1 then " " else " · " end)
+            | join(if $compact == 1 then " " else " · " end) end
     '
 }
 
