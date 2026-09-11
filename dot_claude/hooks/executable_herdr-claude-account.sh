@@ -22,8 +22,11 @@ case "$org_type" in
   *) label="$org_type" ;;
 esac
 
-# --seq makes re-reports overwrite older values when a pane is reused.
+# --seq makes re-reports overwrite older values when a pane is reused; herdr
+# compares seq across sources per pane, so use the same millisecond unit as
+# herdr-codex-account.sh (macOS date has no %N) with a seconds fallback.
+seq=$(perl -MTime::HiRes=time -e 'printf "%d", time * 1000' 2>/dev/null) || seq=$(date +%s)
 herdr pane report-metadata "$HERDR_PANE_ID" \
   --source claude-account --agent claude \
-  --token "account=$label" --seq "$(date +%s)" >/dev/null 2>&1 || true
+  --token "account=$label" --seq "$seq" >/dev/null 2>&1 || true
 exit 0

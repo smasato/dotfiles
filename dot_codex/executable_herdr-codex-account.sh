@@ -64,11 +64,15 @@ case "$(basename "$codex_home")" in
 esac
 
 # --seq makes re-reports overwrite older values when a pane is reused; herdr
-# drops reports whose seq is not higher, so use milliseconds (macOS date has
-# no %N) with a seconds fallback.
+# drops reports whose seq is not higher (compared across sources, so
+# herdr-claude-account.sh uses the same unit), so use milliseconds (macOS date
+# has no %N) with a seconds fallback.
+# No --agent: the zsh wrapper reports before codex is running, and herdr drops
+# an agent-labelled report when the pane has no live agent and last hosted a
+# different one (a pane that just ran Claude would keep showing Team).
 seq=$(perl -MTime::HiRes=time -e 'printf "%d", time * 1000' 2>/dev/null) || seq=$(date +%s)
 herdr pane report-metadata "$HERDR_PANE_ID" \
-  --source codex-account --agent codex \
+  --source codex-account \
   --token "account=$account" --token "seat=$seat" \
   --seq "$seq" >/dev/null 2>&1 || true
 exit 0
