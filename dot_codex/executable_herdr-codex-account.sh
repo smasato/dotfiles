@@ -1,19 +1,45 @@
 #!/bin/sh
-# Report which ChatGPT account a Codex pane is logged into as herdr pane
-# tokens so the agents sidebar can show it via $account / $seat in
-# [ui.sidebar.agents.rows_by_agent]. Runs twice per pane: from the zsh `codex`
-# wrapper right at launch (SessionStart only fires on the first prompt), and as
-# the Codex SessionStart hook so resume / restore re-report (hooks.json is
-# shared by every CODEX_HOME through symlinks, so one copy serves all seats).
+# Report which ChatGPT account a Codex pane is logged into, how it was launched
+# and how much quota is left, as herdr pane metadata. Runs from the zsh `codex`
+# wrapper right at launch (SessionStart only fires on the first prompt) and as
+# the Codex SessionStart / Stop hooks so resume / restore and every finished
+# turn re-report (hooks.json is shared by every CODEX_HOME through symlinks, so
+# one copy serves all seats).
 #
-#   account  plan name (Pro 20x / Pro 5x / Plus / Business; unknown shown raw)
-#   seat     CODEX_HOME suffix (.codex_work1 -> w1); empty for the personal ~/.codex
+#   $account       plan name (Pro 20x / Pro 5x / Plus / Business; unknown shown raw)
+#   $launch        command that started this pane: codex, or wcodexN from the
+#                  CODEX_HOME suffix (.codex_work1 -> wcodex1)
+#   display_agent  "<launch> · <usage>" shown in the pane border in place of
+#                  "codex"; usage is codex-usage --compact (S/W used% and reset
+#                  time). Fetched in the background so hooks return at once.
+#
+#   herdr-codex-account.sh clear   drop display_agent / $launch after codex
+#                                  exits so a reused pane does not keep them
 set -eu
 
 [ "${HERDR_ENV:-}" = "1" ] || exit 0
 [ -n "${HERDR_PANE_ID:-}" ] || exit 0
 command -v herdr >/dev/null 2>&1 || exit 0
 command -v jq >/dev/null 2>&1 || exit 0
+
+# --seq makes re-reports overwrite older values when a pane is reused; herdr
+# drops reports whose seq is not higher (compared across sources, so
+# herdr-claude-account.sh uses the same unit), so use milliseconds (macOS date
+# has no %N) with a seconds fallback.
+# No --agent: the zsh wrapper reports before codex is running, and herdr drops
+# an agent-labelled report when the pane has no live agent and last hosted a
+# different one (a pane that just ran Claude would keep showing Team).
+now_seq() {
+  perl -MTime::HiRes=time -e 'printf "%d", time * 1000' 2>/dev/null || date +%s
+}
+
+if [ "${1:-}" = "clear" ]; then
+  herdr pane report-metadata "$HERDR_PANE_ID" \
+    --source codex-account \
+    --clear-display-agent --clear-token launch \
+    --seq "$(now_seq)" >/dev/null 2>&1 || true
+  exit 0
+fi
 
 # Hook input arrives on stdin; the shell wrapper has a tty there, so skip it.
 input=""
@@ -59,20 +85,26 @@ case "$plan_type" in
 esac
 
 case "$(basename "$codex_home")" in
-  .codex_work*) seat="w${codex_home##*.codex_work}" ;;
-  *) seat="" ;;
+  .codex_work*) launch="wcodex${codex_home##*.codex_work}" ;;
+  *) launch="codex" ;;
 esac
 
-# --seq makes re-reports overwrite older values when a pane is reused; herdr
-# drops reports whose seq is not higher (compared across sources, so
-# herdr-claude-account.sh uses the same unit), so use milliseconds (macOS date
-# has no %N) with a seconds fallback.
-# No --agent: the zsh wrapper reports before codex is running, and herdr drops
-# an agent-labelled report when the pane has no live agent and last hosted a
-# different one (a pane that just ran Claude would keep showing Team).
-seq=$(perl -MTime::HiRes=time -e 'printf "%d", time * 1000' 2>/dev/null) || seq=$(date +%s)
 herdr pane report-metadata "$HERDR_PANE_ID" \
   --source codex-account \
-  --token "account=$account" --token "seat=$seat" \
-  --seq "$seq" >/dev/null 2>&1 || true
+  --token "account=$account" --token "launch=$launch" \
+  --display-agent "$launch" \
+  --seq "$(now_seq)" >/dev/null 2>&1 || true
+
+# The usage fetch is a network call (up to 20s), so run it detached: the hook
+# and the shell wrapper return immediately and the border updates when it lands.
+usage_cmd="$HOME/.local/bin/codex-usage"
+[ -x "$usage_cmd" ] || exit 0
+(
+  usage=$("$usage_cmd" --codex-home "$codex_home" --compact 2>/dev/null) || exit 0
+  [ -n "$usage" ] || exit 0
+  herdr pane report-metadata "$HERDR_PANE_ID" \
+    --source codex-account \
+    --display-agent "$launch · $usage" \
+    --seq "$(now_seq)" >/dev/null 2>&1 || true
+) </dev/null >/dev/null 2>&1 &
 exit 0

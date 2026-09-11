@@ -356,8 +356,11 @@ status_indicators = "symbols"
 # Show what each Claude/Codex/Grok pane is working on in the sidebar via the terminal title.
 # $account is the Claude account type (Team/Max) reported by the
 # herdr-claude-account.sh SessionStart hook. For Codex, $account is the ChatGPT
-# plan (Pro 20x/Pro 5x/Plus/Business) and $seat the work seat (w1/w2/w3, empty
-# for the personal ~/.codex), both reported by the herdr-codex-account.sh hook.
+# plan (Pro 20x/Pro 5x/Plus/Business) and $launch the command that started the
+# pane (codex, or wcodex1..3 for the work seats), both reported by
+# herdr-codex-account.sh. $launch stands in for the agent token because the
+# same script sets display_agent to "<launch> · <quota>" for the pane border,
+# and that would replace "codex" in the sidebar too.
 [ui.sidebar.agents.rows_by_agent]
 # Custom rows must include machine explicitly for multi-machine navigation.
 claude = [
@@ -368,7 +371,7 @@ claude = [
 codex = [
   ["state_icon", "machine", "workspace", "tab"],
   ["terminal_title_stripped"],
-  ["agent", { token = "$account", rules = [{ equals = "Business", fg = "#89b4fa", bold = true }, { equals = "Pro 20x", fg = "#cba6f7", bold = true }, { equals = "Pro 5x", fg = "#cba6f7", bold = true }, { equals = "Plus", fg = "#a6e3a1", bold = true }] }, "$seat"],
+  ["$launch", { token = "$account", rules = [{ equals = "Business", fg = "#89b4fa", bold = true }, { equals = "Pro 20x", fg = "#cba6f7", bold = true }, { equals = "Pro 5x", fg = "#cba6f7", bold = true }, { equals = "Plus", fg = "#a6e3a1", bold = true }] }],
 ]
 grok = [["state_icon", "machine", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
 

@@ -102,11 +102,15 @@ zstyle ':completion:*' insert-tab false
 alias reload="exec zsh"
 alias gs='git status'
 alias pclaude='CLAUDE_CONFIG_DIR="$HOME/.claude_personal_home" claude'
-# Show the ChatGPT account in the herdr sidebar from launch; the SessionStart
-# hook (same script) only fires on the first prompt.
+# Show the ChatGPT account, launch command and quota in herdr from launch; the
+# SessionStart hook (same script) only fires on the first prompt. Clear the
+# pane-border label on exit so a reused pane does not keep it.
 codex() {
   [ "${HERDR_ENV:-}" = "1" ] && sh "$HOME/.codex/herdr-codex-account.sh"
   command codex "$@"
+  local rc=$?
+  [ "${HERDR_ENV:-}" = "1" ] && sh "$HOME/.codex/herdr-codex-account.sh" clear
+  return $rc
 }
 {{- if .work }}
 # Work Business seats; ~/.codex (plain `codex`) is the personal account.
