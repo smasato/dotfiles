@@ -14,7 +14,12 @@ macOS では prefix モード中に ASCII 入力ソースへ自動切り替え�
 順に確認するときは `prefix+a` / `prefix+shift+a`、番号が分かる場合は `prefix+alt+1..9` を使う。
 
 Claude のアカウント表示は **Team が青、Max が紫**。SessionStart hook が報告した値を色分けする。
-Claude/Grok の独自行にも `machine` を含め、複数マシン接続時に実行先を確認できるようにしている。
+Codex は ChatGPT のプラン（**Business が青、Pro 20x / Pro 5x が紫、Plus が緑**）と
+work seat（`w1` / `w2` / `w3`、個人の `~/.codex` は無印）を `~/.codex/herdr-codex-account.sh`
+が報告し、同じ行に表示する。起動直後は zsh の `codex` ラッパー関数（`wcodexN` alias も経由）が、
+resume / restore 後は Codex の SessionStart hook（最初のプロンプト送信時に発火）が同じスクリプトを呼ぶ。
+新しい hook は各 CODEX_HOME で一度 `/hooks` から trust する必要がある。
+Claude/Codex/Grok の独自行にも `machine` を含め、複数マシン接続時に実行先を確認できるようにしている。
 
 ### 明示コピー
 

@@ -1,0 +1,24 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* hooks.json is also written by herdr, moshi-hook, and orca, so only the
+herdr-codex-account.sh SessionStart entry is merged in; everything else passes
+through untouched. The entry is appended (never inserted) because Codex keys
+hook trust hashes by array index in each home's config.toml [hooks.state]. */ -}}
+{{- $cmd := printf "sh '%s/.codex/herdr-codex-account.sh'" .chezmoi.homeDir -}}
+{{- $entry := dict "hooks" (list (dict "type" "command" "command" $cmd "timeout" 5)) -}}
+{{- $cur := dict -}}
+{{- if .chezmoi.stdin }}{{ $cur = fromJson .chezmoi.stdin }}{{ end -}}
+{{- $hooks := default (dict) (get $cur "hooks") -}}
+{{- $starts := default (list) (get $hooks "SessionStart") -}}
+{{- $found := false -}}
+{{- range $starts -}}
+{{-   range (default (list) (get . "hooks")) -}}
+{{-     if eq (get . "command") $cmd }}{{ $found = true }}{{ end -}}
+{{-   end -}}
+{{- end -}}
+{{- if $found -}}
+{{- .chezmoi.stdin -}}
+{{- else -}}
+{{- $_ := set $hooks "SessionStart" (append $starts $entry) -}}
+{{- $_ := set $cur "hooks" $hooks -}}
+{{- toPrettyJson $cur }}
+{{ end -}}
