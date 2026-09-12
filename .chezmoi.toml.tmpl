@@ -26,6 +26,9 @@
 {{-   $machineRole = promptChoice "machineRole" (list "main" "worker") "main" -}}
 {{- end -}}
 
+[diff]
+    exclude = ["always"]
+
 [data]
     email = {{ $email | quote }}
     opAccount = {{ $opAccount | quote }}

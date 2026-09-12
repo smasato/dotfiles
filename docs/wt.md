@@ -187,7 +187,8 @@ Herdr 組み込みの worktree 作成（`new_worktree`）は無効化し、こ�
 未導入なら登録・インストールする。mise の本体インストール後に実行し、
 `CLAUDE_CONFIG_DIR` が継承されても更新先は標準 home に固定する。
 ネットワークや CLI のエラーは apply の失敗として通知され、次回の apply で再試行する。
-このスクリプトは毎回動くため、`chezmoi diff` に実行予定として表示される。
+このスクリプトは毎回実行されるが、通常の `chezmoi diff` では非表示になる。
+表示の切り替えと既存環境への設定反映は [chezmoi diff の運用](../README.md#chezmoi-diff) を参照。
 
 手動で更新する場合:
 

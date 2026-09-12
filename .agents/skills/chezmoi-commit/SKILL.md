@@ -9,9 +9,12 @@ chezmoi ソースの変更を検証してコミットするまでの手順。
 
 ## 手順
 
-1. `chezmoi diff` を実行し、これから適用される差分を確認する。意図しない差分（他タスクの変更混入・テンプレート展開ミス）があれば停止して報告する。
+ワークツリーでは、以下の chezmoi コマンドすべてに `--source "$(git rev-parse --show-toplevel)"` を付ける。
+`.chezmoi.toml.tmpl` を変更した場合は、[設定の再生成手順](../../../README.md#chezmoi-diff) に従って `chezmoi init` を実行してから差分を確認する。
+
+1. `chezmoi diff` を実行し、これから適用される差分を確認する。毎回実行するスクリプトを変更した場合は `chezmoi diff --exclude=none` でその内容も確認する。意図しない差分（他タスクの変更混入・テンプレート展開ミス）があれば停止して報告する。
 2. `chezmoi apply` で変更をホームディレクトリへ適用する。
-3. 再度 `chezmoi diff` を実行し、出力が空（drift なし）であることを確認する。差分が残る場合は原因（modify テンプレート・再ソートなど）を調査してから進む。
+3. 再度 `chezmoi diff` を実行し、出力が空（drift なし）であることを確認する。毎回実行するスクリプトは `[diff] exclude = ["always"]` により非表示になるため、空の出力はスクリプトが実行されないことを意味しない。差分が残る場合は原因（設定の再生成漏れ・modify テンプレート・再ソートなど）を調査してから進む。
 4. `dot_config/herdr/config.toml` を変更した場合は `herdr config check` を実行し、`config: ok` を確認する（デプロイ済み設定のみ検証できるため apply 後に行う）。
 5. `git status` と `git diff` で変更ファイルを確認し、今回のタスクに関係するファイルのみ `git add` する。
 6. 変更内容を要約した conventional commit メッセージ（`feat:` / `fix:` / `docs:` / `refactor:`）でコミットする。
