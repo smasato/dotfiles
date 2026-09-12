@@ -20,6 +20,38 @@ prefer the wt equivalent.
 | Merge branch into default branch and clean up | `wt merge` (run inside the worktree) | `git merge` + `git worktree remove` + `git branch -d` |
 | Remove worktree (branch deleted if merged)    | `wt remove [branch-or-path]`         | `git worktree remove` + `git branch -d`               |
 
+## Inspecting worktrees
+
+| Task                                   | Command                                      |
+| -------------------------------------- | -------------------------------------------- |
+| Check every worktree's working changes | `wt step for-each -- git status --short`     |
+| Resolve the primary worktree path      | `wt step eval '{{ primary_worktree_path }}'` |
+| Preview integrated cleanup candidates  | `wt step prune --dry-run --min-age=2d`       |
+
+`for-each` executes argv directly and sequentially. Use `sh -c` explicitly for
+pipes or redirects. Command failures are collected and execution continues;
+template expansion errors stop the run. For detached worktrees, use
+`{{ branch | default(short_commit) }}` when a label is needed.
+
+The prune preview supplements usage checks; it does not establish that a chat
+has finished or that ignored files are disposable. Keep checking active chats,
+PRs, and uncommitted files, then use `wt remove <path>` for confirmed targets.
+The JSON preview is an array with `path` and a predicted `branch_deleted`,
+not the `wt list` envelope. Branch-only candidates have a null path.
+
+## Existing remote branches
+
+To open an existing remote branch, use `wt switch origin/<branch>`; fetch that
+remote first if its tracking ref is missing. Herdr's picker accepts the same
+remote-qualified name. Reserve `--create` for a new branch: it starts at `--base`
+or the default branch even when a same-named remote branch exists.
+
+With v0.76+, `wt switch --create foo --base origin/foo` tracks `origin/foo`,
+while `--create bar --base origin/foo` has no upstream. This machine's
+`pre-start.sync` hook still adopts a same-named `origin/<branch>` when present.
+If an explicitly chosen base must be preserved, disable only that hook for the
+invocation with `--config-set 'pre-start.sync=""'`; keep the other lifecycle hooks.
+
 ## Merge behavior — check before running
 
 `wt merge` by default: squashes commits, rebases onto the target,

@@ -148,15 +148,20 @@ herdr デフォルトでは未割り当てのアクションに独自キーを�
 組み込みの worktree 作成（`new_worktree`）は無効化し、worktrunk ピッカーに置き換えている。
 
 キーバインドではないが、`wt` で worktree へ switch すると post-switch hook（`scripts/worktree-open.sh`）が
-その worktree を Herdr で開き、ワークスペースが素の状態ならレイアウトする:
+共通実装の `scripts/worktree.py` を呼び、worktree を Herdr で開く。初回は素のワークスペースをレイアウトする:
 タブ 1 = 「左: シェル / 右: ファイルビューア」の split、タブ 2 = lazygit、
 タブ 3 = 「左: シェル / 右: yazi」の split（タブラベル "yazi"）。
 hunk diff タブは自動では作らず、必要なときに `scripts/hunk-diff.sh` のキーバインドで開く。
 hook はフォーカスを動かさない。ピッカー（`prefix+shift+g` / `prefix+shift+c`）から開いたときは
 ピッカー側がフォーカスする。
-`wt remove` 時は post-remove hook が pueue 経由で `scripts/worktree-close.sh` を遅延実行し、
-その worktree のワークスペースを閉じる（pueued のセッションで走るため、close が
-`wt remove` 自身のバックグラウンド掃除を巻き添えにしない）。
+ソケット・worktree ごとのロックと進捗保存で並行実行を直列化し、途中の失敗は次の switch で再開する。
+完成後の独自変更は保ち、閉じたタブを作り直さない。作成結果や yazi 起動の成否を特定できない場合は
+自動再実行を止め、確認するペインをエラーに示す。
+`wt remove` 時は pre-remove hook が `scripts/worktree-close.sh capture` で削除前の ID を保存する。
+post-remove hook の `queue-close` が pueue で 5 秒後の close を予約する。
+同じソケット・ワークスペース・端末であることと、checkout パスが存在しないことを再確認するため、
+同じパスを作り直した場合は閉じない。pueued のプロセスグループで走るので、
+`wt remove` 自身のバックグラウンド掃除を巻き添えにしない。詳細は [Worktrunk の構成](wt.md) を参照。
 
 ### lazygit
 

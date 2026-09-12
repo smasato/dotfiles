@@ -13,71 +13,129 @@ cd "$repo" || exit 1
 
 worktrees=$(mktemp)
 prs=$(mktemp)
-trap 'rm -f "$worktrees" "$prs"' EXIT
+prune=$(mktemp)
+herdr_snapshot=$(mktemp)
+herdr_paths=$(mktemp)
+trap 'rm -f "$worktrees" "$prs" "$prune" "$herdr_snapshot" "$herdr_paths"' EXIT
 wt list --format=json > "$worktrees" || exit 1
+jq -e '.schema == 2 and (.items | type == "array")' "$worktrees" >/dev/null || exit 1
 main_wt=$(jq -r '.items[] | select(.worktree.main == true) | .worktree.path' "$worktrees")
 trunk=$(jq -r '.repo.default_branch' "$worktrees")
 
-# PR state by branch, fetched once. Empty if gh is unavailable.
-gh pr list --author "@me" --state all --limit 1000 \
-	--json number,state,headRefName 2>/dev/null > "$prs" || echo "[]" > "$prs"
+# This is only a preview. Its candidates do not override chat/WIP/PR checks.
+# Unlike wt list's envelope, prune emits a JSON array, including branch-only rows.
+prune_status=unknown
+if wt step prune --dry-run --min-age=2d --format=json > "$prune" \
+	&& jq -e 'type == "array"' "$prune" >/dev/null; then
+	prune_status=available
+else
+	printf 'Prune preview unavailable; PRUNE is unknown. Continuing the audit.\n' >&2
+fi
+
+# PR state by branch, across authors. A failure or truncated result is not "no PR".
+pr_status=unknown
+if gh pr list --state all --limit 1000 --json number,state,headRefName 2>/dev/null > "$prs" \
+	&& jq -e 'type == "array" and all(.[]; (.headRefName | type == "string") and (.state | IN("OPEN", "CLOSED", "MERGED")) and (.number | type == "number"))' "$prs" >/dev/null; then
+	pr_status=available
+else
+	printf 'PR lookup unavailable; PR is unknown.\n' >&2
+fi
+
+# Inspect only the current Herdr session when invoked from a Herdr pane.
+# Map canonical paths once; a missing server/snapshot stays unknown, not closed.
+if [ "${HERDR_ENV:-}" = 1 ] && herdr api snapshot > "$herdr_snapshot" 2>/dev/null \
+	&& jq -e '.ok != false and (.result.snapshot.workspaces | type == "array")' "$herdr_snapshot" >/dev/null; then
+	python3 - "$worktrees" "$herdr_snapshot" > "$herdr_paths" <<'PY'
+import json, os, sys
+worktrees = json.load(open(sys.argv[1]))
+snapshot = json.load(open(sys.argv[2]))["result"]["snapshot"]
+opened = {}
+for workspace in snapshot["workspaces"]:
+    path = (workspace.get("worktree") or {}).get("checkout_path")
+    if path:
+        opened.setdefault(os.path.realpath(path), []).append(workspace["workspace_id"])
+print(json.dumps({item["worktree"]["path"]: ",".join(opened.get(os.path.realpath(item["worktree"]["path"]), [])) or "-"
+                  for item in worktrees["items"] if item.get("worktree")}))
+PY
+fi
 
 transcripts="${2:-}"
-now=$(date +%s)
+# Use macOS date/stat explicitly; GNU coreutils may precede them on PATH.
+now=$(/bin/date +%s)
 
-printf "SIZE\tAGE\tMERGED\tDIRTY\tREMOTE\tPR\tLAST_CHAT\tBUCKET\tWORKTREE\n"
+printf "SIZE\tAGE\tMERGED\tDIRTY\tREMOTE\tPR\tLAST_CHAT\tPRUNE\tHERDR\tBUCKET\tWORKTREE\n"
 
-jq -r '.items[] | select(.worktree != null) | .worktree.path' "$worktrees" | while IFS= read -r wt; do
+jq -c '.items[] | select(.worktree != null)' "$worktrees" | while IFS= read -r item; do
+	wt=$(jq -r '.worktree.path' <<<"$item")
 	[ "$wt" = "$main_wt" ] && continue
 
 	size=$(du -sh "$wt" 2>/dev/null | awk '{print $1}')
-	head=$(git -C "$wt" rev-parse HEAD 2>/dev/null)
-	head_ts=$(git -C "$wt" log -1 --format='%ct' HEAD 2>/dev/null || echo 0)
+	head=$(jq -r '.head.sha // empty' <<<"$item")
+	head_ts=$(jq -r 'try (.head.committed_at | fromdateiso8601) catch 0' <<<"$item")
 	age=$([ "$head_ts" -gt 0 ] 2>/dev/null && echo "$(( (now - head_ts) / 86400 ))d" || echo "?")
 
 	# Squash-merged branches are not ancestors of main, so PR state is the
 	# real signal; merge-base only catches fast-forward/rebase merges.
-	git merge-base --is-ancestor "$head" "$trunk" 2>/dev/null && merged=YES || merged=no
+	merged=unknown
+	if [ -n "$head" ] && [ "$trunk" != null ]; then
+		git merge-base --is-ancestor "$head" "$trunk" 2>/dev/null
+		case $? in 0) merged=YES ;; 1) merged=no ;; esac
+	fi
 
 	# Distinguish real WIP (tracked edits) from disposable untracked scratch.
-	porcelain=$(git -C "$wt" status --porcelain 2>/dev/null)
-	if [ -z "$porcelain" ]; then dirty=clean
+	if ! porcelain=$(git -C "$wt" status --porcelain 2>/dev/null); then dirty=unknown
+	elif [ -z "$porcelain" ]; then dirty=clean
 	elif printf '%s\n' "$porcelain" | grep -qv '^??'; then
 		dirty="wip:$(printf '%s\n' "$porcelain" | grep -cv '^??')"
 	else dirty="scratch:$(printf '%s\n' "$porcelain" | grep -c '^??')"; fi
 
-	branch=$(git -C "$wt" symbolic-ref --quiet --short HEAD 2>/dev/null || echo "")
-	if [ -z "$branch" ]; then remote=detached
-	elif git -C "$wt" show-ref --verify --quiet "refs/remotes/origin/$branch"; then
-		[ "$(git -C "$wt" rev-parse "origin/$branch" 2>/dev/null)" = "$head" ] \
-			&& remote=pushed \
-			|| remote="ahead$(git -C "$wt" rev-list --count "origin/$branch..HEAD" 2>/dev/null)"
-	else remote=no-remote; fi
+	branch=$(jq -r '.branch // empty' <<<"$item")
+	remote=$(jq -r '
+		if .worktree.detached then "detached"
+		elif .branch == null then "unknown"
+		elif .upstream == null then "no-upstream"
+		elif (.upstream.ahead | type) != "number" or (.upstream.behind | type) != "number" then "unknown"
+		else .upstream | "\(.remote)/\(.branch):+\(.ahead)/-\(.behind)" end' <<<"$item")
 
-	pr=$([ -n "$branch" ] && jq -r --arg b "$branch" \
-		'.[] | select(.headRefName==$b) | "#\(.number)/\(.state)"' "$prs" 2>/dev/null | head -1)
-	[ -z "$pr" ] && pr="-"
+	pr=unknown
+	if [ "$pr_status" = available ]; then
+		pr=$(jq -r --arg b "$branch" '
+			[.[] | select(.headRefName == $b)] | sort_by(.state != "OPEN") |
+			if length > 0 then .[0] | "#\(.number)/\(.state)" else empty end' "$prs")
+		if [ -z "$pr" ]; then
+			[ "$(jq length "$prs")" -lt 1000 ] && pr="-" || pr=unknown
+		fi
+	fi
+	herdr_state=$(jq -r --arg p "$wt" '.[$p] // "unknown"' "$herdr_paths" 2>/dev/null)
+	[ -n "$herdr_state" ] || herdr_state=unknown
 
 	# Most recent chat whose transcript operated in this worktree. Match path
 	# followed by "/" or a quote so glint-482 does not match glint-482-r37.
 	last="-"; last_ts=0
 	if [ -d "$transcripts" ]; then
 		f=$(rg -l -0 -F -e "${wt}/" -e "${wt}\"" "$transcripts" 2>/dev/null \
-			| xargs -0 stat -f '%m %N' 2>/dev/null | sort -rn | head -1)
+			| xargs -0 /usr/bin/stat -f '%m %N' 2>/dev/null | sort -rn | head -1)
 		if [ -n "$f" ]; then last_ts=$(echo "$f" | awk '{print $1}')
-			last=$(date -r "$last_ts" '+%Y-%m-%d' 2>/dev/null); fi
+			last=$(/bin/date -r "$last_ts" '+%Y-%m-%d' 2>/dev/null); fi
 	fi
 	recent=$([ "$last_ts" -gt 0 ] 2>/dev/null && [ $(( (now - last_ts) / 86400 )) -le 4 ] && echo yes || echo no)
 
+	prune_candidate=unknown
+	if [ "$prune_status" = available ]; then
+		prune_candidate=$(jq -r --arg p "$wt" \
+			'if any(.[]; .path == $p) then "candidate" else "-" end' "$prune")
+	fi
+
 	case "$dirty" in wip:*) bucket=hold-wip ;; *)
 		case "$pr" in *OPEN*) bucket=hold-open-pr ;; *)
-			if [ "$last_ts" -eq 0 ]; then bucket=review-no-history
+			if [ "$dirty" = unknown ] || [ "$merged" = unknown ] || [ "$remote" = unknown ] || [ "$pr" = unknown ]; then bucket=hold-unknown
+			elif [ "$last_ts" -eq 0 ]; then bucket=review-no-history
 			elif [ "$recent" = yes ]; then bucket=verify-recent-chat
 			elif [ "$merged" = YES ]; then bucket=review-merged
 			else bucket=review; fi ;;
 		esac ;;
 	esac
 
-	printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
-		"$size" "$age" "$merged" "$dirty" "$remote" "$pr" "$last" "$bucket" "$wt"
+	printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
+		"$size" "$age" "$merged" "$dirty" "$remote" "$pr" "$last" "$prune_candidate" "$herdr_state" "$bucket" "$wt"
 done | sort -t$'\t' -k1,1 -rh

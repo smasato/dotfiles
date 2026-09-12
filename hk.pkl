@@ -4,6 +4,11 @@ import "package://github.com/jdx/hk/releases/download/v1.51.0/hk@1.51.0#/Builtin
 local linters = new Mapping<String, Step> {
     ["prettier"] = Builtins.prettier
 
+    ["worktrunk"] {
+        glob = List("dot_config/worktrunk/**", "dot_config/herdr/scripts/*worktree*", "dot_agents/skills/poteto-mode/scripts/*worktree*", ".chezmoiscripts/*claude-worktrunk*", "scripts/*worktrunk*", "scripts/test-worktree-audit.py", "mise.toml", "hk.pkl")
+        check = "mise run check-worktrunk"
+    }
+
     ["pkl"] {
         glob = "*.pkl"
         check = "pkl eval {{files}} >/dev/null"

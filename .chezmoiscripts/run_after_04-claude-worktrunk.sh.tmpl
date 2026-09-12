@@ -1,0 +1,28 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+set -euo pipefail
+
+# Refresh on every apply: updating the wt binary does not update Claude's cache.
+# Run after 01-mise-install and target the standard home even when apply inherits
+# CLAUDE_CONFIG_DIR from pclaude.
+export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+cd "${HOME}"
+eval "$(mise env -s bash)"
+# Unset rather than setting ~/.claude: an explicit value also relocates .claude.json.
+unset CLAUDE_CONFIG_DIR
+
+marketplaces="$(claude plugin marketplace list --json)"
+if jq -e 'any(.[]; .name == "worktrunk")' <<<"${marketplaces}" >/dev/null; then
+  claude plugin marketplace update worktrunk
+else
+  claude plugin marketplace add max-sixty/worktrunk
+fi
+
+plugins="$(claude plugin list --json)"
+if jq -e 'any(.[]; .id == "worktrunk@worktrunk" and .scope == "user")' <<<"${plugins}" >/dev/null; then
+  claude plugin update worktrunk@worktrunk --scope user
+else
+  claude plugin install worktrunk@worktrunk --scope user
+fi
+{{- end }}
