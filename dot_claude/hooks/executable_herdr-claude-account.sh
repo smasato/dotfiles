@@ -9,7 +9,7 @@ set -eu
 command -v herdr >/dev/null 2>&1 || exit 0
 command -v jq >/dev/null 2>&1 || exit 0
 
-# .claude.json lives in $CLAUDE_CONFIG_DIR when set (e.g. pclaude), else $HOME.
+# .claude.json lives in $CLAUDE_CONFIG_DIR when set (e.g. wclaude), else $HOME.
 cfg="${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json"
 [ -r "$cfg" ] || exit 0
 

@@ -199,7 +199,7 @@ claude plugin update worktrunk@worktrunk --scope user
 
 更新後は Claude Code を再起動する。v0.76 以降の activity marker hook は
 `-C "$CLAUDE_PROJECT_DIR"` を指定し、セッション中に `cd` しても起動元の worktree を示す。
-`pclaude` は設定ファイルを共有するが、別の `CLAUDE_CONFIG_DIR` を使うため、プラグインの
+`wclaude` は設定ファイルを共有するが、別の `CLAUDE_CONFIG_DIR` を使うため、プラグインの
 登録とキャッシュも確認する。独立して導入している場合は、その環境変数を指定して更新する。
 今回の自動更新スクリプトは、この別 home や他の Claude プラグインを更新しない。
 

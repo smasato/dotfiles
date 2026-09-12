@@ -43,7 +43,7 @@ elif args==['plugin','list','--json']:
                     'export PATH=' + shlex.quote(f"{root}:{os.environ['PATH']}"))
                 result = subprocess.run(["/bin/bash"], input=script, text=True,
                                         env=dict(os.environ, HOME=str(root), MODE=mode,
-                                                 LOG=str(log), CLAUDE_CONFIG_DIR="personal-home"))
+                                                 LOG=str(log), CLAUDE_CONFIG_DIR="work-home"))
                 calls = [json.loads(line) for line in log.read_text().splitlines()]
                 if mode == "offline":
                     self.assertNotEqual(result.returncode, 0)

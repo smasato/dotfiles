@@ -10,7 +10,9 @@ hk.pkl
 .prettierrc
 .prettierignore
 {{- if not .work }}
-# Work-only Codex homes (wcodex1 / wcodex2 / wcodex3) and their Raycast usage widgets.
+# Work-only Claude / Codex homes and their Raycast usage widgets.
+.claude_work
+.config/raycast/scripts/wclaude-usage.sh
 .codex_work1
 .codex_work2
 .codex_work3

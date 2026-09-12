@@ -101,7 +101,6 @@ zstyle ':completion:*' insert-tab false
 # Aliases
 alias reload="exec zsh"
 alias gs='git status'
-alias pclaude='CLAUDE_CONFIG_DIR="$HOME/.claude_personal_home" claude'
 # Show the ChatGPT account, launch command and quota in herdr from launch; the
 # SessionStart hook (same script) only fires on the first prompt. Clear the
 # pane-border label on exit so a reused pane does not keep it.
@@ -113,6 +112,8 @@ codex() {
   return $rc
 }
 {{- if .work }}
+# Work Claude account; ~/.claude (plain `claude`) is the personal account.
+alias wclaude='CLAUDE_CONFIG_DIR="$HOME/.claude_work" claude'
 # Work Business seats; ~/.codex (plain `codex`) is the personal account.
 alias wcodex1='CODEX_HOME="$HOME/.codex_work1" codex'
 alias wcodex2='CODEX_HOME="$HOME/.codex_work2" codex'

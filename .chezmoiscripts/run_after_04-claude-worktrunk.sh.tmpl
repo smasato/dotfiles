@@ -5,7 +5,7 @@ set -euo pipefail
 
 # Refresh on every apply: updating the wt binary does not update Claude's cache.
 # Run after 01-mise-install and target the standard home even when apply inherits
-# CLAUDE_CONFIG_DIR from pclaude.
+# CLAUDE_CONFIG_DIR from wclaude.
 export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 cd "${HOME}"
 eval "$(mise env -s bash)"

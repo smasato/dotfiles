@@ -21,7 +21,7 @@ Cursor 由来の 46 スキルと付属リソースを `dot_agents/skills/` で�
 
 ## ローカルの連携
 
-Claude と pclaude は既存の skills シンボリックリンクから、Codex は共有ストアから読む。
+claude と wclaude は既存の skills シンボリックリンクから、Codex は共有ストアから読む。
 Claude の `pstack-worker` はモデル継承用、`comment-sicko` は明示的なコメント監査用とする。
 配置やコマンドの前提は `pstack-runtime/references/workspace.md` にまとめる。
 
