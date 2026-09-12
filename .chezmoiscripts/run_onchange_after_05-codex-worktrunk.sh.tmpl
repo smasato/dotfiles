@@ -25,10 +25,9 @@ PY
     printf 'Worktrunk disabled in %s; leaving it disabled.\n' "$CODEX_HOME"
     continue
   fi
-  marketplaces=$(codex plugin marketplace list --json)
-  if ! jq -e 'any(.marketplaces[]; .name == "worktrunk")' <<<"$marketplaces" >/dev/null; then
-    codex plugin marketplace add max-sixty/worktrunk
-  fi
+  # Config registration does not create the per-home marketplace snapshot.
+  # Add is idempotent; list fails if that snapshot has not been fetched yet.
+  codex plugin marketplace add max-sixty/worktrunk
   plugins=$(codex plugin list --marketplace worktrunk --json)
   if ! jq -e 'any(.installed[]; .pluginId == "worktrunk@worktrunk" and .installed and .enabled)' <<<"$plugins" >/dev/null; then
     codex plugin add worktrunk@worktrunk

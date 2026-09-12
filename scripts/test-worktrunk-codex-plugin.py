@@ -23,7 +23,9 @@ if kind == "claude":
     assert args == ["plugin", "list", "--json"]
     print(json.dumps([dict(id="worktrunk@worktrunk", scope="user", enabled=True)]))
 elif args == ["plugin", "marketplace", "list", "--json"]:
-    print(json.dumps(dict(marketplaces=[dict(name="worktrunk")] if (home / "marketplace").exists() else [])))
+    if not (home / "marketplace").exists():
+        sys.exit("marketplace root does not contain a supported manifest")
+    print(json.dumps(dict(marketplaces=[dict(name="worktrunk")])))
 elif args == ["plugin", "marketplace", "add", "max-sixty/worktrunk"]:
     (home / "marketplace").touch()
 elif args == ["plugin", "add", "worktrunk@worktrunk"]:
@@ -44,7 +46,10 @@ class CodexPluginTests(unittest.TestCase):
         for name in (".claude", ".claude_work", ".codex", ".codex_work1", ".codex_work2", ".codex_work3"):
             home = root / name
             home.mkdir()
-            (home / "config.toml").write_text('[plugins."worktrunk@worktrunk"]\nenabled = true\n')
+            (home / "config.toml").write_text(
+                '[marketplaces.worktrunk]\nsource_type = "git"\n'
+                'source = "https://github.com/max-sixty/worktrunk.git"\n'
+                '[plugins."worktrunk@worktrunk"]\nenabled = true\n')
         return dict(os.environ, HOME=str(root), MODE=mode, LOG=str(root / "calls"),
                     PATH=f"{root}:{os.environ['PATH']}", CODEX_HOME="inherited-wrong-home",
                     CLAUDE_CONFIG_DIR="inherited-wrong-home")
@@ -75,7 +80,8 @@ class CodexPluginTests(unittest.TestCase):
                 subprocess.run(["/bin/bash"], input=script, text=True, env=env, capture_output=True, check=True)
                 calls = [json.loads(line) for line in (root / "calls").read_text().splitlines()]
                 self.assertEqual({home for home, args in calls}, {".codex", ".codex_work1", ".codex_work3"})
-                self.assertFalse(any("add" in args for home, args in calls))
+                self.assertFalse(any(args == ["plugin", "add", "worktrunk@worktrunk"]
+                                     for home, args in calls))
 
     def test_read_only_check_visits_each_home_and_reports_missing_plugins(self):
         with tempfile.TemporaryDirectory() as directory:
