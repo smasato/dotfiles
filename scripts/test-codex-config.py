@@ -12,7 +12,7 @@ TEMPLATE = ROOT / "dot_codex/modify_private_config.toml"
 
 def render(current):
     return subprocess.run(
-        ["chezmoi", "execute-template", "--with-stdin", "--file", str(TEMPLATE)],
+        ["chezmoi", "--source", str(ROOT), "execute-template", "--with-stdin", "--file", str(TEMPLATE)],
         input=current,
         text=True,
         capture_output=True,

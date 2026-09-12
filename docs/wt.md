@@ -344,6 +344,9 @@ Herdr 外からの実行なら `unknown` を表示する。他の Herdr セッ�
 会話の日付取得には macOS 標準の `date` / `stat` を使い、GNU coreutils の PATH に影響されない。
 
 共通の検証入口は `mise run check-worktrunk`。関連ファイルの変更時は `hk check` からも実行する。
+`dot_config/herdr/plugins/config/worktrunk/config.toml` 単独の変更も対象に含む。
+picker 設定は TOML の構文、管理するキー、真偽値、配置方法、サイズを検証する。
+配置は `split` / `popup`、サイズは正のセル数または `1%`〜`100%` を受け付ける。
 管理元への `wt config show`、実際の wt による hook 展開、Claude / Codex plugin の導入・確認失敗、
 Herdr の並行実行・再開・遅延 close、削除の確認・キャンセル・失敗、監査の PR 対応・marker・取得失敗・Herdr パス照合を検証する。
 コピーとブランチの起点は一時リポジトリに実際の worktree を作って確認する。
