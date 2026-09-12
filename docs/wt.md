@@ -205,6 +205,23 @@ claude plugin update worktrunk@worktrunk --scope user
 
 ## 状態確認と片付け候補
 
+`wt-prune` は `wt step prune --foreground` の Zsh エイリアス。
+デフォルトブランチへ統合済みのワークツリーとローカルブランチをまとめて削除する。
+`git delete-squashed-branches` がワークツリー付きブランチの削除で失敗する場合も使える。
+squash merge のほか、通常の merge や rebase で統合されたブランチも対象になる。
+判定基準は wt のデフォルトブランチで、任意の比較先ブランチを指定する機能はない。
+
+```sh
+wt-prune --dry-run       # 削除候補を確認
+wt-prune                 # 作成から1日以上の統合済み候補を削除
+wt-prune --min-age=0s     # 作成から1日未満の候補も対象にする
+```
+
+未コミットの変更があるワークツリー、ロックされたワークツリー、メインワークツリーは残る。
+削除時は通常の pre/post-remove hook が動く。現在のワークツリーも対象なら最後に削除し、
+wt のシェル統合がメインワークツリーへ移動する。リモートの最新状態を判定に使う場合は、
+先に `git fetch --prune` する。
+
 ```sh
 wt step for-each -- git status --short
 wt step eval '{{ primary_worktree_path }}'
