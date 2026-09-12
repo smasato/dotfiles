@@ -2,10 +2,10 @@
 # Open (or switch to) the herdr-lazygit tab via the plugin action and pin the
 # tab label to "lazygit" — herdr labels tabs with bare numbers and the plugin
 # offers no way to name the tab it creates. When the lazygit tab is already
-# focused, jump back to the tab we came from (remembered per workspace)
+# focused, jump back to the tab we came from (remembered per session/workspace)
 # instead of letting the plugin toggle the pane closed; close the tab with
 # lazygit's own quit (q) or close_tab instead.
-set -eu
+set -euo pipefail
 
 state_dir="${TMPDIR:-/tmp}/herdr-lazygit-return"
 mkdir -p "$state_dir"
@@ -21,12 +21,16 @@ label="$(herdr tab get "$tab_id" | jq -r '.result.tab.label // ""')"
 mode="OPEN"
 [ "$label" = "lazygit" ] && mode="RETURN"
 
-state_file="$state_dir/$(printf '%s' "$workspace_id" | tr -c 'A-Za-z0-9_-' '_')"
+session_key="$(python3 "$(dirname "$0")/herdr_common.py")"
+state_file="$state_dir/${session_key}-$(printf '%s' "$workspace_id" | tr -c 'A-Za-z0-9_-' '_')"
 
 if [ "$mode" = "RETURN" ]; then
   back=""
   [ -f "$state_file" ] && back="$(cat "$state_file")"
-  if [ -n "$back" ] && herdr tab focus "$back" >/dev/null 2>&1; then
+  if [ -n "$back" ] && herdr tab get "$back" 2>/dev/null |
+    jq -e --arg ws "$workspace_id" --arg cur "$tab_id" \
+      '.result.tab | .workspace_id == $ws and .tab_id != $cur' >/dev/null \
+    && herdr tab focus "$back" >/dev/null 2>&1; then
     exit 0
   fi
   # The recorded tab is gone — fall back to the lowest-numbered other tab in
@@ -49,8 +53,8 @@ HERDR_WORKSPACE_ID="$workspace_id" \
 # only pane in their tab (the tab variant — split lazygit panes share a tab
 # with other panes). On the toggle-close path nothing matches and we time out.
 for _ in 1 2 3 4 5 6 7 8 9 10; do
-  tab_ids="$(herdr pane list 2>/dev/null | jq -r '
-    .result.panes as $panes
+  tab_ids="$(herdr pane list --workspace "$workspace_id" 2>/dev/null | jq -r --arg ws "$workspace_id" '
+    [.result.panes[] | select(.workspace_id == $ws)] as $panes
     | reduce $panes[] as $p ({}; .[$p.tab_id] += 1) as $counts
     | $panes[] | select(.label == "Git" and $counts[.tab_id] == 1) | .tab_id
   ' 2>/dev/null || true)"

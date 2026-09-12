@@ -97,11 +97,13 @@ Worktrunk はテンプレート変数をシェル用に自動エスケープす�
 hunk diff タブは自動では作らず、必要なときに `scripts/hunk-diff.sh` のキーバインドで開く。
 
 進捗は `${XDG_STATE_HOME:-~/.local/state}/herdr/worktrunk/` に保存する。
-途中の失敗は次の switch で再開し、CLI の応答が失われた作成処理もペイン一覧から照合する。
+作成結果は API が返すペイン ID・端末 ID で記録する。タブ名変更などの途中失敗は次の switch で再開する。
+作成応答を失った場合は `creation-unconfirmed` に保留し、後から増えたペインを自動採用しない。
+復旧時には保存済みの各ペインが同じ端末・タブに属することも再確認する。
 完了後の再実行ではペインを増やさず、ユーザーが閉じたタブも再作成しない。
 既に独自レイアウトがある場合や、最初のシェルが置き換えられた場合も変更しない。
-作成結果が複数ペインに対応して特定できない場合は、自動処理を止めてエラーを出す。
-yazi 起動の応答を失った場合も端末入力を再送しない。表示されたペイン ID を確認し、必要なら手動で起動する。
+yazi 起動の応答を失った場合も `yazi-unconfirmed` に保留し、端末入力を自動再送しない。
+接続先の識別と API 呼び出しは `herdr_common.py` を共用し、lazygit の戻り先も同じソケット識別で分離する。
 
 ### worktree-close.sh（pre-remove / post-remove）
 
@@ -115,10 +117,55 @@ pueue に分離する理由: ワークスペースを閉じるとペインの
 プロセスグループが kill されるため、`wt remove` を実行したペインで直接閉じると
 wt 自身の trash 掃除（`.git/wt/trash` の rm）まで巻き添えになる。
 
+### 状態確認と復旧
+
+`herdr-worktrees` は `~/.local/bin` に配置する。`status` は保存した記録だけを読み、Herdr 停止中でも使える。
+表示は最後の記録であり、稼働中のペインや pueue の現在状態を自動取得するものではない。
+`--json` ではペイン ID・端末 ID・接続先・pueue タスク ID・最後のエラーも確認できる。
+
+```sh
+herdr-worktrees status
+herdr-worktrees status /path/to/worktree --json
+```
+
+復旧コマンドは対象の Herdr セッション内で実行する。対象パス、ソケット、ワークスペース、
+保存済み端末を照合し、別セッションや再作成された端末には適用しない。
+
+| 状態                                | 確認後の操作                                                                                   |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 通常の途中失敗                      | `herdr-worktrees resume /path/to/worktree`                                                     |
+| 作成されたペインが分かる            | `herdr-worktrees resume /path/to/worktree --adopt-pane w1:p3`                                  |
+| 作成されなかったことを確認した      | `herdr-worktrees resume /path/to/worktree --retry-pending`。ペイン集合が変わっていれば拒否する |
+| yazi が既に動いている               | `herdr-worktrees resume /path/to/worktree --yazi-running`。入力を送らず完了として記録する      |
+| yazi が起動せず、対象がシェルのまま | `herdr-worktrees resume /path/to/worktree --retry-yazi`                                        |
+| close の予約・実行失敗              | `herdr-worktrees retry-close /path/to/removed-worktree`。pueue 経由で再試行する                |
+
+`--adopt-pane` は確認済みの作成結果を明示的に採用する操作。失敗後に手動で追加した別のペインを指定しない。
+予約済み・予約結果不明の close は重複投入を拒否する。`pueue status` / `pueue log <task-id>` で
+旧タスクが停止済みか存在しないことを確認した場合だけ、`retry-close` に `--confirm-task-stopped` を付ける。
+close の記録は `captured` → `queued` → `closed` または `skipped` に進み、失敗は `queue-failed` / `close-failed`、
+予約応答が不明なら `queue-unconfirmed` として残る。後から始まった削除の記録を古いタスクで上書きしない。
+
 ### herdr-worktrunk プラグイン
 
 `.chezmoiscripts/run_onchange_after_herdr-plugins.sh.tmpl` で
-`devashish2203/herdr-worktrunk` をインストール。キーバインドは `docs/herdr.md` 参照:
+`devashish2203/herdr-worktrunk` をインストール。実処理は `scripts/update-plugins.sh` と
+`herdr_plugins.py` に集約し、file viewer・lazygit の更新と対応するエージェントスキルの同期も行う。
+本体バージョンやインストーラーの変更がない場合でも、dotfiles リポジトリで次を実行すれば更新できる。
+
+```sh
+mise run update-herdr-plugins
+```
+
+手動タスクは `check-worktrunk` を更新前後に実行する。事前検証が失敗すれば更新を始めない。
+更新後は必要なプラグインの登録・有効状態・警告を確認し、スキルを同期する。
+更新前後のバージョンとコミット、途中失敗、検証結果は
+`${XDG_STATE_HOME:-~/.local/state}/herdr/plugin-updates/` の JSON に保存する。
+chezmoi apply からの実行でも同じ更新記録を残す。前後のテスト実行は手動タスク側で行う。
+更新が途中で失敗した場合は部分更新を記録して終了する。自動ロールバックは行わない。
+テストにはスタブを使い、実際のタブ切り替えやペイン起動までは自動確認しない。
+
+キーバインドは `docs/herdr.md` 参照:
 
 - `prefix+shift+g` — worktree ピッカー（`worktrunk.open`）
 - `prefix+shift+c` — カレントリポジトリを開く（`worktrunk.open-current`）

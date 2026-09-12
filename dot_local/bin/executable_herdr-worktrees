@@ -1,0 +1,4 @@
+#!/bin/bash
+# Inspect saved Worktrunk/Herdr state and resume one explicitly selected operation.
+set -eu
+exec python3 "$HOME/.config/herdr/scripts/worktree.py" "$@"

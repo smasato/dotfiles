@@ -8,6 +8,11 @@ import unittest
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
 scripts = sorted(ROOT.glob("dot_config/herdr/scripts/*worktree*.sh"))
+scripts.extend(ROOT / path for path in (
+    "dot_config/herdr/scripts/executable_lazygit-tab.sh",
+    "dot_config/herdr/scripts/executable_update-plugins.sh",
+    "dot_local/bin/executable_herdr-worktrees",
+))
 scripts.append(ROOT / "dot_agents/skills/poteto-mode/scripts/executable_worktree-audit.sh")
 subprocess.run(["shellcheck", *map(str, scripts)], check=True)
 suite = unittest.TestSuite()

@@ -15,7 +15,8 @@ root=pathlib.Path(os.environ['FIXTURE'])
 a=sys.argv[1:]
 with (root/'calls').open('a') as f: f.write(json.dumps([pathlib.Path(sys.argv[0]).name,*a])+'\n')
 if pathlib.Path(sys.argv[0]).name=='pueue':
-    (root/'queued').write_text(json.dumps(a)); sys.exit(0)
+    if os.environ.get('FAIL')=='pueue': sys.exit(1)
+    (root/'queued').write_text(json.dumps(a)); print('41'); sys.exit(0)
 f=root/'session.json'
 s=json.loads(f.read_text())
 def value(key): return a[a.index(key)+1]
@@ -32,9 +33,17 @@ elif a[:3]==['plugin','pane','open'] or a[:2] in (['tab','create'],['pane','spli
     mode=os.environ.get('FAIL','')
     if is_git and mode=='before' and not failed.exists(): failed.touch(); sys.exit(1)
     tab='w1:t1' if 'herdr-file-viewer' in a else 'w1:t2' if is_git else 'w1:t3'
-    pane(tab)
+    created=pane(tab)
+    if a[:3]==['plugin','pane','open']: result={'plugin_pane':{'pane':created}}
+    elif a[:2]==['tab','create']: result={'root_pane':created}
+    else: result={'pane':created}
+    if is_git and os.environ.get('EXTRA'): pane('w1:manual')
     f.write_text(json.dumps(s))
     if is_git and mode=='after' and not failed.exists(): failed.touch(); sys.exit(1)
+elif a[:2]==['tab','rename'] and os.environ.get('FAIL')=='rename' and not (root/'failed').exists():
+    (root/'failed').touch(); sys.exit(1)
+elif a[:2]==['pane','run'] and os.environ.get('FAIL')=='yazi' and not (root/'failed').exists():
+    (root/'failed').touch(); sys.exit(1)
 elif a[:2]==['workspace','close']:
     s['workspaces']=[]; s['panes']=[]
 elif a[:2] not in (['tab','rename'],['pane','rename'],['pane','run']):
@@ -73,7 +82,7 @@ class HerdrTests(unittest.TestCase):
         return self.run_action("open", self.root, self.path, "feature/o'reilly", check=check)
 
     def test_retry_and_completed_layout(self):
-        self.env["FAIL"] = "before"
+        self.env["FAIL"] = "rename"
         self.assertNotEqual(self.open(check=False).returncode, 0)
         self.open()
         data = json.loads(self.session.read_text())
@@ -91,8 +100,18 @@ class HerdrTests(unittest.TestCase):
     def test_lost_creation_response(self):
         self.env["FAIL"] = "after"
         self.assertNotEqual(self.open(check=False).returncode, 0)
-        self.open()
-        self.assertEqual(len(json.loads(self.session.read_text())["panes"]), 5)
+        before = self.session.read_text()
+        self.assertNotEqual(self.open(check=False).returncode, 0)
+        self.assertEqual(self.session.read_text(), before)
+
+    def test_manual_pane_after_failure_is_not_adopted(self):
+        self.env["FAIL"] = "before"
+        self.assertNotEqual(self.open(check=False).returncode, 0)
+        data = json.loads(self.session.read_text())
+        data["panes"].append(dict(pane_id="w1:p3", terminal_id="manual", workspace_id="w1", tab_id="w1:t2"))
+        self.session.write_text(json.dumps(data))
+        self.assertNotEqual(self.open(check=False).returncode, 0)
+        self.assertEqual(json.loads(self.session.read_text()), data)
 
     def test_concurrent_open(self):
         argv = [sys.executable, str(SCRIPT), "open", str(self.root), str(self.path), "branch"]
@@ -114,7 +133,7 @@ class HerdrTests(unittest.TestCase):
         self.path.rmdir()
         self.run_action("queue-close", self.path)
         args = json.loads((self.root / "queued").read_text())
-        self.assertEqual(args[:6], ["add", "--delay", "5 seconds", "--escape", "--", sys.executable])
+        self.assertEqual(args[:7], ["add", "--delay", "5 seconds", "--escape", "--print-task-id", "--", sys.executable])
         return args[-1]
 
     def test_removed_workspace_closes(self):
@@ -151,8 +170,85 @@ class HerdrTests(unittest.TestCase):
 
     def test_failed_removal_does_not_queue(self):
         self.run_action("capture", self.path)
-        self.run_action("queue-close", self.path)
+        self.assertNotEqual(self.run_action("queue-close", self.path, check=False).returncode, 0)
         self.assertFalse((self.root / "queued").exists())
+
+    def test_creation_response_wins_over_concurrent_manual_pane(self):
+        self.env["EXTRA"] = "1"
+        self.open()
+        state = json.loads(next((self.root / "state/herdr/worktrunk").glob("*.layout.json")).read_text())
+        self.assertEqual(state["git"]["pane_id"], "w1:p3")
+        self.assertEqual(len(json.loads(self.session.read_text())["panes"]), 6)
+
+    def test_resume_confirmed_creation_and_reject_wrong_pane(self):
+        self.env["FAIL"] = "after"
+        self.open(check=False)
+        self.assertNotEqual(self.run_action("resume", self.path, "--adopt-pane", "w1:p1", check=False).returncode, 0)
+        self.run_action("resume", self.path, "--adopt-pane", "w1:p3")
+        self.assertEqual(len(json.loads(self.session.read_text())["panes"]), 5)
+
+    def test_explicit_retry_when_no_pane_was_created(self):
+        self.env["FAIL"] = "before"
+        self.open(check=False)
+        self.run_action("resume", self.path, "--retry-pending")
+        self.assertEqual(len(json.loads(self.session.read_text())["panes"]), 5)
+
+    def test_retry_refuses_changed_pane_set(self):
+        self.env["FAIL"] = "after"
+        self.open(check=False)
+        before = self.session.read_text()
+        self.assertNotEqual(self.run_action("resume", self.path, "--retry-pending", check=False).returncode, 0)
+        self.assertEqual(self.session.read_text(), before)
+
+    def test_status_works_without_server_and_does_not_call_cli(self):
+        self.env["FAIL"] = "before"
+        self.open(check=False)
+        self.socket.unlink()
+        before = (self.root / "calls").read_text()
+        rows = json.loads(self.run_action("status", self.path, "--json").stdout)
+        self.assertEqual(rows[0]["phase"], "creation-unconfirmed")
+        self.assertEqual(rows[0]["pending"]["key"], "git")
+        self.assertEqual((self.root / "calls").read_text(), before)
+
+    def test_yazi_acknowledgement_does_not_resend_input(self):
+        self.env["FAIL"] = "yazi"
+        self.open(check=False)
+        self.assertEqual(json.loads(self.run_action("status", "--json").stdout)[0]["phase"], "yazi-unconfirmed")
+        self.run_action("resume", self.path, "--yazi-running")
+        calls = [json.loads(line)[1:3] for line in (self.root / "calls").read_text().splitlines()]
+        self.assertEqual(calls.count(["pane", "run"]), 1)
+        self.assertEqual(json.loads(self.run_action("status", "--json").stdout)[0]["phase"], "complete")
+
+    def test_yazi_retry_requires_explicit_resolution(self):
+        self.env["FAIL"] = "yazi"
+        self.open(check=False)
+        self.assertNotEqual(self.run_action("resume", self.path, check=False).returncode, 0)
+        self.run_action("resume", self.path, "--retry-yazi")
+        self.assertEqual(json.loads(self.run_action("status", "--json").stdout)[0]["phase"], "complete")
+
+    def test_failed_queue_can_be_retried_and_closed(self):
+        self.run_action("capture", self.path)
+        self.path.rmdir()
+        self.env["FAIL"] = "pueue"
+        self.assertNotEqual(self.run_action("queue-close", self.path, check=False).returncode, 0)
+        self.assertEqual(json.loads(self.run_action("status", "--json").stdout)[0]["phase"], "queue-failed")
+        self.env.pop("FAIL")
+        self.run_action("retry-close", self.path)
+        self.assertEqual(json.loads(self.run_action("status", "--json").stdout)[0]["task"], "41")
+        captured = json.loads((self.root / "queued").read_text())[-1]
+        self.run_action("close", captured)
+        self.assertEqual(json.loads(self.run_action("status", "--json").stdout)[0]["phase"], "closed")
+
+    def test_queued_close_is_not_duplicated_without_confirmation(self):
+        self.queued_close()
+        self.assertNotEqual(self.run_action("retry-close", self.path, check=False).returncode, 0)
+        self.run_action("retry-close", self.path, "--confirm-task-stopped")
+
+    def test_worker_failure_is_recorded(self):
+        captured = self.queued_close()
+        self.socket.unlink()
+        self.assertNotEqual(self.run_action("close", captured, check=False).returncode, 0)
+        self.assertEqual(json.loads(self.run_action("status", "--json").stdout)[0]["phase"], "close-failed")
 
 
 if __name__ == "__main__":

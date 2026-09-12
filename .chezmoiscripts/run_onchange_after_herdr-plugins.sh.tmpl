@@ -1,52 +1,10 @@
 {{- if (eq .chezmoi.os "darwin") -}}
 #!/bin/bash
-
-set -eu
-
-# Install herdr plugins used in this environment, then write agent skills from
-# the installed herdr binary and plugin checkouts so they stay version-matched.
-# Reruns when this list changes (e.g. when a plugin is added below) or when
-# the installed herdr version changes, which also picks up plugin updates
-# (plugins are pinned to the commit resolved at install time; reinstalling
-# is the only way to move them forward).
-# plugins: devashish2203/herdr-worktrunk smarzban/herdr-file-viewer crokily/herdr-lazygit
+# Refresh plugins and their agent skills when Herdr or the installer changes.
 # herdr: {{ if lookPath "herdr" }}{{ output "herdr" "--version" | trim }}{{ else }}not installed{{ end }}
-
-# Rebuild PATH from scratch: mise env prepends its tool bin dirs, and dropping
-# the inherited PATH keeps stale entries (e.g. Homebrew's node) from shadowing them.
-export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-cd "${HOME}"
-eval "$(mise env -s bash)"
-
-if ! command -v herdr >/dev/null 2>&1; then
-  echo "herdr not found on PATH; run 'mise install' first" >&2
-  exit 1
-fi
-
-for plugin in devashish2203/herdr-worktrunk smarzban/herdr-file-viewer crokily/herdr-lazygit; do
-  echo "Installing herdr plugin: ${plugin}"
-  herdr plugin install "${plugin}" --yes
-done
-
-skills_root="${HOME}/.agents/skills"
-
-echo "Writing herdr skill from herdr --skill"
-mkdir -p "${skills_root}/herdr"
-tmp="$(mktemp)"
-herdr --skill > "${tmp}"
-mv "${tmp}" "${skills_root}/herdr/SKILL.md"
-
-fv_root="$(herdr plugin list --json | jq -r '
-  .result.plugins[]
-  | select(.plugin_id == "herdr-file-viewer")
-  | .source.managed_path // empty
-')"
-fv_skill="${fv_root}/skills/herdr-file-viewer/SKILL.md"
-if [ -z "${fv_root}" ] || [ ! -f "${fv_skill}" ]; then
-  echo "herdr-file-viewer skill not found at ${fv_skill}" >&2
-  exit 1
-fi
-echo "Copying herdr-file-viewer skill"
-mkdir -p "${skills_root}/herdr-file-viewer"
-cp "${fv_skill}" "${skills_root}/herdr-file-viewer/SKILL.md"
+# installer: {{ include "dot_config/herdr/scripts/herdr_plugins.py" | sha256sum }}
+# bootstrap: {{ include "dot_config/herdr/scripts/executable_update-plugins.sh" | sha256sum }}
+# common: {{ include "dot_config/herdr/scripts/herdr_common.py" | sha256sum }}
+set -euo pipefail
+bash "$HOME/.config/herdr/scripts/update-plugins.sh"
 {{- end }}

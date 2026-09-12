@@ -5,7 +5,7 @@ local linters = new Mapping<String, Step> {
     ["prettier"] = Builtins.prettier
 
     ["worktrunk"] {
-        glob = List("dot_config/worktrunk/**", "dot_config/herdr/scripts/*worktree*", "dot_agents/skills/poteto-mode/scripts/*worktree*", ".chezmoiscripts/*claude-worktrunk*", "scripts/*worktrunk*", "scripts/test-worktree-audit.py", "mise.toml", "hk.pkl")
+        glob = List("dot_config/worktrunk/**", "dot_config/herdr/scripts/*.py", "dot_config/herdr/scripts/*worktree*", "dot_config/herdr/scripts/*lazygit*", "dot_config/herdr/scripts/*update-plugins*", "dot_local/bin/*herdr-worktrees", "dot_agents/skills/poteto-mode/scripts/*worktree*", ".chezmoiscripts/*claude-worktrunk*", ".chezmoiscripts/*herdr-plugins*", "scripts/*worktrunk*", "scripts/update-herdr-plugins.py", "scripts/test-worktree-audit.py", "mise.toml", "hk.pkl")
         check = "mise run check-worktrunk"
     }
 

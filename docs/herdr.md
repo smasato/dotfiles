@@ -154,14 +154,21 @@ herdr デフォルトでは未割り当てのアクションに独自キーを�
 hunk diff タブは自動では作らず、必要なときに `scripts/hunk-diff.sh` のキーバインドで開く。
 hook はフォーカスを動かさない。ピッカー（`prefix+shift+g` / `prefix+shift+c`）から開いたときは
 ピッカー側がフォーカスする。
-ソケット・worktree ごとのロックと進捗保存で並行実行を直列化し、途中の失敗は次の switch で再開する。
+ソケット・worktree ごとのロックと進捗保存で並行実行を直列化する。
+作成結果は API が返す ID で保存し、作成応答が不明な場合は確認待ちにする。
+タブ名変更などの再実行可能な処理は次の switch で再開する。
 完成後の独自変更は保ち、閉じたタブを作り直さない。作成結果や yazi 起動の成否を特定できない場合は
-自動再実行を止め、確認するペインをエラーに示す。
+自動再実行を止める。`herdr-worktrees status [path] --json` で保存済みの状態・ID・エラーを確認できる。
+`herdr-worktrees resume <path>` で再開し、作成結果の確認には `--adopt-pane <id>` / `--retry-pending`、
+yazi の確認には `--yazi-running` / `--retry-yazi` を指定する。
 `wt remove` 時は pre-remove hook が `scripts/worktree-close.sh capture` で削除前の ID を保存する。
 post-remove hook の `queue-close` が pueue で 5 秒後の close を予約する。
 同じソケット・ワークスペース・端末であることと、checkout パスが存在しないことを再確認するため、
 同じパスを作り直した場合は閉じない。pueued のプロセスグループで走るので、
-`wt remove` 自身のバックグラウンド掃除を巻き添えにしない。詳細は [Worktrunk の構成](wt.md) を参照。
+`wt remove` 自身のバックグラウンド掃除を巻き添えにしない。
+close の予約・実行失敗は `herdr-worktrees retry-close <path>` で再試行できる。
+プラグインだけを更新する場合は dotfiles で `mise run update-herdr-plugins` を使う。
+更新前後の検証とバージョン記録を含む。詳細は [Worktrunk の構成](wt.md) を参照。
 
 ### lazygit
 
@@ -172,6 +179,8 @@ post-remove hook の `queue-close` が pueue で 5 秒後の close を予約す�
 
 `scripts/lazygit-tab.sh` と `scripts/hunk-diff.sh` はキーを押した時点のペイン、タブ、cwd を使うため、
 コマンド起動前に別のペインへ移動しても対象は変わらない。
+lazygit の改名対象はそのワークスペース内に限定し、戻り先はソケット・サーバーの識別情報と
+ワークスペース ID ごとに保存する。戻る直前にもタブの所属を確認し、記録が無効なら同じワークスペースの別タブへ戻る。
 
 ### hunk diff（`scripts/hunk-diff.sh`）
 

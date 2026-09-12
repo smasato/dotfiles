@@ -11,3 +11,7 @@ run = '''yq -i 'sort_keys(.packages.darwin.*.*) | (.packages.darwin.*.* | select
 [tasks.check-worktrunk]
 description = "Check Worktrunk hooks, Claude plugin updates, Herdr lifecycle, and audit"
 run = "python3 scripts/check-worktrunk.py"
+
+[tasks.update-herdr-plugins]
+description = "Update Herdr plugins and record revisions with before/after integration checks"
+run = "python3 scripts/update-herdr-plugins.py"
