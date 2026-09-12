@@ -7,6 +7,8 @@ per-home values and additional settings take precedence. */ -}}
 model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 service_tier = "fast"
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
 
 [marketplaces.worktrunk]
 source_type = "git"
