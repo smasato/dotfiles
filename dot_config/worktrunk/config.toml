@@ -14,14 +14,10 @@ json-schema = 2
 fetch = '''{% if branch %}branch={{ branch }}; case "$branch" in ''|-|@|^|pr:*|mr:*) ;; *) git show-ref --verify --quiet "refs/heads/$branch" || git fetch origin --prune || true ;; esac{% endif %}'''
 
 [pre-start]
-# Prefer `wt switch origin/<branch>` to open existing remote branches. Herdr
-# passes a selected remote ref through; a typed bare name without a local branch
-# and Claude Code's WorktreeCreate hook can still use --create instead.
-# Retain synchronization for those paths: fast-forward to the upstream, or
-# adopt origin/<branch> if it exists. This also applies after an explicit --base;
-# callers that need that base preserved should override this hook for the call.
-# Diverged or no matching remote branch: keep the base content. Skip detached HEAD.
-sync = '''{% if branch %}{% if upstream %}git merge --ff-only {{ upstream }} || true{% else %}branch={{ branch }}; { git rev-parse --verify --quiet "refs/remotes/origin/$branch" >/dev/null && git branch --set-upstream-to "origin/$branch" && git merge --ff-only "origin/$branch"; } || true{% endif %}{% endif %}'''
+# Opt in with .worktreeinclude in the primary worktree. Only ignored files
+# matching that file are copied, without overwriting existing destinations.
+# Run synchronously on creation so later startup hooks can use local settings.
+copy = "wt step copy-ignored --require-include"
 
 [post-switch]
 # Open the worktree in Herdr with the standard layout (shell + file viewer in

@@ -1,3 +1,6 @@
 # herdr-worktrunk plugin config
 # Read on each picker run; no plugin reinstall required.
 show_remote_branches = true
+picker_placement = "popup"
+popup_width = "80%"
+popup_height = "70%"

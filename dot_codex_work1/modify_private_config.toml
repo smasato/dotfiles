@@ -8,6 +8,13 @@ model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 service_tier = "fast"
 
+[marketplaces.worktrunk]
+source_type = "git"
+source = "https://github.com/max-sixty/worktrunk.git"
+
+[plugins."worktrunk@worktrunk"]
+enabled = true
+
 [plugins."visualize@openai-bundled"]
 enabled = true
 

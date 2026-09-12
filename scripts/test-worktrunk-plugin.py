@@ -17,7 +17,7 @@ class PluginTests(unittest.TestCase):
             "chezmoi", "execute-template", "--file",
             str(ROOT / ".chezmoiscripts/run_after_04-claude-worktrunk.sh.tmpl")], text=True)
         subprocess.run(["shellcheck", "-"], input=rendered, text=True, check=True)
-        for mode in ("installed", "fresh", "offline"):
+        for mode in ("installed", "fresh", "offline", "missing-after-install", "disabled"):
             with self.subTest(mode=mode), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 log = root / "calls"
@@ -25,16 +25,19 @@ class PluginTests(unittest.TestCase):
                 mise.write_text("#!/bin/sh\nexit 0\n")
                 mise.chmod(0o755)
                 claude = root / "claude"
-                claude.write_text(f"#!{sys.executable}\n" + '''import json,os,sys
+                claude.write_text(f"#!{sys.executable}\n" + '''import json,os,pathlib,sys
 assert 'CLAUDE_CONFIG_DIR' not in os.environ
 args=sys.argv[1:]
 with open(os.environ['LOG'],'a') as f: f.write(json.dumps(args)+'\\n')
 mode=os.environ['MODE']
+installed=pathlib.Path(os.environ['HOME'])/'installed'
 if mode=='offline': sys.exit(1)
 if args==['plugin','marketplace','list','--json']:
  print(json.dumps([{'name':'worktrunk'}] if mode=='installed' else []))
 elif args==['plugin','list','--json']:
- print(json.dumps([{'id':'worktrunk@worktrunk','scope':'user'}] if mode=='installed' else []))
+ print(json.dumps([{'id':'worktrunk@worktrunk','scope':'user','enabled':mode!='disabled'}]
+                  if mode=='installed' or installed.exists() else []))
+elif args[:2]==['plugin','install'] and mode!='missing-after-install': installed.touch()
 ''')
                 claude.chmod(0o755)
                 # Only replace the production PATH boundary; keep the rendered body intact.
@@ -48,6 +51,9 @@ elif args==['plugin','list','--json']:
                 if mode == "offline":
                     self.assertNotEqual(result.returncode, 0)
                     self.assertEqual(len(calls), 1)
+                elif mode in ("missing-after-install", "disabled"):
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertEqual(calls[-1], ["plugin", "list", "--json"])
                 else:
                     self.assertEqual(result.returncode, 0)
                     self.assertEqual(calls, [
@@ -57,6 +63,7 @@ elif args==['plugin','list','--json']:
                         ["plugin", "list", "--json"],
                         ["plugin", "update" if mode == "installed" else "install",
                          "worktrunk@worktrunk", "--scope", "user"],
+                        ["plugin", "list", "--json"],
                     ])
 
 

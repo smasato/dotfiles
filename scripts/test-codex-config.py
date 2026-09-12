@@ -27,6 +27,8 @@ class CodexConfigTests(unittest.TestCase):
         self.assertEqual(config["model"], "gpt-6-astra")
         self.assertEqual(config["model_reasoning_effort"], "medium")
         self.assertTrue(config["features"]["hooks"])
+        self.assertTrue(config["plugins"]["worktrunk@worktrunk"]["enabled"])
+        self.assertEqual(config["marketplaces"]["worktrunk"]["source_type"], "git")
         self.assertEqual(config["projects"][str(ROOT)]["trust_level"], "trusted")
 
     def test_existing_settings_take_precedence(self):
@@ -45,6 +47,11 @@ url = "https://mcp.linear.app/mcp"
 args = []
 [plugins."sites@openai-bundled"]
 enabled = false
+[plugins."worktrunk@worktrunk"]
+enabled = false
+[marketplaces.worktrunk]
+source_type = "local"
+source = "/custom/marketplace"
 [hooks.state.example]
 trusted = false
 [tui.model_availability_nux]

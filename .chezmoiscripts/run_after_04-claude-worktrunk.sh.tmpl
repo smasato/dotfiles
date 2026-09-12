@@ -25,4 +25,8 @@ if jq -e 'any(.[]; .id == "worktrunk@worktrunk" and .scope == "user")' <<<"${plu
 else
   claude plugin install worktrunk@worktrunk --scope user
 fi
+
+# A zero exit from update/install is not proof that this home enabled the plugin.
+plugins="$(claude plugin list --json)"
+jq -e 'any(.[]; .id == "worktrunk@worktrunk" and .scope == "user" and .enabled == true)' <<<"${plugins}" >/dev/null
 {{- end }}

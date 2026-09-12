@@ -1,0 +1,40 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+set -euo pipefail
+
+# Config defaults register the marketplace; this also installs the plugin and
+# verifies each home through Codex's own inventory. No shared-cache assumptions.
+# defaults: {{ include "dot_codex/modify_private_config.toml" | sha256sum }}
+export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+cd "${HOME}"
+eval "$(mise env -s bash)"
+codex_homes=("$HOME/.codex")
+{{ if .work -}}
+codex_homes+=("$HOME/.codex_work1" "$HOME/.codex_work2" "$HOME/.codex_work3")
+{{ end -}}
+for codex_home in "${codex_homes[@]}"; do
+  export CODEX_HOME="$codex_home"
+  # Keep an explicit per-home opt-out; installing would re-enable the plugin.
+  if python3 - "$CODEX_HOME/config.toml" <<'PY'
+import pathlib, sys, tomllib
+config = tomllib.loads(pathlib.Path(sys.argv[1]).read_text())
+disabled = config.get("plugins", {}).get("worktrunk@worktrunk", {}).get("enabled") is False
+sys.exit(0 if disabled else 1)
+PY
+  then
+    printf 'Worktrunk disabled in %s; leaving it disabled.\n' "$CODEX_HOME"
+    continue
+  fi
+  marketplaces=$(codex plugin marketplace list --json)
+  if ! jq -e 'any(.marketplaces[]; .name == "worktrunk")' <<<"$marketplaces" >/dev/null; then
+    codex plugin marketplace add max-sixty/worktrunk
+  fi
+  plugins=$(codex plugin list --marketplace worktrunk --json)
+  if ! jq -e 'any(.installed[]; .pluginId == "worktrunk@worktrunk" and .installed and .enabled)' <<<"$plugins" >/dev/null; then
+    codex plugin add worktrunk@worktrunk
+  fi
+  plugins=$(codex plugin list --marketplace worktrunk --json)
+  jq -e 'any(.installed[]; .pluginId == "worktrunk@worktrunk" and .installed and .enabled)' <<<"$plugins" >/dev/null
+  printf 'Worktrunk installed and enabled in %s\n' "$CODEX_HOME"
+done
+{{- end }}

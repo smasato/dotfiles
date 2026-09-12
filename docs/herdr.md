@@ -139,13 +139,21 @@ herdr デフォルトでは未割り当てのアクションに独自キーを�
 
 ### worktrunk / ファイルビューア
 
-| キー             | 動作                                                                       |
-| ---------------- | -------------------------------------------------------------------------- |
-| `prefix+shift+g` | worktrunk プラグインの worktree ピッカーを開く（`worktrunk.open`）         |
-| `prefix+shift+c` | worktrunk プラグインでカレントリポジトリを開く（`worktrunk.open-current`） |
-| `prefix+f`       | ファイルビューアを開く（`herdr-file-viewer.open-file-viewer`）             |
+| キー             | 動作                                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| `prefix+shift+g` | worktree ピッカーを popup で開く。新規作成の起点はデフォルトブランチ（`worktrunk.open`）      |
+| `prefix+shift+c` | worktree ピッカーを popup で開く。新規作成の起点は現在のブランチ（`worktrunk.open-current`）  |
+| `prefix+alt+x`   | 削除 popup で worktree を選び、ブランチ名・パスを確認して削除（`scripts/worktree-remove.sh`） |
+| `prefix+f`       | ファイルビューアを開く（`herdr-file-viewer.open-file-viewer`）                                |
 
 組み込みの worktree 作成（`new_worktree`）は無効化し、worktrunk ピッカーに置き換えている。
+popup は幅 80%・高さ 70%。既存レイアウトを縮めずに表示し、選択せずに Esc で閉じられる。
+`plugins/config/worktrunk/config.toml` はピッカー起動ごとに読み込まれる。
+削除 popup も幅 80%・高さ 70%。primary と detached を除き、現在の worktree も選べる。
+選択後の `Remove? [y/N]` で肯定した場合だけ `wt remove --foreground` を実行する。
+未コミット変更があれば拒否し、失敗時はエラーを表示して Enter を待つ。
+ignored ファイルは削除され、未統合ブランチは保持される。成功後は既存 hook が close を予約する。
+merge キーは追加していない。
 
 キーバインドではないが、`wt` で worktree へ switch すると post-switch hook（`scripts/worktree-open.sh`）が
 共通実装の `scripts/worktree.py` を呼び、worktree を Herdr で開く。初回は素のワークスペースをレイアウトする:

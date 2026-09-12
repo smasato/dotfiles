@@ -41,7 +41,13 @@ elif name == "herdr":
 elif name == "gh":
     if os.environ["FAILURE"] == "gh": sys.exit(1)
     if os.environ["FAILURE"] == "gh-malformed": print("{}"); sys.exit(0)
-    print(json.dumps([{"number": 7, "state": "OPEN", "headRefName": "open"}]))
+    if args == ["repo", "view", "--json", "url"]:
+        print(json.dumps({"url": "https://github.com/example/repo"}))
+    else:
+        assert args[:5] == ["pr", "list", "--repo", "https://github.com/example/repo", "--state"]
+        print(json.dumps([{"number": 7, "state": "OPEN", "headRefName": "open", "headRefOid": "open",
+                          "headRepository": {"name": "repo"}, "headRepositoryOwner": {"login": "example"},
+                          "url": "https://github.com/example/repo/pull/7"}]))
 elif name == "git":
     if args[:1] == ["-C"]:
         branch = pathlib.Path(args[1]).name
@@ -54,6 +60,8 @@ elif name == "git":
     elif args == ["status", "--porcelain"]:
         if os.environ["FAILURE"] == "status" and branch == "excluded": sys.exit(128)
         print(" M tracked.txt" if branch == "wip" else "", end="")
+    elif args[:3] == ["remote", "get-url", "--"]:
+        print("git@github.com:example/repo.git")
     else:
         sys.exit("unexpected git command: " + repr(args))
 '''
@@ -77,10 +85,11 @@ class WorktreeAuditTests(unittest.TestCase):
             (root / "list.json").write_text(json.dumps({
                 "schema": 2, "repo": {"default_branch": "main"},
                 "items": [{"branch": None if branch == "excluded" else branch,
+                    "marker": "🤖" if branch == "integrated" else "💬" if branch == "open" else None,
                     "head": {"sha": branch, "committed_at": "2020-09-13T12:26:40Z"},
                     "upstream": {"remote": "mirror", "branch": "renamed", "ahead": 2, "behind": 3}
                     if branch == "integrated" else {"remote": "origin", "branch": branch, "ahead": 0, "behind": 2}
-                    if branch == "recent" else None, "worktree": {
+                    if branch in ("recent", "open", "wip", "main") else None, "worktree": {
                     "path": str(path), "main": branch == "main", "detached": branch == "excluded"
                 }} for branch, path in paths.items()],
             }))
@@ -136,8 +145,8 @@ class WorktreeAuditTests(unittest.TestCase):
             self.assertEqual(set(rows), set(branches) - {"main"})
             expected_buckets = {
                 "integrated": "review", "wip": "hold-wip", "open": "hold-open-pr",
-                "recent": "verify-recent-chat", "unknown": "review-no-history",
-                "excluded": "review-merged",
+                "recent": "verify-recent-chat", "unknown": "hold-unknown",
+                "excluded": "hold-unknown",
             }
             if failure.startswith("gh"):
                 expected_buckets = {name: "hold-wip" if name == "wip" else "hold-unknown" for name in expected_buckets}
@@ -154,6 +163,9 @@ class WorktreeAuditTests(unittest.TestCase):
         self.assertEqual(rows["unknown"]["REMOTE"], "no-upstream")
         self.assertEqual(rows["integrated"]["HERDR"], "w7,w8")
         self.assertEqual(rows["recent"]["HERDR"], "-")
+        self.assertEqual(rows["integrated"]["MARKER"], "🤖")
+        self.assertEqual(rows["open"]["MARKER"], "💬")
+        self.assertEqual(rows["unknown"]["MARKER"], "-")
 
     def test_failed_sources_hold_unknown(self):
         for failure in ("gh", "gh-malformed", "status", "ancestry"):

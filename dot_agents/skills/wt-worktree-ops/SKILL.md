@@ -47,10 +47,14 @@ remote-qualified name. Reserve `--create` for a new branch: it starts at `--base
 or the default branch even when a same-named remote branch exists.
 
 With v0.76+, `wt switch --create foo --base origin/foo` tracks `origin/foo`,
-while `--create bar --base origin/foo` has no upstream. This machine's
-`pre-start.sync` hook still adopts a same-named `origin/<branch>` when present.
-If an explicitly chosen base must be preserved, disable only that hook for the
-invocation with `--config-set 'pre-start.sync=""'`; keep the other lifecycle hooks.
+while `--create bar --base origin/foo` has no upstream. The global sync hook
+has been removed, so a same-named remote does not override an explicit base.
+
+New worktrees copy local settings from the primary worktree only when its
+`.worktreeinclude` exists. Files must be both ignored and included; existing
+destinations are preserved. Existing worktrees do not recopy on switch.
+If copying fails, fix the cause and run `wt step copy-ignored --require-include`
+in the new worktree before resuming startup. The checkout and partial copies remain.
 
 ## Merge behavior — check before running
 

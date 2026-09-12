@@ -23,7 +23,7 @@ class HookTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             log = root / "argv.jsonl"
-            for name in ("git", "bash", "pueue"):
+            for name in ("git", "bash", "pueue", "wt"):
                 stub = root / name
                 stub.write_text(f"#!{sys.executable}\nimport json,sys\n"
                                 f"with open({str(log)!r},'a') as f: "
@@ -40,11 +40,7 @@ class HookTests(unittest.TestCase):
             with self.subTest(branch=branch):
                 self.assertEqual(self.run_hook("pre-switch", branch=branch),
                                  [["show-ref", "--verify", "--quiet", f"refs/heads/{branch}"]])
-                self.assertEqual(self.run_hook("pre-start", branch=branch, upstream=""), [
-                    ["rev-parse", "--verify", "--quiet", f"refs/remotes/origin/{branch}"],
-                    ["branch", "--set-upstream-to", f"origin/{branch}"],
-                    ["merge", "--ff-only", f"origin/{branch}"],
-                ])
+                self.assertEqual(self.run_hook("pre-start", branch=branch, upstream=""), [["step", "copy-ignored", "--require-include"]])
 
     def test_paths_and_detached_label(self):
         path = "/tmp/wt audit/o'reilly"
@@ -56,13 +52,14 @@ class HookTests(unittest.TestCase):
         self.assertEqual(calls[0][-3:], ["/tmp/repo root", path, "abc1234"])
 
     def test_detached_skips_git_hooks(self):
-        for hook in ("pre-switch", "pre-start"):
-            self.assertEqual(self.run_hook(hook, branch=""), [])
+        self.assertEqual(self.run_hook("pre-switch", branch=""), [])
+        self.assertEqual(self.run_hook("pre-start", branch=""),
+                         [["step", "copy-ignored", "--require-include"]])
 
     def test_upstream_and_remove_paths(self):
         upstream = "mirror/o'reilly"
         self.assertEqual(self.run_hook("pre-start", branch="topic", upstream=upstream),
-                         [["merge", "--ff-only", upstream]])
+                         [["step", "copy-ignored", "--require-include"]])
         path = "/tmp/o'reilly worktree"
         for hook, action in (("pre-remove", "capture"), ("post-remove", "queue-close")):
             self.assertEqual(self.run_hook(hook, worktree_path=path)[0][-2:], [action, path])

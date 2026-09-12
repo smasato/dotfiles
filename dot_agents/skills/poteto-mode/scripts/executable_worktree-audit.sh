@@ -6,6 +6,7 @@
 #
 # Usage: worktree-audit.sh [repo-path] [scoped-transcript-directory]
 set -u
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 
 repo="${1:-$(git rev-parse --show-toplevel 2>/dev/null)}"
 [ -z "$repo" ] && { echo "not in a git repo; pass a repo path" >&2; exit 1; }
@@ -32,12 +33,10 @@ else
 	printf 'Prune preview unavailable; PRUNE is unknown. Continuing the audit.\n' >&2
 fi
 
-# PR state by branch, across authors. A failure or truncated result is not "no PR".
-pr_status=unknown
-if gh pr list --state all --limit 1000 --json number,state,headRefName 2>/dev/null > "$prs" \
-	&& jq -e 'type == "array" and all(.[]; (.headRefName | type == "string") and (.state | IN("OPEN", "CLOSED", "MERGED")) and (.number | type == "number"))' "$prs" >/dev/null; then
-	pr_status=available
-else
+# PR state uses upstream repository, branch, and HEAD. Missing/ambiguous identity
+# and lookup failures remain unknown; a same-named branch is not enough.
+if ! python3 "$script_dir/worktree-prs.py" "$worktrees" > "$prs"; then
+	printf '{}\n' > "$prs"
 	printf 'PR lookup unavailable; PR is unknown.\n' >&2
 fi
 
@@ -63,7 +62,7 @@ transcripts="${2:-}"
 # Use macOS date/stat explicitly; GNU coreutils may precede them on PATH.
 now=$(/bin/date +%s)
 
-printf "SIZE\tAGE\tMERGED\tDIRTY\tREMOTE\tPR\tLAST_CHAT\tPRUNE\tHERDR\tBUCKET\tWORKTREE\n"
+printf "SIZE\tAGE\tMERGED\tDIRTY\tREMOTE\tPR\tLAST_CHAT\tPRUNE\tHERDR\tMARKER\tBUCKET\tWORKTREE\n"
 
 jq -c '.items[] | select(.worktree != null)' "$worktrees" | while IFS= read -r item; do
 	wt=$(jq -r '.worktree.path' <<<"$item")
@@ -89,7 +88,6 @@ jq -c '.items[] | select(.worktree != null)' "$worktrees" | while IFS= read -r i
 		dirty="wip:$(printf '%s\n' "$porcelain" | grep -cv '^??')"
 	else dirty="scratch:$(printf '%s\n' "$porcelain" | grep -c '^??')"; fi
 
-	branch=$(jq -r '.branch // empty' <<<"$item")
 	remote=$(jq -r '
 		if .worktree.detached then "detached"
 		elif .branch == null then "unknown"
@@ -97,15 +95,11 @@ jq -c '.items[] | select(.worktree != null)' "$worktrees" | while IFS= read -r i
 		elif (.upstream.ahead | type) != "number" or (.upstream.behind | type) != "number" then "unknown"
 		else .upstream | "\(.remote)/\(.branch):+\(.ahead)/-\(.behind)" end' <<<"$item")
 
-	pr=unknown
-	if [ "$pr_status" = available ]; then
-		pr=$(jq -r --arg b "$branch" '
-			[.[] | select(.headRefName == $b)] | sort_by(.state != "OPEN") |
-			if length > 0 then .[0] | "#\(.number)/\(.state)" else empty end' "$prs")
-		if [ -z "$pr" ]; then
-			[ "$(jq length "$prs")" -lt 1000 ] && pr="-" || pr=unknown
-		fi
-	fi
+	pr=$(jq -r --arg p "$wt" '.[$p] // "unknown"' "$prs")
+	# Saved activity is a hint, not process liveness or cleanup authorization.
+	marker=$(jq -r 'if .marker == null or .marker == "" then "-"
+		elif (.marker | type) == "string" then .marker | gsub("[\\t\\r\\n]"; " ")
+		else "unknown" end' <<<"$item")
 	herdr_state=$(jq -r --arg p "$wt" '.[$p] // "unknown"' "$herdr_paths" 2>/dev/null)
 	[ -n "$herdr_state" ] || herdr_state=unknown
 
@@ -136,6 +130,6 @@ jq -c '.items[] | select(.worktree != null)' "$worktrees" | while IFS= read -r i
 		esac ;;
 	esac
 
-	printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
-		"$size" "$age" "$merged" "$dirty" "$remote" "$pr" "$last" "$prune_candidate" "$herdr_state" "$bucket" "$wt"
+	printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
+		"$size" "$age" "$merged" "$dirty" "$remote" "$pr" "$last" "$prune_candidate" "$herdr_state" "$marker" "$bucket" "$wt"
 done | sort -t$'\t' -k1,1 -rh
