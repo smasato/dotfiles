@@ -18,6 +18,7 @@ org_type=$(jq -r '.oauthAccount.organizationType // empty' "$cfg" 2>/dev/null) |
 case "$org_type" in
   claude_team) label="Team" ;;
   claude_max) label="Max" ;;
+  claude_pro) label="Pro" ;;
   "") exit 0 ;;
   *) label="$org_type" ;;
 esac
