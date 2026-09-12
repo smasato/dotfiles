@@ -101,14 +101,20 @@ zstyle ':completion:*' insert-tab false
 # Aliases
 alias reload="exec zsh"
 alias gs='git status'
-# Show the ChatGPT account, launch command and quota in herdr from launch; the
-# SessionStart hook (same script) only fires on the first prompt. Clear the
-# pane-border label on exit so a reused pane does not keep it.
+# Show cached quota before the first prompt; Codex owns live async updates.
+# Each invocation owns its label, including when the same session is resumed.
 codex() {
-  [ "${HERDR_ENV:-}" = "1" ] && sh "$HOME/.codex/herdr-codex-account.sh"
-  command codex "$@"
-  local rc=$?
-  [ "${HERDR_ENV:-}" = "1" ] && sh "$HOME/.codex/herdr-codex-account.sh" clear
+  local -x HERDR_CODEX_RUN_ID=""
+  local rc=0
+  if [ "${HERDR_ENV:-}" = "1" ]; then
+    HERDR_CODEX_RUN_ID=$(sh "$HOME/.codex/herdr-codex-account.sh" start)
+  fi
+  {
+    command codex "$@"
+    rc=$?
+  } always {
+    [ "${HERDR_ENV:-}" = "1" ] && sh "$HOME/.codex/herdr-codex-account.sh" clear
+  }
   return $rc
 }
 {{- if .work }}

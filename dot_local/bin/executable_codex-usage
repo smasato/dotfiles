@@ -6,9 +6,10 @@
 # endpoint Codex's /status uses (chatgpt.com/backend-api/wham/usage), the same
 # one moshi-hook polls for its usage snapshots.
 #
-# Usage: codex-usage [--codex-home DIR] [--compact]
+# Usage: codex-usage [--codex-home DIR] [--compact] [--cache-only]
 #   --codex-home DIR  Codex config dir (default: $CODEX_HOME or ~/.codex).
 #   --compact         tab-bar format: no padding, space separator.
+#   --cache-only      read a recent cache without credentials or network access.
 #
 # The last successful API response is cached under ~/.cache/codex-usage/. When
 # a fetch fails (429, expired token, offline) the cached value is shown with a
@@ -33,10 +34,12 @@ export PATH="/opt/homebrew/bin:$PATH"
 
 codex_home="${CODEX_HOME:-$HOME/.codex}"
 compact=0
+cache_only=0
 while [ $# -gt 0 ]; do
     case "$1" in
         --codex-home) codex_home="$2"; shift 2 ;;
         --compact) compact=1; shift ;;
+        --cache-only) cache_only=1; shift ;;
         *) echo "unknown option: $1" >&2; exit 1 ;;
     esac
 done
@@ -79,7 +82,9 @@ render() {
 
 # Print the cached line if a recent cache exists; exit 0 either way when shown.
 show_cached_or_fail() {
-    echo "$1" >&2
+    if [ -n "${1:-}" ]; then
+        echo "$1" >&2
+    fi
     if [ -r "$cache_file" ]; then
         # /usr/bin: PATH puts Homebrew first, where a GNU stat may shadow the BSD one.
         fetched=$(/usr/bin/stat -f %m "$cache_file")
@@ -93,6 +98,10 @@ show_cached_or_fail() {
     fi
     exit 1
 }
+
+if [ "$cache_only" = 1 ]; then
+    show_cached_or_fail
+fi
 
 auth_file="$codex_home/auth.json"
 if [ ! -r "$auth_file" ]; then
@@ -128,5 +137,8 @@ if [ -z "$parsed" ]; then
 fi
 
 mkdir -p "$cache_dir"
-printf '%s' "$body" > "$cache_file.tmp" && mv "$cache_file.tmp" "$cache_file"
+# Async hooks and the tab bar can fetch the same account concurrently.
+cache_tmp=$(mktemp "$cache_file.XXXXXX")
+trap 'rm -f "$cache_tmp"' EXIT
+printf '%s' "$body" > "$cache_tmp" && mv "$cache_tmp" "$cache_file"
 echo "$parsed"

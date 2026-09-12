@@ -19,11 +19,19 @@ ChatGPT のプラン（**Business が青、Pro 20x / Pro 5x が紫、Plus が緑
 `~/.codex/herdr-codex-account.sh` が報告し、サイドバーの同じ行に表示する。
 同じスクリプトがペイン枠のラベルを `wcodex3 · S🔵14% (09/18 02:15) W🔵2% (09/18 13:00)` の形に
 置き換える（`codex-usage --compact` の出力。S は 5 時間、W は 7 日の使用率で、括弧内はリセット時刻）。
-起動直後は zsh の `codex` ラッパー関数（`wcodexN` alias も経由）が、resume / restore 後は
-Codex の SessionStart hook（最初のプロンプト送信時に発火）が、ターン終了ごとは Stop hook が
-同じスクリプトを呼び、使用率は裏で取得して届いた時点で枠が更新される。
-codex 終了時にラッパーが枠ラベルを消すので、同じペインで別エージェントを起こしても残らない。
-新しい hook は各 CODEX_HOME で一度 `/hooks` から trust する必要がある。
+起動直後は zsh の `codex` ラッパー関数（`wcodexN` alias も経由）が、
+`codex-usage --cache-only --compact` で保存済みの使用率を表示する。通信は行わず、
+キャッシュがなければ起動コマンドだけを表示する。キャッシュには `⚠` と取得時刻が付く。
+SessionStart hook（最初のプロンプト送信時に発火）とターン終了時の Stop hook は
+Codex の `async: true` で使用率を取得し、完了時に枠を更新する。
+`herdr-codex-account.sh` は同じディレクトリの Python スクリプトを呼び、独自のバックグラウンド処理は作らない。
+起動ごとの `HERDR_CODEX_RUN_ID` と取得開始順をロック下で確認し、終了後や再起動前の古い結果を破棄する。
+状態は `~/.cache/herdr-codex/`（`XDG_CACHE_HOME` 設定時はその配下）に保存する。
+SessionEnd とラッパーの終了処理が枠とアカウントtokenを消し、Herdrも実行中の `--agent codex` 表示を終了検知時に削除する。
+最初のプロンプト前の仮表示には60秒の期限を付け、シェルごと強制終了された場合の残留を防ぐ。
+通常の実行中表示には期限を付けないため、長いターンや待機中でも消えない。
+更新した SessionStart / Stop と新しい SessionEnd hook は各 CODEX_HOME の `/hooks` で trust し直す必要がある。
+他のhookの登録順は維持する。[Codexの非同期hook仕様](https://learn.chatgpt.com/docs/hooks#run-hooks-in-the-background)。
 Claude/Codex/Grok の独自行にも `machine` を含め、複数マシン接続時に実行先を確認できるようにしている。
 
 ### 明示コピー
