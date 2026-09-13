@@ -53,6 +53,8 @@
       "startup" (dict "quiet" true)
       "showHardwareCursor" true
       "tui" (dict "imeSafeCursor" true)
+      "statusLine" (dict "transparent" true)
+      "terminal" (dict "showProgress" true)
       "display" (dict
         "cacheMissMarker" true
         "showTokenUsage" true
