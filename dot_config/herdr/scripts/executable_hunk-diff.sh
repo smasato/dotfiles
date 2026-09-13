@@ -33,6 +33,17 @@ worktree) pane_label="hunk" ;;
 *) pane_label="hunk:$mode" ;;
 esac
 
+# Toggle only the current dedicated hunk tab. Never close a tab containing
+# other panes, or a hunk tab elsewhere in the workspace.
+if [ "$target" = "tab" ]; then
+  if herdr pane list --workspace "$workspace_id" | jq -e --arg tab "$tab_id" --arg label "$pane_label" '
+    [.result.panes[] | select(.tab_id == $tab)] |
+    length == 1 and .[0].label == $label
+  ' >/dev/null; then
+    exec herdr tab close "$tab_id"
+  fi
+fi
+
 # Toggle/replace for splits: close any hunk pane already in this tab. Same
 # mode means toggle off (stop here); another mode falls through and reopens.
 if [ "$target" = "split" ]; then
