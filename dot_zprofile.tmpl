@@ -24,7 +24,6 @@ export PATH="$PATH:$HOME/dev/bin"
 [ -d {{ output "brew" "--prefix" | trim }}/opt/mysql-client ] && export PATH={{ output "brew" "--prefix" | trim }}/opt/mysql-client/bin:$PATH
 
 # These tools are added to the end of PATH as they supplement existing functionality
-[ -d {{ output "brew" "--prefix" | trim }}/opt/llvm/ ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/llvm/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/curl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/curl/bin
 [ -d {{ output "brew" "--prefix" | trim }}/opt/openssl ] && export PATH=$PATH:{{ output "brew" "--prefix" | trim }}/opt/openssl/bin
 

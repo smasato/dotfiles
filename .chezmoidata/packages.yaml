@@ -69,7 +69,6 @@ packages:
         libyaml:
         libzip:
         little-cms2:
-        llvm:
         mise:
         mosh:
         moshi-hook:
