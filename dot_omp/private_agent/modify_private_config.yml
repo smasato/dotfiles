@@ -4,7 +4,7 @@
       "providers" dict
       "setupVersion" 2
       "modelRoles" (dict
-        "default" "openai-codex/gpt-5.6-sol:medium"
+        "default" "openai-codex/gpt-6-astra:medium"
         "advisor" "openai-codex/gpt-6-astra:xhigh"
         "smol" "devin/swe-2:medium"
         "tiny" "openai-codex/gpt-5.6-luna:low"
