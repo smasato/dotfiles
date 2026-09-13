@@ -4,6 +4,7 @@
 {{- /* Go の対象モデル: https://opencode.ai/docs/go/ 。Zen は比較用の Big Pickle のみ初期登録する。 */ -}}
 {{- /* モデル割り当ては初期値。OMP 内で変更した値を chezmoi apply で戻さない。 */ -}}
 {{- $config := dict
+      "providers" dict
       "setupVersion" 2
       "modelRoles" (dict
         "default" "opencode-go/kimi-k2.7-code:high"
@@ -17,6 +18,7 @@
         "vision" "xai-oauth/grok-4.6:medium"
         "commit" "opencode-go/glm-5.3-flash:low"
         "zen" "opencode-zen/big-pickle:high")
+      "advisor" (dict "enabled" true)
       "cycleOrder" (list "default" "slow" "review" "zen")
       "enabledModels" (list
         "opencode-go/kimi-k2.7-code"
@@ -31,7 +33,6 @@
         "xai-oauth/grok-4.20-multi-agent-0309"
         "opencode-zen/big-pickle")
       "modelProviderOrder" (list "opencode-go" "xai-oauth" "opencode-zen")
-      "advisor" (dict "enabled" false)
       "task" (dict
         "agentModelOverrides" (dict
           "scout" "@smol"
@@ -46,12 +47,14 @@
           "sonic" "off"
           "task" "off"
           "reviewer" "off"
-          "security-reviewer" "off"
-          "browser-verifier" "off"
-          "check-runner" "off")
-        "prewalk" false
-        "showResolvedModelBadge" true)
+          "security-reviewer" "off")
+        "prewalk" false)
       "prewalk" (dict "enabled" false)
+      "tier" (dict
+        "openai" "none"
+        "anthropic" "none"
+        "subagent" "none"
+        "advisor" "none")
 -}}
 {{- if .chezmoi.stdin -}}
 {{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}
@@ -59,4 +62,21 @@
 {{- /* 既知の仕事用バックエンドと従量課金の xai API は認証があっても選択させない。 */ -}}
 {{- $disabled := concat (get $config "disabledProviders" | default list) (list "openai-codex" "openai" "anthropic" "devin" "xai") | uniq -}}
 {{- $_ := set $config "disabledProviders" $disabled -}}
+{{- /* 通常プロファイルと同じ非モデル設定を強制する */ -}}
+{{- $enforced := dict
+      "theme" (dict "dark" "dark-catppuccin" "light" "light-catppuccin")
+      "symbolPreset" "nerd"
+      "composer" (dict "shape" "claude")
+      "personality" "pragmatic"
+      "startup" (dict "quiet" true)
+      "showHardwareCursor" true
+      "tui" (dict "imeSafeCursor" true)
+      "display" (dict
+        "cacheMissMarker" true
+        "showTokenUsage" true
+        "showTurnTime" true)
+      "task" (dict "showResolvedModelBadge" true)
+      "dev" (dict "autoqa" false)
+-}}
+{{- $config = mergeOverwrite $config $enforced -}}
 {{- toYaml $config | trim -}}
