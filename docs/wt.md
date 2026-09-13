@@ -190,12 +190,13 @@ close の記録は `captured` → `queued` → `closed` または `skipped` に�
 mise run update-herdr-plugins
 ```
 
-手動タスクは `check-worktrunk` を更新前後に実行する。事前検証が失敗すれば更新を始めない。
+手動タスクは更新前と更新成功後に `check-worktrunk` を実行する。事前検証が失敗すれば更新を始めない。
 更新後は必要なプラグインの登録・有効状態・警告を確認し、スキルを同期する。
 更新前後のバージョンとコミット、途中失敗、検証結果は
 `${XDG_STATE_HOME:-~/.local/state}/herdr/plugin-updates/` の JSON に保存する。
 chezmoi apply からの実行でも同じ更新記録を残す。前後のテスト実行は手動タスク側で行う。
 更新が途中で失敗した場合は部分更新を記録して終了する。自動ロールバックは行わない。
+インストーラーが失敗した場合は事後検証を省略し、更新記録の `validation.after` を `not-run` とする。
 テストにはスタブを使い、実際のタブ切り替えやペイン起動までは自動確認しない。
 
 キーバインドは `docs/herdr.md` 参照:
@@ -223,8 +224,8 @@ merge キーは追加していない。
 
 - `worktrunk@worktrunk` プラグインを有効化（marketplace: `max-sixty/worktrunk`）。
   worktrunk スキル（設定・hook のリファレンス）と `wt-switch-create` スキルが使える
-- `permissions.allow` に `EnterWorktree` / `ExitWorktree` を追加。
-  Claude Code の worktree 分離（`isolation: "worktree"`）が確認なしで動く
+- `permissions.allow` に `EnterWorktree` を追加。
+  worktree への入場を許可する設定であり、退出を含む全操作の確認を省略するものではない。
 
 `chezmoi apply` は `run_after_04-claude-worktrunk.sh.tmpl` を毎回実行し、
 標準の `~/.claude` にある Worktrunk marketplace とプラグインを更新する。
@@ -267,7 +268,8 @@ CODEX_HOME="$HOME/.codex" codex plugin list --marketplace worktrunk --json
 
 確認する値は `.installed[]` の `pluginId == "worktrunk@worktrunk"`、`installed: true`、`enabled: true`。
 marker を動かすには `features.hooks = true` も必要で、既定値は有効。導入後は Codex を再起動する。
-開始時に作業中、Stop / PermissionRequest 時に入力待ち、SessionEnd 時に marker を消す。
+プロンプト送信時（`UserPromptSubmit`）に作業中、Stop / PermissionRequest 時に入力待ち、
+SessionEnd 時に marker を消す。セッション起動時（`SessionStart`）に設定するものではない。
 本体の mise 更新と plugin の更新は別。更新するときは対象 home を指定して
 `codex plugin marketplace upgrade worktrunk` を実行し、一覧で状態を再確認する。
 [設定仕様](https://developers.openai.com/codex/config-reference/)、
