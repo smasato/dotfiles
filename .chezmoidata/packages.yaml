@@ -29,11 +29,7 @@ packages:
         csvq:
         curl:
         eza:
-        fb303:
-        fbthrift:
         ffmpeg:
-        fizz:
-        folly:
         freetype:
         fribidi:
         gawk:
@@ -97,7 +93,6 @@ packages:
         ugrep:
         unibilium:
         utf8proc:
-        wangle:
         webp:
         wimlib:
         x264:
