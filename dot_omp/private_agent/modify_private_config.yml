@@ -13,6 +13,15 @@
       "theme" (dict "dark" "dark-catppuccin" "light" "light-catppuccin")
       "symbolPreset" "nerd"
       "composer" (dict "shape" "claude")
+      "personality" "pragmatic"
+      "startup" (dict "quiet" true)
+      "showHardwareCursor" true
+      "tui" (dict "imeSafeCursor" true)
+      "display" (dict
+        "cacheMissMarker" true
+        "showTokenUsage" true
+        "showTurnTime" true)
+      "task" (dict "showResolvedModelBadge" true)
 -}}
 {{- $config = mergeOverwrite $config $enforced -}}
 {{- toYaml $config | trim -}}
