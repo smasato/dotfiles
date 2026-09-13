@@ -34,10 +34,10 @@ SessionEnd とラッパーの終了処理が枠とアカウントtokenを消し�
 他のhookの登録順は維持する。[Codexの非同期hook仕様](https://learn.chatgpt.com/docs/hooks#run-hooks-in-the-background)。
 Claude/Codex/Grok の独自行にも `machine` を含め、複数マシン接続時に実行先を確認できるようにしている。
 
-### 明示コピー
+### 選択時の自動コピー
 
-`copy_on_select = false` に設定している。マウスでドラッグ・ダブルクリックしても
-クリップボードは上書きせず、選択後に `Cmd+C` でコピーする。
+`copy_on_select = true` に設定している。マウスでドラッグ・ダブルクリックして選択すると、
+選択内容を自動でクリップボードにコピーする。
 ペインの出力が続いていても選択は保持される。
 
 ### エージェントへの依頼と待機
