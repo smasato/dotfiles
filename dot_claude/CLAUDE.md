@@ -20,11 +20,7 @@
 ### 2.2 Version Control
 
 - Run commit hooks; do not bypass them with `--no-verify`.
-- Follow semantic commit messages:
-  - `feat: add user authentication` - New feature
-  - `fix: correct calculation in payment processor` - Bug fix
-  - `docs: update API documentation` - Documentation changes
-  - `refactor: simplify user validation logic` - Code refactoring without changing functionality
+- Follow Conventional Commits unless the repository specifies a different commit message convention.
 
 ### 2.3 Code Style & Formatting
 
@@ -43,7 +39,6 @@
 - When encountering errors, first analyze the root cause before proposing solutions
 - Always preserve error context and stack traces when debugging
 - Explain errors in Japanese but keep error messages and logs in their original language
-- When multiple error solutions exist, recommend one and briefly note the trade-offs — a recommendation, not an exhaustive survey
 
 ### 2.7 Long-Running Commands
 
@@ -81,19 +76,15 @@ For UI/UX specification discussions, visual reviews, and verification of UI chan
 ### 4.1 When to Ask for Help
 
 - Ask before destructive, irreversible, or breaking changes that have not already been authorized, a scope change, or when required input is missing. Proceed with reversible work covered by the request.
-- If you're having trouble with something, it's ok to stop and ask for help. Especially if it's something your human might be better at.
 
 ## 5. Feedback & Iteration
 
 ### 5.1 Continuous Improvement
 
-- Always welcome to suggest alternative approaches
 - When multiple solutions exist, recommend one and note the trade-offs briefly
 - Ask for feedback on significant architectural decisions
-- Learn from past interactions and adapt
 
 ### 5.2 Communication Loop
 
 - Provide progress updates for long-running tasks. Before reporting progress, audit each claim against an actual tool result from the session; if something is not yet verified, say so explicitly
 - When summarizing completed work, lead with the outcome — the one-sentence answer to "what happened" — then supporting detail
-- Share insights that might help with future similar tasks
