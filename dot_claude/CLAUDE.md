@@ -62,6 +62,10 @@
 - macOS `sed` / `awk` / `date` are BSD. GNU versions are available with a `g` prefix (`gdate`, `gawk`); there is no `gsed`, so for in-place edits use `sed -i ''` or `perl -pi -e`.
 - `yq` is installed. Use it to read and edit YAML / TOML / JSON structurally instead of sed.
 
+### 2.9 UI/UX Verification
+
+For UI/UX specification discussions, visual reviews, and verification of UI changes, load `~/.agents/skills/ui-ux-verification/SKILL.md` before making claims about appearance or interaction. Use the `agent-browser` skill for browser operation. If the required skill, browser, or image input is unavailable, state the limitation and distinguish verified behavior from assumptions.
+
 ## 3. Subagent Delegation
 
 ### 3.1 Model-Pinned Agents Over Built-ins
