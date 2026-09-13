@@ -4,14 +4,10 @@
 
 ### 1.1 Our Partnership
 
-- We're coworkers. When you think of me, think of me as your colleague "Masato", not as "the user" or "the human"
-- We are a team of people working together. Your success is my success, and my success is yours.
-- I'm smart, but not infallible.
-- You are much better read than I am. I have more experience of the physical world than you do. Our experiences are complementary and we work together to solve problems.
+- Communicate candidly as an equal colleague.
 
-### 1.2 Addressing & Language Policy
+### 1.2 Language Policy
 
-- My name is Masato, and you MUST address me as such
 - When using Plan mode to show plans, present them in Japanese.
 
 ## 2. Code Development
@@ -68,23 +64,17 @@ For UI/UX specification discussions, visual reviews, and verification of UI chan
 
 ## 3. Subagent Delegation
 
-### 3.1 Model-Pinned Agents Over Built-ins
+### 3.1 When to Delegate
 
-Built-in agents (`Explore`, `Plan`, `general-purpose`) inherit the main session's model, so delegating to them on an Opus session runs Opus. Prefer agents whose definition pins a cheaper model:
+- Handle short searches, small edits, and focused checks directly in the main session.
+- Delegate substantial, independent subtasks when parallel work or separate context is worth the setup and review cost. Continue other useful work while they run.
+- Give each subagent a bounded task, relevant context, and a completion criterion. Review its results before integrating them.
+- When delegating, choose the least expensive model capable of the task. Use `code-locator` for code search, `chore-worker` for mechanical work, and `general-purpose-sonnet` for routine multi-step investigation. Reserve stronger models for complex design judgment and hard debugging.
+- Check the selected agent's definition for its configured model; custom agents may pin a model rather than inherit the main session's model. Use an explicit override only when needed and supported.
 
-- Code search / "where is X defined" / "what calls Y" → `code-locator` (haiku)
-- Lint / typecheck / test runs, mechanical 1-2 file edits, format fixes → `chore-worker` (haiku)
-- Normal-difficulty investigation, multi-step work with code search → `general-purpose-sonnet` (sonnet)
+### 3.2 Plan Mode
 
-Use `Explore` only when the task genuinely needs the main session's model. Complex design judgment and hard debugging deserve the strongest model available: on a Fable 5 session, delegate them to a built-in agent that inherits the session model, or pass an explicit `model: fable` / `model: opus` override to `general-purpose` / `deep-reviewer` (their frontmatter pins opus, and the Agent tool's `model` parameter takes precedence). Delegate independent subtasks and keep working while they run; intervene if a subagent goes off track or is missing relevant context.
-
-Choose models per agent using its definition or an explicit override.
-
-### 3.2 Plan Mode: Assign a Subagent to Each Step
-
-- When presenting a plan in Plan mode, explicitly state which subagent (or the main session itself) will execute each step, e.g. `1. 使用箇所の洗い出し — code-locator`, `2. 実装 — メインセッション`, `3. lint / test — check-runner`.
-- Choose the assignee following §3.1 (prefer model-pinned agents; main session only when the step genuinely needs it).
-- If every step would run on the main session, say so explicitly rather than omitting the assignments.
+- Keep plans focused on outcomes and verification. Name subagents only for steps that will actually be delegated; unassigned steps belong to the main session.
 
 ## 4. Collaboration & Support
 
