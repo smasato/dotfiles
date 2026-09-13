@@ -22,6 +22,7 @@
         "showTokenUsage" true
         "showTurnTime" true)
       "task" (dict "showResolvedModelBadge" true)
+      "dev" (dict "autoqa" false)
 -}}
 {{- $config = mergeOverwrite $config $enforced -}}
 {{- toYaml $config | trim -}}
