@@ -22,6 +22,7 @@ tmux = "latest"
 herdr = "latest"
 usage = "latest"
 hk = "latest"
+pitchfork = "latest"
 "github:aubepkg/aube" = "latest"
 worktrunk = "latest"
 hunk = "latest"
@@ -44,9 +45,8 @@ codex = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:agent-browser" = "latest"
 "npm:@opencode-ai/cli" = { version = "beta", allow_builds = ["@opencode-ai/cli"] }
-# RC pin: mise's latest resolution omits these releases. The pinned Git dependency
-# requires: MISE_NPM_PACKAGE_MANAGER=npm mise install npm:@probelabs/probe
-"npm:@probelabs/probe" = { version = "0.6.0-rc339", allow_builds = ["@probelabs/probe"] }
+# rc339 exposes MCP grep without a native implementation; repair it after install.
+"npm:@probelabs/probe" = { version = "0.6.0-rc339", allow_builds = ["@probelabs/probe"], depends = ["ripgrep", "python"], postinstall = 'python3 "$HOME/.local/bin/patch-probe.py"' }
 
 [settings]
 env_file = '.env'

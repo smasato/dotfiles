@@ -1,0 +1,12 @@
+{{- if and (not .work) (eq .chezmoi.hostname "smasato-mini") -}}
+#!/bin/bash
+set -eu
+
+# Pitchfork owns and refreshes its LaunchAgent. Do not also template that plist.
+# Register after tools and the personal host's daemon configuration are deployed.
+# pitchfork config: {{ include "dot_config/pitchfork/private_config.toml.tmpl" | sha256sum }}
+# mise tools: {{ include "dot_config/mise/config.toml" | sha256sum }}
+export PATH="/opt/homebrew/bin:${PATH}"
+cd "${HOME}"
+mise exec -- pitchfork boot enable
+{{- end }}

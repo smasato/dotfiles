@@ -1,0 +1,23 @@
+#:schema https://pitchfork.jdx.dev/schema.json
+
+[settings.general]
+mise_bin = "/opt/homebrew/bin/mise"
+
+# launchd owns the supervisor; read-only CLI use must not start a second owner.
+[settings.supervisor]
+auto_start = false
+
+[daemons.probe-tunnel]
+run = 'exec /opt/homebrew/bin/op run --account {{ .opAccount | quote }} -- tunnel-client run --profile probe'
+dir = {{ .chezmoi.homeDir | quote }}
+mise = true
+boot_start = true
+retry = 3
+ready_http = { url = "http://127.0.0.1:8080/readyz", timeout = "120s" }
+# Monitor process health, not remote readiness: network outages should reconnect
+# inside tunnel-client rather than repeatedly requesting 1Password approval.
+health_http = { url = "http://127.0.0.1:8080/healthz", interval = "30s", timeout = "5s", retries = 6 }
+
+[daemons.probe-tunnel.env]
+CONTROL_PLANE_API_KEY = "op://vuxodtxtyggstkobadvvvjn54a/5qqyny2qaz2r4etykue5ih2fwa/2mpjhxwgsn663pqkujcxuqefmi"
+CONTROL_PLANE_TUNNEL_ID = "op://vuxodtxtyggstkobadvvvjn54a/5qqyny2qaz2r4etykue5ih2fwa/tunnel_id"

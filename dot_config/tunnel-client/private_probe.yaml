@@ -1,0 +1,22 @@
+config_version: 1
+control_plane:
+  base_url: 'https://api.openai.com'
+
+  # CONTROL_PLANE_TUNNEL_ID is injected by op run, not stored in this profile.
+  api_key: 'env:CONTROL_PLANE_API_KEY'
+health:
+  # Keep a fixed port when you want a stable local admin URL.
+  # For concurrent or clean-room runs, switch listen_addr to "127.0.0.1:0" and
+  # set url_file so another process can discover the resolved /healthz, /readyz,
+  # /metrics, and /ui base URL.
+  listen_addr: '127.0.0.1:8080'
+  # url_file: "/tmp/tunnel-client-health.url"
+admin_ui:
+  open_browser: false
+log:
+  level: info
+  format: json
+mcp:
+  commands:
+    - channel: main
+      command: '/opt/homebrew/bin/mise exec -- probe mcp'

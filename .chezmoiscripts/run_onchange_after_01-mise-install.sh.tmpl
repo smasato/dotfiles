@@ -8,6 +8,7 @@ set -eu
 # lexical order of their target name, hence the zero-padded numeric prefix.
 # Reruns when the mise tool list changes.
 # mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+# Probe repair hash: {{ include "dot_local/bin/executable_patch-probe.py" | sha256sum }}
 
 export PATH="/opt/homebrew/bin:${PATH}"
 
@@ -19,5 +20,10 @@ fi
 # Run from $HOME so only the global ~/.config/mise/config.toml applies —
 # a repo-local mise.toml (e.g. the chezmoi source dir's) must not leak in.
 cd "${HOME}"
+# Probe's pinned Git dependency is unsupported by the embedded npm installer.
+# Install its prerequisites before the scoped npm override and repair hook.
+mise install --yes node python ripgrep
+MISE_NPM_PACKAGE_MANAGER=npm mise install --yes npm:@probelabs/probe
+mise exec -- python3 "$HOME/.local/bin/patch-probe.py"
 mise install --yes
 {{- end }}
