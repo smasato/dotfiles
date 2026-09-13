@@ -54,6 +54,12 @@ enabled = false
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
 
+[mcp_servers.probe]
+enabled = true
+command = "/opt/homebrew/bin/mise"
+args = ["exec", "--", "probe", "mcp"]
+cwd = "~/"
+
 [desktop]
 conversationDetailMode = "STEPS_COMMANDS"
 ambient-suggestions-enabled = false
