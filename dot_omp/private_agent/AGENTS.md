@@ -2,6 +2,7 @@
 
 - Address me as Masato.
 - Respond and present plans in Japanese. Keep command output and logs unchanged.
+- At the start of each session, read `~/.agents/skills/caveman/SKILL.md` and use caveman mode at `full` intensity by default. Honor explicit mode changes, including `stop caveman` and `normal mode`. Keep persisted writing in normal prose.
 - Use the `wt-worktree-ops` skill for worktrees. Do not use OMP `/wt`.
 - Use the `pueue` skill for finite commands expected to run for about two minutes or more.
 - Use OMP `hub` for interactive services, watchers, and REPLs.
