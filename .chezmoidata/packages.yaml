@@ -83,7 +83,6 @@ packages:
         pkg-config:
         poppler:
         procs:
-        proj:
         pueue:
           start_service: true
         re2c:
