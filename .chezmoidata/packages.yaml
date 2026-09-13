@@ -75,7 +75,6 @@ packages:
         openjdk:
         openssl@3:
         pango:
-        pipx:
         pkg-config:
         poppler:
         procs:
