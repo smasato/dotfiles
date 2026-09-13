@@ -25,11 +25,7 @@ $cmd_duration\
 $line_break\
 $character"""
 
-right_format = """
-[](lavender)\
-$time\
-[ ](lavender)\
-"""
+right_format = ""
 
 palette = 'catppuccin_{{ if eq (get . "machineRole") "worker" }}frappe{{ else }}mocha{{ end }}'
 
@@ -141,12 +137,6 @@ format = '[[ $symbol( $version)(\(#$virtualenv\)) ](fg:crust bg:green)]($style)'
 symbol = ""
 style = "bg:sapphire"
 format = '[[ $symbol( $context) ](fg:crust bg:sapphire)]($style)'
-
-[time]
-disabled = false
-time_format = "%R"
-style = "bg:lavender"
-format = '[[  $time ](fg:crust bg:lavender)]($style)'
 
 [line_break]
 disabled = true
