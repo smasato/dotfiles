@@ -82,7 +82,6 @@ packages:
           start_service: true
         re2c:
         readline:
-        reattach-to-user-namespace:
         sevenzip:
         srt:
         tcl-tk:
