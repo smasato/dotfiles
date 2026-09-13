@@ -28,6 +28,7 @@ hunk = "latest"
 grok = "latest"
 "github:can1357/oh-my-pi" = "latest"
 "github:vercel-labs/fx" = "latest"
+"github:openai/tunnel-client" = { version = "latest", asset_pattern = "tunnel-client-v*-darwin-arm64.zip" }
 neovim = "latest"
 lazygit = "latest"
 glow = "latest"
