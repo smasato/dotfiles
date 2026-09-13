@@ -1,0 +1,18 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* omp が実行時に書き換えるキーは既存の値を引き継ぐ（下は新規マシン向けの初期値） */ -}}
+{{- $config := dict
+      "providers" dict
+      "setupVersion" 2
+      "modelRoles" (dict "default" "devin/swe-2:high")
+-}}
+{{- if .chezmoi.stdin -}}
+{{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}
+{{- end -}}
+{{- /* chezmoi で強制する設定 */ -}}
+{{- $enforced := dict
+      "theme" (dict "dark" "dark-catppuccin" "light" "light-catppuccin")
+      "symbolPreset" "nerd"
+      "composer" (dict "shape" "claude")
+-}}
+{{- $config = mergeOverwrite $config $enforced -}}
+{{- toYaml $config | trim -}}
