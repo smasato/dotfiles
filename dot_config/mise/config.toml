@@ -43,6 +43,9 @@ codex = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:agent-browser" = "latest"
 "npm:@opencode-ai/cli" = { version = "beta", allow_builds = ["@opencode-ai/cli"] }
+# RC pin: mise's latest resolution omits these releases. The pinned Git dependency
+# requires: MISE_NPM_PACKAGE_MANAGER=npm mise install npm:@probelabs/probe
+"npm:@probelabs/probe" = { version = "0.6.0-rc339", allow_builds = ["@probelabs/probe"] }
 
 [settings]
 env_file = '.env'
