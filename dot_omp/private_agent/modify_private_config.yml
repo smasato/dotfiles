@@ -3,7 +3,43 @@
 {{- $config := dict
       "providers" dict
       "setupVersion" 2
-      "modelRoles" (dict "default" "devin/swe-2:high")
+      "modelRoles" (dict
+        "default" "openai-codex/gpt-5.6-sol:medium"
+        "advisor" "openai-codex/gpt-6-astra:xhigh"
+        "smol" "devin/swe-2:medium"
+        "tiny" "openai-codex/gpt-5.6-luna:low"
+        "task" "devin/swe-2:medium"
+        "plan" "openai-codex/gpt-5.6-sol:high"
+        "slow" "openai-codex/gpt-6-astra:high"
+        "review" "anthropic/claude-opus-5:high")
+      "advisor" (dict "enabled" true)
+      "cycleOrder" (list "default" "slow")
+      "enabledModels" (list
+        "openai-codex/gpt-5.6-sol"
+        "openai-codex/gpt-5.6-luna"
+        "openai-codex/gpt-6-astra"
+        "devin/swe-2"
+        "anthropic/claude-opus-5")
+      "task" (dict
+        "agentModelOverrides" (dict
+          "scout" "@smol"
+          "sonic" "@smol"
+          "task" "@task"
+          "reviewer" "@review"
+          "security-reviewer" "@slow")
+        "agentAdvisor" (dict
+          "scout" "off"
+          "sonic" "off"
+          "task" "off"
+          "reviewer" "off"
+          "security-reviewer" "off")
+        "prewalk" false)
+      "prewalk" (dict "enabled" false)
+      "tier" (dict
+        "openai" "none"
+        "anthropic" "none"
+        "subagent" "none"
+        "advisor" "none")
 -}}
 {{- if .chezmoi.stdin -}}
 {{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}
