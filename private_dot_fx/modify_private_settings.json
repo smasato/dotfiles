@@ -1,0 +1,17 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* fx writes runtime preferences to this file. Preserve them while providing
+new-machine defaults and keeping binary updates under mise. */ -}}
+{{- $settings := dict
+      "provider" "codex"
+      "permission_mode" "auto"
+      "context" true
+-}}
+{{- if .chezmoi.stdin -}}
+{{-   $settings = mergeOverwrite $settings (fromJson .chezmoi.stdin) -}}
+{{- end -}}
+{{- $enforced := dict
+      "auto_upgrade" false
+      "update_channel" "stable"
+-}}
+{{- $settings = mergeOverwrite $settings $enforced -}}
+{{- toPrettyJson $settings | trim -}}

@@ -26,6 +26,17 @@ References: [diff configuration](https://www.chezmoi.io/reference/configuration-
 [entry types](https://www.chezmoi.io/reference/command-line-flags/common/#available-entry-types),
 [configuration template](https://www.chezmoi.io/reference/special-files/chezmoi-format-tmpl/).
 
+## Update fx
+
+fx is installed by mise from `github:vercel-labs/fx`. The initial install runs
+when the managed mise configuration changes. To install a newer release later,
+upgrade it explicitly from `$HOME` so a repository-local `mise.toml` cannot
+affect resolution:
+
+```bash
+(cd "$HOME" && mise upgrade github:vercel-labs/fx)
+```
+
 # Configure hk
 
 ```bash

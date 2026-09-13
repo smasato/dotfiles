@@ -1,6 +1,7 @@
 .vscode/settings.json
 dot_config/private_karabiner/private_karabiner.json
 dot_pi/agent/modify_private_settings.json
+private_dot_fx/modify_private_settings.json
 dot_codex/modify_hooks.json
 dot_claude_work/
 dot_codex_work1/
