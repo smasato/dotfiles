@@ -11,19 +11,20 @@
         "smol" "opencode-go/glm-5.3-flash:low"
         "tiny" "opencode-go/glm-5.3-flash:low"
         "task" "opencode-go/minimax-m3:medium"
-        "plan" "opencode-go/kimi-k3:high"
-        "slow" "xai-oauth/grok-4.6:high"
+        "plan" "opencode-go/kimi-k3:max"
+        "slow" "xai-oauth/grok-4.6:xhigh"
         "advisor" "xai-oauth/grok-4.6:high"
-        "review" "opencode-go/glm-5.2:high"
+        "review" "opencode-go/glm-5.3:max"
         "vision" "xai-oauth/grok-4.6:medium"
         "commit" "opencode-go/glm-5.3-flash:low"
         "zen" "opencode-zen/big-pickle:high")
       "advisor" (dict "enabled" true)
-      "cycleOrder" (list "default" "slow" "review" "zen")
+      "cycleOrder" (list "default" "plan" "slow" "review" "zen")
       "enabledModels" (list
         "opencode-go/kimi-k2.7-code"
         "opencode-go/kimi-k3"
         "opencode-go/glm-5.3-flash"
+        "opencode-go/glm-5.3"
         "opencode-go/glm-5.2"
         "opencode-go/minimax-m3"
         "opencode-go/deepseek-v4.1-flash"
