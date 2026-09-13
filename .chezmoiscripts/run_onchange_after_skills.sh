@@ -5,9 +5,9 @@ set -eu
 # Install global agent skills via the mise-managed `skills` CLI.
 # Reruns when this list changes (e.g. when a skill is added below).
 # skills: ChromeDevTools/chrome-devtools-mcp:*
-# skills: JuliusBrussee/caveman:explicit list (workflow skills only; the caveman
-#   family comes from the caveman@caveman Claude plugin, and the Caveman Cloud
-#   skills need a gateway account this environment does not have)
+# skills: JuliusBrussee/caveman:explicit list (caveman output mode and workflow
+#   skills only; the remaining Caveman Cloud skills need a gateway account this
+#   environment does not have)
 # pstack and control-cli/control-ui/deslop are maintained in dot_agents/skills.
 # skills: emilkowalski/skill:explicit list (no write-swift / animate-expo: no Swift or Expo work here)
 # skills: github/gh-stack:gh-stack
@@ -43,11 +43,12 @@ fi
 echo "Adding skills: ChromeDevTools/chrome-devtools-mcp (all)"
 skills add ChromeDevTools/chrome-devtools-mcp --skill '*' --agent universal -g -y
 
-# Explicit names skip the caveman family (already provided by the caveman@caveman
-# Claude plugin) and the Caveman Cloud skills (caveman-discover/-evidence-review/
-# -learn/-manage/-optimize/-setup), which need a Caveman Cloud gateway account.
-echo "Adding skills: JuliusBrussee/caveman (workflow skills only)"
+# Explicit names include the caveman output mode and workflow skills. Skip the
+# Caveman Cloud skills (caveman-discover/-evidence-review/-learn/-manage/
+# -optimize/-setup), which need a Caveman Cloud gateway account.
+echo "Adding skills: JuliusBrussee/caveman (output mode and workflow skills)"
 skills add JuliusBrussee/caveman \
+  --skill caveman \
   --skill investigate-first --skill lean-build --skill migration \
   --skill safe-refactor --skill surgical-patch --skill verify-and-stop \
   --agent universal -g -y
