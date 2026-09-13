@@ -37,6 +37,36 @@ affect resolution:
 (cd "$HOME" && mise upgrade github:vercel-labs/fx)
 ```
 
+## Experimental OMP profile
+
+Run `omp --profile experimental` for personal OpenCode Go / Zen and SuperGrok
+experiments. Its config, credentials, sessions, and caches are separate from the
+default OMP profile. Only the OMP instruction overlay and custom agent definitions
+are shared through symlinks.
+
+Authenticate inside this profile with `/login opencode-go`, `/login opencode-zen`,
+and `/login xai-oauth`. Use the personal OpenCode API key and SuperGrok account.
+Credentials are not copied from the default profile or stored in this repository.
+
+Initial assignments use Kimi K2.7 Code for the main model, GLM-5.3-Flash for
+lightweight work, MiniMax M3 for task agents, Kimi K3 for planning, GLM-5.2 for
+review, and Grok 4.6 via OAuth for deeper analysis and vision. Zen's Big Pickle is
+a comparison model. The model switcher cycles through `default`, `slow`, `review`,
+and `zen`. The advisor is off initially to avoid consuming quota on every turn.
+
+The profile disables the `openai-codex`, `openai`, `anthropic`, `devin`, and paid
+`xai` backends. This is configuration isolation, not a sandbox: project settings
+and explicit command-line overrides still apply. Keep work repositories out of
+personal experiments.
+
+Model assignments are initial defaults; changes made inside OMP survive
+`chezmoi apply`. Inspect them with
+`omp --profile experimental config get modelRoles --json`.
+[Go limits vary by model](https://opencode.ai/docs/go/). Enabling **Use balance**
+in the OpenCode console permits Go overages to consume Zen credits. SuperGrok
+OAuth model access depends on the subscription; catalog presence alone does not
+prove account access.
+
 # Configure hk
 
 ```bash

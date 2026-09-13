@@ -1,0 +1,62 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* 起動: omp --profile experimental。認証とセッションは通常プロファイルから分離する。 */ -}}
+{{- /* 初回は /login opencode-go、/login opencode-zen、/login xai-oauth で個人契約を登録する。 */ -}}
+{{- /* Go の対象モデル: https://opencode.ai/docs/go/ 。Zen は比較用の Big Pickle のみ初期登録する。 */ -}}
+{{- /* モデル割り当ては初期値。OMP 内で変更した値を chezmoi apply で戻さない。 */ -}}
+{{- $config := dict
+      "setupVersion" 2
+      "modelRoles" (dict
+        "default" "opencode-go/kimi-k2.7-code:high"
+        "smol" "opencode-go/glm-5.3-flash:low"
+        "tiny" "opencode-go/glm-5.3-flash:low"
+        "task" "opencode-go/minimax-m3:medium"
+        "plan" "opencode-go/kimi-k3:high"
+        "slow" "xai-oauth/grok-4.6:high"
+        "advisor" "xai-oauth/grok-4.6:high"
+        "review" "opencode-go/glm-5.2:high"
+        "vision" "xai-oauth/grok-4.6:medium"
+        "commit" "opencode-go/glm-5.3-flash:low"
+        "zen" "opencode-zen/big-pickle:high")
+      "cycleOrder" (list "default" "slow" "review" "zen")
+      "enabledModels" (list
+        "opencode-go/kimi-k2.7-code"
+        "opencode-go/kimi-k3"
+        "opencode-go/glm-5.3-flash"
+        "opencode-go/glm-5.2"
+        "opencode-go/minimax-m3"
+        "opencode-go/deepseek-v4.1-flash"
+        "opencode-go/qwen3.7-plus"
+        "opencode-go/mimo-v2.5"
+        "xai-oauth/grok-4.6"
+        "xai-oauth/grok-4.20-multi-agent-0309"
+        "opencode-zen/big-pickle")
+      "modelProviderOrder" (list "opencode-go" "xai-oauth" "opencode-zen")
+      "advisor" (dict "enabled" false)
+      "task" (dict
+        "agentModelOverrides" (dict
+          "scout" "@smol"
+          "sonic" "@smol"
+          "task" "@task"
+          "reviewer" "@review"
+          "security-reviewer" "@slow"
+          "browser-verifier" "@vision"
+          "check-runner" "@smol")
+        "agentAdvisor" (dict
+          "scout" "off"
+          "sonic" "off"
+          "task" "off"
+          "reviewer" "off"
+          "security-reviewer" "off"
+          "browser-verifier" "off"
+          "check-runner" "off")
+        "prewalk" false
+        "showResolvedModelBadge" true)
+      "prewalk" (dict "enabled" false)
+-}}
+{{- if .chezmoi.stdin -}}
+{{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}
+{{- end -}}
+{{- /* 既知の仕事用バックエンドと従量課金の xai API は認証があっても選択させない。 */ -}}
+{{- $disabled := concat (get $config "disabledProviders" | default list) (list "openai-codex" "openai" "anthropic" "devin" "xai") | uniq -}}
+{{- $_ := set $config "disabledProviders" $disabled -}}
+{{- toYaml $config | trim -}}
