@@ -4,14 +4,14 @@
       "providers" dict
       "setupVersion" 2
       "modelRoles" (dict
-        "default" "openai-codex/gpt-6-astra:medium"
-        "advisor" "openai-codex/gpt-6-astra:xhigh"
-        "smol" "devin/swe-2:medium"
+        "default" "openai-codex/gpt-6-astra:low"
+        "advisor" "anthropic/claude-fable-5-1:medium"
+        "smol" "devin/glm-5-3-flash-1m:low"
         "tiny" "openai-codex/gpt-5.6-luna:low"
         "task" "devin/swe-2:medium"
-        "plan" "openai-codex/gpt-5.6-sol:high"
-        "slow" "openai-codex/gpt-6-astra:high"
-        "review" "anthropic/claude-opus-5:high")
+        "plan" "openai-codex/gpt-6-astra:xhigh"
+        "slow" "openai-codex/gpt-6-astra:xhigh"
+        "review" "anthropic/claude-fable-5-1:high")
       "advisor" (dict "enabled" true)
       "cycleOrder" (list "default" "slow")
       "enabledModels" (list
