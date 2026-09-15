@@ -1,6 +1,7 @@
 """Verify Codex defaults preserve existing per-home settings."""
 
 from pathlib import Path
+import json
 import subprocess
 import tomllib
 import unittest
@@ -10,9 +11,10 @@ ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "dot_codex/modify_private_config.toml"
 
 
-def render(current):
+def render(current, *, work=False):
     return subprocess.run(
-        ["chezmoi", "--source", str(ROOT), "execute-template", "--with-stdin", "--file", str(TEMPLATE)],
+        ["chezmoi", "--source", str(ROOT), "--override-data", json.dumps({"work": work}),
+         "execute-template", "--with-stdin", "--file", str(TEMPLATE)],
         input=current,
         text=True,
         capture_output=True,
@@ -71,8 +73,39 @@ trusted = false
         self.assertIn("openaiDeveloperDocs", result["mcp_servers"])
 
     def test_apply_is_idempotent(self):
-        first = render('model_reasoning_effort = "low"\n')
-        self.assertEqual(render(first), first)
+        for work in (False, True):
+            with self.subTest(work=work):
+                first = render('model_reasoning_effort = "low"\n', work=work)
+                self.assertEqual(render(first, work=work), first)
+
+    def test_probe_is_only_added_on_personal_profile(self):
+        for work in (False, True):
+            with self.subTest(work=work):
+                config = tomllib.loads(render("", work=work))
+                self.assertEqual("probe" in config["mcp_servers"], not work)
+
+    def test_work_profile_removes_existing_probe(self):
+        current = render('''
+[mcp_servers.probe]
+cwd = "/custom/probe"
+enabled = false
+[mcp_servers.linear]
+url = "https://mcp.linear.app/mcp"
+''')
+        expected = tomllib.loads(current)
+        del expected["mcp_servers"]["probe"]
+        result = render(current, work=True)
+        self.assertEqual(tomllib.loads(result), expected)
+        self.assertEqual(render(result, work=True), result)
+
+    def test_personal_probe_uses_home_directory_and_preserves_opt_out(self):
+        config = tomllib.loads(render('''
+[mcp_servers.probe]
+cwd = "/custom/probe"
+enabled = false
+'''))
+        self.assertEqual(config["mcp_servers"]["probe"]["cwd"], str(Path.home()))
+        self.assertFalse(config["mcp_servers"]["probe"]["enabled"])
 
     def test_complete_config_preserves_comments_and_formatting(self):
         current = "# Keep this comment.\n" + render("")

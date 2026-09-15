@@ -7,7 +7,7 @@ Worktrunk（`wt` CLI）による git worktree 管理の構成メモ。
 
 | ファイル                                                        | 役割                                                                 |
 | --------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `dot_config/mise/config.toml`                                   | mise で `worktrunk = "latest"` をインストール                        |
+| `dot_config/mise/config.toml.tmpl`                              | mise で `worktrunk = "latest"` をインストール                        |
 | `dot_zshrc.tmpl`                                                | シェル統合（`wt config shell init zsh` を eval）                     |
 | `dot_config/worktrunk/config.toml`                              | ユーザー設定。ライフサイクル hook を定義                             |
 | `dot_config/herdr/scripts/executable_worktree-open.sh`          | post-switch hook から呼ばれ、worktree を Herdr で開く                |
@@ -20,7 +20,7 @@ Worktrunk（`wt` CLI）による git worktree 管理の構成メモ。
 
 ## インストールとシェル統合
 
-- 本体は mise 管理（`dot_config/mise/config.toml` の `worktrunk = "latest"`）。
+- 本体は mise 管理（`dot_config/mise/config.toml.tmpl` の `worktrunk = "latest"`）。
 - `.zshrc` で `wt` が存在すれば `eval "$(command wt config shell init zsh)"` を実行。
   これで `wt switch` 後にシェルの cwd が worktree へ移動する（シェル統合なしでは cd できない）。
 

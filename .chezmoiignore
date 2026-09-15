@@ -20,6 +20,9 @@ hk.pkl
 .config/raycast/scripts/wcodex2-usage.sh
 .config/raycast/scripts/wcodex3-usage.sh
 {{- end }}
+{{- if .work }}
+.local/bin/patch-probe.py
+{{- end }}
 {{- if or .work (ne .chezmoi.hostname "smasato-mini") }}
 # This tunnel belongs to the personal Mac mini. Never start it on another host.
 .config/pitchfork/config.toml

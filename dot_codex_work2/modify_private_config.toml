@@ -2,7 +2,7 @@
 {{- /* Kept byte-identical across dot_codex and dot_codex_work1/2/3:
 chezmoi modify-templates cannot include .chezmoitemplates, so each Codex home
 carries its own copy. Existing per-home values take precedence over defaults,
-except Probe's cwd always uses the home directory. */ -}}
+except Probe is removed on work profiles and its cwd uses the personal home. */ -}}
 {{- $defaults := fromToml `
 model = "gpt-6-astra"
 model_reasoning_effort = "medium"
@@ -72,7 +72,11 @@ ambient-suggestions-enabled = false
 {{- $cur := dict -}}
 {{- if .chezmoi.stdin }}{{ $cur = fromToml .chezmoi.stdin }}{{ end -}}
 {{- $merged := mergeOverwrite $defaults $cur -}}
+{{- if .work -}}
+{{- $_ := unset $merged.mcp_servers "probe" -}}
+{{- else -}}
 {{- $_ := set $merged.mcp_servers.probe "cwd" .chezmoi.homeDir -}}
+{{- end -}}
 {{- if deepEqual $cur $merged -}}
 {{- .chezmoi.stdin -}}
 {{- else -}}

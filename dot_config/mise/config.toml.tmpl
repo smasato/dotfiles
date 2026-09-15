@@ -22,14 +22,18 @@ tmux = "latest"
 herdr = "latest"
 usage = "latest"
 hk = "latest"
+{{ if not .work -}}
 pitchfork = "latest"
+{{ end -}}
 "github:aubepkg/aube" = "latest"
 worktrunk = "latest"
 hunk = "latest"
 grok = "latest"
 "github:can1357/oh-my-pi" = "latest"
 "github:vercel-labs/fx" = "latest"
+{{ if not .work -}}
 "github:openai/tunnel-client" = { version = "latest", asset_pattern = "tunnel-client-v*-darwin-arm64.zip" }
+{{ end -}}
 neovim = "latest"
 lazygit = "latest"
 glow = "latest"
@@ -45,8 +49,10 @@ codex = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:agent-browser" = "latest"
 "npm:@opencode-ai/cli" = { version = "beta", allow_builds = ["@opencode-ai/cli"] }
+{{ if not .work -}}
 # rc339 exposes MCP grep without a native implementation; repair it after install.
 "npm:@probelabs/probe" = { version = "0.6.0-rc339", allow_builds = ["@probelabs/probe"], depends = ["ripgrep", "python"], postinstall = 'python3 "$HOME/.local/bin/patch-probe.py"' }
+{{ end }}
 
 [settings]
 env_file = '.env'
