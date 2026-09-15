@@ -288,16 +288,16 @@ v0.77.0 の `wt config show` は plugin 存在判定に限界があるため、�
 
 ## 状態確認と片付け候補
 
-`wt-prune` は `wt step prune --foreground` の Zsh エイリアス。
+`wt-prune` は `wt step prune --foreground --min-age=0s` の Zsh エイリアス。
 デフォルトブランチへ統合済みのワークツリーとローカルブランチをまとめて削除する。
 `git delete-squashed-branches` がワークツリー付きブランチの削除で失敗する場合も使える。
 squash merge のほか、通常の merge や rebase で統合されたブランチも対象になる。
 判定基準は wt のデフォルトブランチで、任意の比較先ブランチを指定する機能はない。
 
 ```sh
+wt-prune                 # 作成時刻を問わず統合済み候補を削除
 wt-prune --dry-run       # 削除候補を確認
-wt-prune                 # 作成から1日以上の統合済み候補を削除
-wt-prune --min-age=0s     # 作成から1日未満の候補も対象にする
+wt step prune --foreground --min-age=2d  # 年齢制限が必要な場合は元コマンドを使う
 ```
 
 未コミットの変更があるワークツリー、ロックされたワークツリー、メインワークツリーは残る。
