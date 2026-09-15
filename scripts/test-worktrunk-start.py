@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import unittest
@@ -25,6 +26,9 @@ class StartTests(unittest.TestCase):
         local_vars = subprocess.check_output(
             ["git", "rev-parse", "--local-env-vars"], text=True).splitlines()
         self.env = {key: value for key, value in os.environ.items() if key not in local_vars}
+        # core.hooksPath only disables hook files, not hook.<name>.command.
+        # Fixture commits must not inherit user hooks, signing, or system config.
+        self.env.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1")
         self.env.update(GIT_AUTHOR_NAME="Test", GIT_AUTHOR_EMAIL="test@example.com",
                         GIT_COMMITTER_NAME="Test", GIT_COMMITTER_EMAIL="test@example.com")
         self.git("init", "-q", "--initial-branch=main", str(self.repo), cwd=self.root)
@@ -92,7 +96,7 @@ class StartTests(unittest.TestCase):
         target = self.create("topic")
         self.assertEqual(self.git("rev-parse", "HEAD", cwd=target).stdout.strip(), self.base)
         result = subprocess.run(["git", "config", "--get", "branch.topic.remote"],
-                                cwd=target, capture_output=True)
+                                cwd=target, env=self.env, capture_output=True)
         self.assertEqual(result.returncode, 1)
 
     def test_copy_failure_stops_startup_and_keeps_created_worktree(self):
@@ -126,6 +130,28 @@ class StartTests(unittest.TestCase):
         self.wt("remove", "--foreground", "--", str(target))
         self.assertFalse(target.exists())
         self.git("show-ref", "--verify", "refs/heads/unmerged")
+
+
+class GitIsolationTests(unittest.TestCase):
+    def test_fixture_ignores_global_hooks_and_signing(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = Path(directory) / "gitconfig"
+            config.write_text(
+                '[hook "reject-fixture"]\n'
+                '    event = pre-commit\n'
+                '    command = false\n'
+                '[commit]\n'
+                '    gpgSign = true\n'
+                '[gpg]\n'
+                '    program = /nonexistent/fixture-signing-program\n'
+            )
+            result = subprocess.run(
+                [sys.executable, str(Path(__file__).resolve()),
+                 "StartTests.test_include_is_required"],
+                env=dict(os.environ, GIT_CONFIG_GLOBAL=str(config)),
+                text=True, capture_output=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":
