@@ -19,6 +19,19 @@ Claude と Codex は設定・skills の追加後に新しいセッションで�
 Codex の自動 Stop hook は追加していない。
 Herdr の全キーは [チートシート](herdr.md#annotate) を参照。
 
+### ターミナルの選択と自動コピー
+
+現在は Herdr の `copy_on_select = true`。マウス選択後にハイライトが消えても、
+ローカル Mac ではそのまま `Ctrl+F` → `u` で注釈を開く。
+`annotate.capture` は選択テキストがない場合にクリップボードを読み取るため、
+選択表示を維持する必要はない。途中で別のテキストをコピーしないこと。
+開いた注釈画面で引用内容を確認し、コメントを入力して `Ctrl+S` で保存する。
+
+リモート Herdr では、手元のクリップボードとプラグインの実行先が異なる場合がある。
+さらに prefix 入力自体が選択を解除する既知の制限があり、
+`copy_on_select = false` だけでは解決しない。
+[公式のリモート向け回避策](https://github.com/plannotator/herdr-annotate#remote-sessions)を参照。
+
 ## 管理と更新
 
 [plannotator.yaml](../.chezmoidata/plannotator.yaml) の version でブラウザー版 binary、
