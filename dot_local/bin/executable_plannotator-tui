@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+
+# Use Herdr Annotate's bundled release, including after plugin updates.
+plugin_root=$(herdr plugin list --plugin annotate --json |
+  jq -er '.result.plugins[] | select(.plugin_id == "annotate" and .enabled) | .source.managed_path')
+export HERDR_PLUGIN_ID=annotate
+exec "$plugin_root/bin/plannotator-tui.exe" "$@"

@@ -15,6 +15,7 @@ PLUGINS = {
     "worktrunk": "devashish2203/herdr-worktrunk",
     "herdr-file-viewer": "smarzban/herdr-file-viewer",
     "herdr-lazygit": "crokily/herdr-lazygit",
+    "annotate": "plannotator/herdr-annotate",
 }
 
 
@@ -32,14 +33,15 @@ def revisions(plugins):
 
 def refresh_skills(plugins):
     herdr_skill = subprocess.check_output(["herdr", "--skill"], text=True, timeout=15)
-    viewer = plugins["herdr-file-viewer"]
-    managed = viewer.get("source", {}).get("managed_path")
-    if not managed:
-        raise RuntimeError("Installed file viewer has no managed checkout")
-    viewer_skill = (Path(managed) / "skills/herdr-file-viewer/SKILL.md").read_text()
-    if not herdr_skill.strip() or not viewer_skill.strip():
+    skills = {"herdr": herdr_skill}
+    for plugin_id, name in (("herdr-file-viewer", "herdr-file-viewer"), ("annotate", "plannotator-tui")):
+        managed = plugins[plugin_id].get("source", {}).get("managed_path")
+        if not managed:
+            raise RuntimeError(f"Installed {plugin_id} has no managed checkout")
+        skills[name] = (Path(managed) / "skills" / name / "SKILL.md").read_text()
+    if any(not content.strip() for content in skills.values()):
         raise RuntimeError("Refusing to replace an agent skill with empty output")
-    for name, content in (("herdr", herdr_skill), ("herdr-file-viewer", viewer_skill)):
+    for name, content in skills.items():
         directory = Path.home() / ".agents/skills" / name
         directory.mkdir(parents=True, exist_ok=True)
         temporary = directory / ".SKILL.md.update"

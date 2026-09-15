@@ -186,6 +186,23 @@ close の予約・実行失敗は `herdr-worktrees retry-close <path>` で再試
 プラグインだけを更新する場合は dotfiles で `mise run update-herdr-plugins` を使う。
 更新前後の検証とバージョン記録を含む。詳細は [Worktrunk の構成](wt.md) を参照。
 
+### Annotate
+
+| キー             | 動作                                                        |
+| ---------------- | ----------------------------------------------------------- |
+| `prefix+u`       | 選択テキストにコメント（`annotate.capture`）                |
+| `prefix+shift+u` | コメントを Markdown としてコピー（`annotate.copy-context`） |
+| `prefix+ctrl+u`  | コピーしてアーカイブ（`annotate.copy-archive`）             |
+| `prefix+m`       | コメント一覧（`annotate.manage`）                           |
+| `prefix+i`       | 現在のフォルダの文書レビュー（`annotate.open`）             |
+| `prefix+shift+i` | 現在のエージェントの回答レビュー（`annotate.last`）         |
+
+Full 版を使い、文書レビュー用の `plannotator-tui` はプラグイン同梱版を使う。
+文書レビューは標準の overlay で開く。Send / `E` でフィードバックをエージェントへ返す。
+`prefix+a` / `prefix+shift+a` のエージェント切り替えは引き続き使える。
+`mise run update-herdr-plugins` は Annotate と共有 `plannotator-tui` skill も更新する。
+ブラウザー版と Claude / Codex の使い分けは [Plannotator](plannotator.md) を参照。
+
 ### lazygit
 
 | キー             | 動作                                                                                                                                          |

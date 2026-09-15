@@ -25,7 +25,6 @@ packages:
         chezmoi:
         cmake:
         coreutils:
-        crit:
         csvq:
         curl:
         eza:

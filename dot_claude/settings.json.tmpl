@@ -329,8 +329,8 @@
   "enabledPlugins": {
     "catppuccin@claude-themes": true,
     "caveman@caveman": true,
-    "crit@crit": true,
     "i-have-adhd@i-have-adhd": true,
+    "plannotator@plannotator": true,
     "skill-creator@claude-plugins-official": true,
     "worktrunk@worktrunk": true
   },
@@ -353,17 +353,19 @@
         "repo": "club-cog/devin-handoff"
       }
     },
-    "crit": {
-      "source": {
-        "source": "github",
-        "repo": "tomasz-tomczyk/crit"
-      }
-    },
     "i-have-adhd": {
       "source": {
         "source": "github",
         "repo": "ayghri/i-have-adhd"
       }
+    },
+    "plannotator": {
+      "source": {
+        "source": "github",
+        "repo": "backnotprop/plannotator",
+        "ref": "v{{ .plannotator.version }}"
+      },
+      "autoUpdate": false
     },
     "worktrunk": {
       "source": {

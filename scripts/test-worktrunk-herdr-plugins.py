@@ -21,7 +21,7 @@ with (root/'calls').open('a') as f: f.write(json.dumps(a)+'\n')
 f=root/'installed'
 installed=json.loads(f.read_text()) if f.exists() else []
 mode=os.environ.get('FAIL','')
-names=['worktrunk','herdr-file-viewer','herdr-lazygit']
+names=['worktrunk','herdr-file-viewer','herdr-lazygit','annotate']
 if a==['--version']: print('herdr 0.9.0')
 elif a==['--skill']: print('new Herdr skill')
 elif a==['plugin','list','--json']:
@@ -31,7 +31,7 @@ elif a==['plugin','list','--json']:
                warnings=['incompatible'] if mode=='warning' and installed else []) for name in names]
  print(json.dumps({'ok':True,'result':{'plugins':plugins}}))
 elif a[:2]==['plugin','install']:
- name=dict(zip(['devashish2203/herdr-worktrunk','smarzban/herdr-file-viewer','crokily/herdr-lazygit'],names))[a[2]]
+ name=dict(zip(['devashish2203/herdr-worktrunk','smarzban/herdr-file-viewer','crokily/herdr-lazygit','plannotator/herdr-annotate'],names))[a[2]]
  assert a[3:]==['--yes']
  if mode=='install' and name=='herdr-file-viewer': sys.exit(1)
  installed.append(name); f.write_text(json.dumps(installed))
@@ -51,7 +51,11 @@ class HerdrPluginTests(unittest.TestCase):
         viewer.parent.mkdir(parents=True)
         if failure != "skill":
             viewer.write_text("new viewer skill")
-        for name in ("herdr", "herdr-file-viewer"):
+        annotate = root / "viewer/skills/plannotator-tui/SKILL.md"
+        annotate.parent.mkdir(parents=True)
+        if failure != "annotate-skill":
+            annotate.write_text("new annotate skill")
+        for name in ("herdr", "herdr-file-viewer", "plannotator-tui"):
             skill = root / ".agents/skills" / name / "SKILL.md"
             skill.parent.mkdir(parents=True)
             skill.write_text("old skill")
@@ -69,12 +73,13 @@ class HerdrPluginTests(unittest.TestCase):
         self.assertEqual(report["status"], "updated")
         self.assertEqual(report["before"]["worktrunk"]["commit"], "old-sha")
         self.assertEqual(report["after"]["worktrunk"]["commit"], "new-sha")
-        self.assertEqual(len([a for a in calls if a[:2] == ["plugin", "install"]]), 3)
+        self.assertEqual(len([a for a in calls if a[:2] == ["plugin", "install"]]), 4)
         self.assertEqual((root / ".agents/skills/herdr/SKILL.md").read_text(), "new Herdr skill\n")
         self.assertEqual((root / ".agents/skills/herdr-file-viewer/SKILL.md").read_text(), "new viewer skill")
+        self.assertEqual((root / ".agents/skills/plannotator-tui/SKILL.md").read_text(), "new annotate skill")
 
     def test_failures_are_recorded_without_replacing_skills(self):
-        for failure in ("inventory", "install", "skill", "warning"):
+        for failure in ("inventory", "install", "skill", "annotate-skill", "warning"):
             with self.subTest(failure=failure):
                 root, result, report, calls = self.run_update(failure)
                 self.assertNotEqual(result.returncode, 0)

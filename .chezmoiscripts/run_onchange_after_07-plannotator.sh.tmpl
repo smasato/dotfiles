@@ -1,0 +1,96 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+set -euo pipefail
+
+# Pin the binary, shared skills, and Claude marketplace to the same release.
+# Full upstream install writes conflicting skills through our shared symlinks.
+version='{{ .plannotator.version }}'
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+cd "$HOME"
+eval "$(mise env -s bash)"
+
+staging=$(mktemp -d)
+trap 'rm -rf "$staging"' EXIT
+base="https://raw.githubusercontent.com/backnotprop/plannotator/v${version}"
+fetch() {
+  curl -fsSL --retry 3 --connect-timeout 15 --max-time 120 "$1" -o "$2"
+}
+
+if [ ! -x "$HOME/.local/bin/plannotator" ] ||
+  ! "$HOME/.local/bin/plannotator" --version | grep -Fxq "plannotator $version"; then
+  fetch "$base/scripts/install.sh" "$staging/install.sh"
+  bash "$staging/install.sh" --minimal --non-interactive --version "v$version"
+fi
+"$HOME/.local/bin/plannotator" --version
+
+# Fetch every file before changing the shared store. Keep OpenAI invocation
+# policy alongside SKILL.md; neither Claude nor Codex should auto-run reviews.
+skills=(plannotator plannotator-review plannotator-annotate plannotator-last)
+for skill in "${skills[@]}"; do
+  mkdir -p "$staging/$skill/agents"
+  for file in SKILL.md agents/openai.yaml; do
+    fetch "$base/apps/skills/core/$skill/$file" "$staging/$skill/$file"
+    test -s "$staging/$skill/$file"
+  done
+done
+for skill in "${skills[@]}"; do
+  mkdir -p "$HOME/.agents/skills/$skill/agents"
+  cp "$staging/$skill/SKILL.md" "$HOME/.agents/skills/$skill/SKILL.md"
+  cp "$staging/$skill/agents/openai.yaml" "$HOME/.agents/skills/$skill/agents/openai.yaml"
+done
+
+# Settings are shared, but each Claude home has its own plugin registry/cache.
+configure_claude() (
+  if [ "$1" = "$HOME/.claude" ]; then
+    unset CLAUDE_CONFIG_DIR
+  else
+    export CLAUDE_CONFIG_DIR="$1"
+  fi
+  echo "Configuring Plannotator for $1"
+  plugins=$(claude plugin list --json)
+  if jq -e 'any(.[]; .id == "crit@crit" and .scope == "user")' <<<"$plugins" >/dev/null; then
+    claude plugin uninstall crit@crit --scope user --keep-data
+  fi
+  marketplaces=$(claude plugin marketplace list --json)
+  if jq -e 'any(.[]; .name == "crit")' <<<"$marketplaces" >/dev/null; then
+    # chezmoi has already removed the declaration; clear the cached registry too.
+    claude plugin marketplace remove crit
+  fi
+
+  marketplaces=$(claude plugin marketplace list --json)
+  if ! jq -e --arg ref "v$version" 'any(.[]; .name == "plannotator" and .repo == "backnotprop/plannotator" and .ref == $ref)' <<<"$marketplaces" >/dev/null; then
+    # add is also the supported way to change an existing marketplace's ref.
+    claude plugin marketplace add "backnotprop/plannotator@v$version"
+  fi
+  plugins=$(claude plugin list --json)
+  if jq -e 'any(.[]; .id == "plannotator@plannotator" and .scope == "user")' <<<"$plugins" >/dev/null; then
+    if ! jq -e --arg version "$version" 'any(.[]; .id == "plannotator@plannotator" and .scope == "user" and .version == $version)' <<<"$plugins" >/dev/null; then
+      claude plugin update plannotator@plannotator --scope user
+    fi
+  else
+    claude plugin install plannotator@plannotator --scope user
+  fi
+  plugins=$(claude plugin list --json)
+  if jq -e 'any(.[]; .id == "plannotator@plannotator" and .scope == "user" and .enabled == false)' <<<"$plugins" >/dev/null; then
+    claude plugin enable plannotator@plannotator --scope user
+  fi
+  plugins=$(claude plugin list --json)
+  jq -e --arg version "$version" '
+    any(.[]; .id == "plannotator@plannotator" and .scope == "user" and .enabled and .version == $version)
+    and all(.[]; .id != "crit@crit")
+  ' <<<"$plugins" >/dev/null
+  # marketplace add rewrites its declaration and drops autoUpdate. Restore the
+  # template's policy without replacing the work home's settings symlink.
+  jq '.extraKnownMarketplaces.plannotator.autoUpdate = false' "$1/settings.json" > "$staging/settings.json"
+  cat "$staging/settings.json" > "$1/settings.json"
+)
+configure_claude "$HOME/.claude"
+{{ if .work -}}
+configure_claude "$HOME/.claude_work"
+{{ end -}}
+
+# Removing a brew from packages.yaml does not uninstall existing versions.
+if brew list --formula crit >/dev/null 2>&1; then
+  HOMEBREW_NO_AUTOREMOVE=1 brew uninstall --force crit
+fi
+{{- end }}

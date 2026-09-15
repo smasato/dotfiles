@@ -237,6 +237,43 @@ type = "shell"
 command = "bash ~/.config/herdr/scripts/hunk-diff.sh branch tab"
 description = "hunk: branch diff (tab)"
 
+# Annotate selections, documents, and agent replies. Keep a/A for agent cycling.
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "annotate.capture"
+description = "annotate selected text"
+
+[[keys.command]]
+key = "prefix+shift+u"
+type = "plugin_action"
+command = "annotate.copy-context"
+description = "copy annotations"
+
+[[keys.command]]
+key = "prefix+ctrl+u"
+type = "plugin_action"
+command = "annotate.copy-archive"
+description = "copy and archive annotations"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "annotate.manage"
+description = "manage annotations"
+
+[[keys.command]]
+key = "prefix+i"
+type = "plugin_action"
+command = "annotate.open"
+description = "review documents here"
+
+[[keys.command]]
+key = "prefix+shift+i"
+type = "plugin_action"
+command = "annotate.last"
+description = "review agent replies"
+
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
 # [keys.indexed]
