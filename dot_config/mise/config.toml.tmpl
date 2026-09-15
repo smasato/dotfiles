@@ -59,6 +59,10 @@ env_file = '.env'
 experimental = true
 idiomatic_version_file_enable_tools = []
 
+[settings.github]
+# Retrieve gh credentials even when they are stored in the macOS Keychain.
+credential_command = 'gh auth token --hostname "$MISE_CREDENTIAL_HOST"'
+
 [settings.ruby]
 # precompiled binaries only; never fetch ruby-build and compile from source
 compile = false
