@@ -31,7 +31,6 @@
         "anthropic/claude-fable-5-1")
       "task" (dict
         "agentModelOverrides" (dict
-          "scout" "@smol"
           "sonic" "@smol"
           "task" "@task"
           "reviewer" "@review"
@@ -68,7 +67,9 @@
         "cacheMissMarker" true
         "showTokenUsage" true
         "showTurnTime" true)
-      "task" (dict "showResolvedModelBadge" true)
+      "task" (dict
+        "showResolvedModelBadge" true
+        "agentModelOverrides" (dict "scout" "devin/swe-2:low"))
       "dev" (dict "autoqa" false)
 -}}
 {{- $config = mergeOverwrite $config $enforced -}}
