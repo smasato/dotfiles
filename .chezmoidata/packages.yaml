@@ -8,8 +8,6 @@ packages:
       work: []
     brews:
       base:
-        anomalyco/tap/opencode:
-          trusted: true
         aom:
         autoconf:
         automake:
