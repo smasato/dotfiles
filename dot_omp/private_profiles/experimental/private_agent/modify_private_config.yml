@@ -1,6 +1,6 @@
 {{- /* chezmoi:modify-template */ -}}
 {{- /* 起動: omp --profile experimental。認証とセッションは通常プロファイルから分離する。 */ -}}
-{{- /* 初回は /login opencode-go、/login opencode-zen、/login xai-oauth で個人契約を登録する。 */ -}}
+{{- /* 初回は /login で anthropic、openai-codex、opencode-go、opencode-zen、xai-oauth の個人契約を登録する。 */ -}}
 {{- /* Go の対象モデル: https://opencode.ai/docs/go/ 。Zen は比較用の Big Pickle のみ初期登録する。 */ -}}
 {{- /* モデル割り当ては初期値。OMP 内で変更した値を chezmoi apply で戻さない。 */ -}}
 {{- $config := dict
@@ -60,8 +60,22 @@
 {{- if .chezmoi.stdin -}}
 {{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}
 {{- end -}}
-{{- /* 既知の仕事用バックエンドと従量課金の xai API は認証があっても選択させない。 */ -}}
-{{- $disabled := concat (get $config "disabledProviders" | default list) (list "openai-codex" "openai" "anthropic" "devin" "xai") | uniq -}}
+{{- /* 既存プロファイルにもサブスクリプション用モデルを追加し、モデル割り当ては維持する。 */ -}}
+{{- $subscriptionModels := list
+      "openai-codex/gpt-5.6-sol"
+      "openai-codex/gpt-5.6-luna"
+      "openai-codex/gpt-5.6-terra"
+      "openai-codex/gpt-6-astra"
+      "anthropic/claude-opus-5"
+      "anthropic/claude-sonnet-5"
+      "anthropic/claude-haiku-4-5"
+      "anthropic/claude-fable-5"
+      "anthropic/claude-fable-5-1"
+-}}
+{{- $_ := set $config "enabledModels" (concat (get $config "enabledModels" | default list) $subscriptionModels | uniq) -}}
+{{- $_ := set $config "modelProviderOrder" (concat (get $config "modelProviderOrder" | default list) (list "openai-codex" "anthropic") | uniq) -}}
+{{- /* Claude と Codex の OAuth は許可し、仕事用 Devin と従量課金の OpenAI / xAI API は無効にする。 */ -}}
+{{- $disabled := concat (without (get $config "disabledProviders" | default list) "openai-codex" "anthropic") (list "openai" "devin" "xai") | uniq -}}
 {{- $_ := set $config "disabledProviders" $disabled -}}
 {{- /* 通常プロファイルと同じ非モデル設定を強制する */ -}}
 {{- $enforced := dict
