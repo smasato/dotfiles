@@ -12,5 +12,6 @@
     "notifications": true,
     "sound": true,
     "volume": 0.4
-  }
+  },
+  "plugins": ["./herdr-opencode"]
 }
