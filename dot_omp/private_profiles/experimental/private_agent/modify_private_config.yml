@@ -81,7 +81,7 @@
 {{- $enforced := dict
       "theme" (dict "dark" "dark-catppuccin" "light" "light-catppuccin")
       "symbolPreset" "nerd"
-      "composer" (dict "shape" "claude")
+      "composer" (dict "shape" "claude" "tokenRate" true)
       "personality" "pragmatic"
       "startup" (dict "quiet" true)
       "showHardwareCursor" true
