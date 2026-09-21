@@ -6,7 +6,6 @@
 #
 # Usage: worktree-audit.sh [repo-path] [scoped-transcript-directory]
 set -u
-script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 
 repo="${1:-$(git rev-parse --show-toplevel 2>/dev/null)}"
 [ -z "$repo" ] && { echo "not in a git repo; pass a repo path" >&2; exit 1; }
@@ -35,7 +34,7 @@ fi
 
 # PR state uses upstream repository, branch, and HEAD. Missing/ambiguous identity
 # and lookup failures remain unknown; a same-named branch is not enough.
-if ! python3 "$script_dir/worktree-prs.py" "$worktrees" > "$prs"; then
+if ! python3 "${XDG_CONFIG_HOME:-$HOME/.config}/worktrunk/prs.py" "$worktrees" > "$prs"; then
 	printf '{}\n' > "$prs"
 	printf 'PR lookup unavailable; PR is unknown.\n' >&2
 fi

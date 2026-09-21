@@ -2,13 +2,14 @@
 import importlib.util
 from pathlib import Path
 import unittest
+from unittest import mock
 import sys
 
 sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location(
-    "worktree_prs", ROOT / "dot_agents/skills/poteto-mode/scripts/worktree-prs.py")
+    "worktrunk_prs", ROOT / "dot_config/worktrunk/prs.py")
 prs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(prs)
 
@@ -68,6 +69,52 @@ class PrTests(unittest.TestCase):
         self.assertEqual(prs.classify(self.item, [pull()], None), "unknown")
         self.item["upstream"] = None
         self.assertEqual(self.classify([]), "unknown")
+
+
+class AnnotationMappingTests(unittest.TestCase):
+    def setUp(self):
+        self.repository = ("github.com", "example", "repo")
+        self.items = [
+            dict(branch="topic", head=dict(sha="current"),
+                 upstream=dict(remote="origin", branch="topic"),
+                 worktree=dict(path="/repo/topic")),
+            dict(branch="orphan", head=dict(sha="current"),
+                 upstream=dict(remote="origin", branch="topic")),
+            dict(branch=None, head=dict(sha="detached"), upstream=None,
+                 worktree=dict(path="/repo/detached", detached=True)),
+        ]
+
+    def lookup(self, pulls):
+        return mock.patch.object(
+            prs, "_lookup", return_value=(pulls, {"origin": self.repository, None: None}))
+
+    def test_branch_annotations_cover_branch_only_items(self):
+        with self.lookup([pull(state="MERGED")]):
+            result = prs.branch_annotations(self.items)
+        self.assertEqual(result, {"topic": "#7/MERGED", "orphan": "#7/MERGED"})
+
+    def test_branch_annotations_omit_detached_and_hold_unknown(self):
+        with self.lookup([pull(sha="old", state="MERGED")]):
+            result = prs.branch_annotations(self.items)
+        self.assertNotIn(None, result)
+        self.assertEqual(result, {"topic": "unknown", "orphan": "unknown"})
+
+    def test_annotations_stay_path_keyed_and_keep_detached(self):
+        with self.lookup([pull(state="MERGED")]):
+            result = prs.annotations(self.items)
+        self.assertEqual(result, {
+            "/repo/topic": "#7/MERGED",
+            "/repo/detached": "unknown",
+        })
+
+    def test_lookup_failure_holds_everything_unknown(self):
+        with mock.patch.object(prs, "_lookup", return_value=None):
+            self.assertEqual(prs.branch_annotations(self.items),
+                             {"topic": "unknown", "orphan": "unknown"})
+            self.assertEqual(prs.annotations(self.items), {
+                "/repo/topic": "unknown",
+                "/repo/detached": "unknown",
+            })
 
 
 if __name__ == "__main__":

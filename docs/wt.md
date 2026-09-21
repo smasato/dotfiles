@@ -288,23 +288,36 @@ v0.77.0 の `wt config show` は plugin 存在判定に限界があるため、�
 
 ## 状態確認と片付け候補
 
-`wt-prune` は `wt step prune --min-age=0s` の Zsh エイリアス。
-デフォルトブランチへ統合済みのワークツリーとローカルブランチをまとめて削除する。
-通常の `wt remove` と同じく、ファイルの掃除はバックグラウンドで進む。
-`git delete-squashed-branches` がワークツリー付きブランチの削除で失敗する場合も使える。
-squash merge のほか、通常の merge や rebase で統合されたブランチも対象になる。
-判定基準は wt のデフォルトブランチで、任意の比較先ブランチを指定する機能はない。
+`wt-prune` は `wt safe-prune --` の Zsh エイリアス。`--` で `--dry-run` などの引数を判定スクリプトへ渡す。
+`~/.config/worktrunk/prune.py` が次の条件をすべて満たすワークツリーとローカルブランチだけを削除する。
+
+1. `wt step prune --dry-run --min-age=0s` がブランチも削除する統合済み候補として報告する。
+2. reflog にブランチ作成の記録が残っており、作成時と現在の HEAD の tree が異なる。
+3. 対応する PR が `MERGED` で head SHA も現在の HEAD と一致するか、照会に成功して対応する PR がないと確認できる。
+
+Git remote のないローカルリポジトリでは、PR 照会をせず最初の２条件で判定する。
+remote がある場合、PR の `OPEN` / `CLOSED`、SHA 不一致、追跡先なし、API 失敗などの判定不能は保留する。
+PR 照合は監査スクリプトと同じ `~/.config/worktrunk/prs.py` を使う。
+照会先は `gh repo view` が返すリポジトリで、別リポジトリに向けた PR までは検索しない。
+
+経過時間の制限はない。staging などから作成しただけのブランチは残し、
+変更を加えて統合済みになったブランチは当日でも削除できる。
+古い `MERGED` PR と名前・SHA が一致しても、作成時から内容が変わっていなければ残す。
+reflog が失効したブランチや、変更をすべて打ち消して作成時と同じ内容に戻ったブランチも残す。
+統合先は wt のデフォルトブランチで、squash merge・通常の merge・rebase の内容統合判定は wt に任せる。
 
 ```sh
-wt-prune                 # 作成時刻を問わず統合済み候補を削除
-wt-prune --dry-run       # 削除候補を確認
-wt step prune --min-age=2d  # 年齢制限が必要な場合は元コマンドを使う
+wt-prune                       # 上記の条件を満たす対象だけ削除
+wt-prune --dry-run             # 削除候補を確認。保留理由は stderr に表示
+wt-prune --dry-run --format=json
 ```
 
-未コミットの変更があるワークツリー、ロックされたワークツリー、メインワークツリーは残る。
-削除時は通常の pre/post-remove hook が動く。現在のワークツリーも対象なら最後に削除し、
-wt のシェル統合がメインワークツリーへ移動する。リモートの最新状態を判定に使う場合は、
-先に `git fetch --prune` する。
+未コミットの変更があるワークツリー、ロックされたワークツリー、メインワークツリー、
+detached HEAD、作成履歴を確認できない対象は残る。`--min-age` や強制削除オプションは受け付けない。
+削除直前にも HEAD・checkout・統合済み候補を再確認し、`wt remove --foreground` で１件ずつ削除する。
+強制削除はしない。通常の pre/post-remove hook が動き、削除完了を待つ。
+現在のワークツリーも対象なら最後に削除し、wt のシェル統合がメインワークツリーへ移動する。
+リモートの最新状態を統合判定に使う場合は、先に `git fetch --prune` する。
 
 ```sh
 wt step for-each -- git status --short
@@ -324,7 +337,7 @@ HEAD・コミット日時・ブランチ・upstream は、一度取得した sch
 `REMOTE` は実際の upstream と差分数を表示する（例: `mirror/topic:+2/-3`）。
 追跡先なしは `no-upstream`、detached HEAD は `detached`。`MERGED` は祖先関係の判定であり、
 prune の内容統合判定とは区別する。Git や PR 取得の失敗は `unknown` とし、`hold-unknown` に保留する。
-PR は著者を限定せず取得し、`worktree-prs.py` が upstream の remote URL・ブランチ名と
+PR は著者を限定せず取得し、`~/.config/worktrunk/prs.py` が upstream の remote URL・ブランチ名と
 PR の head repository・ブランチを照合する。ローカルだけ別名でも upstream 側で照合する。
 同名の別 fork は除外し、複数の OPEN PR、削除済み fork、追跡先なし、detached HEAD、
 remote の取得失敗・別ホスト・解決できない SSH alias は `unknown` として保留する。
@@ -353,6 +366,8 @@ picker 設定は TOML の構文、管理するキー、真偽値、配置方法�
 管理元への `wt config show`、実際の wt による hook 展開、Claude / Codex plugin の導入・確認失敗、
 Herdr の並行実行・再開・遅延 close、削除の確認・キャンセル・失敗、監査の PR 対応・marker・取得失敗・Herdr パス照合を検証する。
 コピーとブランチの起点は一時リポジトリに実際の worktree を作って確認する。
+`wt-prune` も実際の Git / wt で、staging 起点の新規ブランチ保護、当日のマージ済み削除、
+PR 判定不能時の保留、削除直前の HEAD 変更、現在のワークツリー削除を検証する。
 Herdr・forge・削除 popup の外部操作はスタブに置き換え、利用中の worktree は変更しない。
 シェルスクリプトは ShellCheck も通す。
 

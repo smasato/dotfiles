@@ -5,6 +5,10 @@
 # Keep schema 2 (envelope) explicit for consumers; it is the default since v0.77.
 json-schema = 2
 
+[aliases]
+# Keep wt's shell integration when pruning the current worktree.
+safe-prune = 'python3 "${XDG_CONFIG_HOME:-$HOME/.config}/worktrunk/prune.py" {{ args }}'
+
 [pre-switch]
 # When switching to a branch that doesn't exist locally, fetch first so the
 # remote-tracking ref is available and wt can create a tracking branch from it.

@@ -77,6 +77,11 @@ class WorktreeAuditTests(unittest.TestCase):
                 command = bindir / name
                 command.write_text(f"#!{sys.executable}\n{STUB}")
                 command.chmod(0o755)
+            config = root / "config" / "worktrunk"
+            config.mkdir(parents=True)
+            (config / "prs.py").write_text(
+                (ROOT / "dot_config/worktrunk/prs.py").read_text())
+
 
             branches = ("main", "integrated", "wip", "open", "recent", "unknown", "excluded")
             paths = {branch: root / branch for branch in branches}
@@ -128,6 +133,7 @@ class WorktreeAuditTests(unittest.TestCase):
                 ["bash", str(AUDIT), str(paths["main"]), str(transcripts)],
                 env=dict(os.environ, PATH=f"{bindir}:{os.environ['PATH']}",
                          FIXTURE=str(root), PREVIEW=preview, FAILURE=failure,
+                         XDG_CONFIG_HOME=str(root / "config"),
                          HERDR_TEST=herdr, HERDR_ENV="0" if herdr == "outside" else "1"),
                 text=True, capture_output=True, check=True,
             )

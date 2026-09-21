@@ -1,4 +1,9 @@
-"""Read-only PR annotations keyed by checkout path. Ambiguous matches stay unknown."""
+"""Read-only PR annotations. Ambiguous matches stay unknown.
+
+annotations(items) keys results by checkout path for the audit table.
+branch_annotations(items) keys results by branch and also covers
+branch-only items without a worktree, for prune decisions.
+"""
 import json
 from pathlib import Path
 import re
@@ -59,8 +64,12 @@ def classify(item, prs, repository):
     return f"#{pr['number']}/{pr['state']}"
 
 
-def annotations(items):
-    result = {item["worktree"]["path"]: "unknown" for item in items if item.get("worktree")}
+def _lookup(items):
+    """Fetch the PR snapshot and resolve each item's upstream remote.
+
+    Returns (prs, remotes) or None on any lookup failure; callers then hold
+    every item unknown instead of guessing.
+    """
     try:
         repo_url = json.loads(subprocess.check_output(
             ["gh", "repo", "view", "--json", "url"], text=True,
@@ -79,11 +88,9 @@ def annotations(items):
             raise ValueError("Invalid PR list")
     except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         print(f"PR lookup unavailable: {error}", file=sys.stderr)
-        return result
+        return None
     remotes = {}
     for item in items:
-        if not item.get("worktree"):
-            continue
         remote = (item.get("upstream") or {}).get("remote")
         if remote not in remotes:
             remotes[remote] = None
@@ -99,8 +106,41 @@ def annotations(items):
                         remotes[remote] = None
                 except (OSError, ValueError, subprocess.SubprocessError):
                     pass
-        result[item["worktree"]["path"]] = classify(item, prs, remotes[remote])
-    return result
+    return prs, remotes
+
+
+def _classifications(items):
+    """Classify every item once; shared by both annotation mappings."""
+    lookup = _lookup(items)
+    if lookup is None:
+        return ["unknown"] * len(items)
+    prs, remotes = lookup
+    return [
+        classify(item, prs, remotes.get((item.get("upstream") or {}).get("remote")))
+        for item in items
+    ]
+
+
+def annotations(items):
+    """Map checkout path to PR state for items that have a worktree."""
+    states = _classifications(items)
+    return {
+        item["worktree"]["path"]: state
+        for item, state in zip(items, states) if item.get("worktree")
+    }
+
+
+def branch_annotations(items):
+    """Map branch name to PR state, including branch-only items.
+
+    Detached worktrees and items without a branch are omitted; callers treat
+    a missing key as unknown.
+    """
+    states = _classifications(items)
+    return {
+        item["branch"]: state
+        for item, state in zip(items, states) if item.get("branch")
+    }
 
 
 if __name__ == "__main__":
