@@ -61,6 +61,7 @@
       "github" (dict "enabled" true)
       "checkpoint" (dict "enabled" true)
       "security" (dict "enabled" true)
+      "secrets" (dict "enabled" true)
       "theme" (dict "dark" "dark-catppuccin" "light" "light-catppuccin")
       "symbolPreset" "nerd"
       "composer" (dict "shape" "claude" "tokenRate" true)
