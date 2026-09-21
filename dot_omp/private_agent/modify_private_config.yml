@@ -75,8 +75,11 @@
         "showTokenUsage" true
         "showTurnTime" true)
       "task" (dict
+        "enableLsp" true
+        "enableEffort" true
+        "maxRuntimeMs" 0
         "showResolvedModelBadge" true
-        "agentModelOverrides" (dict "scout" "devin/swe-2:low"))
+        "agentModelOverrides" (dict "scout" "@smol"))
       "dev" (dict "autoqa" false)
 -}}
 {{- $config = mergeOverwrite $config $enforced -}}
