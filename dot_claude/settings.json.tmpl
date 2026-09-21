@@ -52,7 +52,8 @@
       "Bash(rm -rf ~/)",
       "Bash(sudo:*)"
     ],
-    "defaultMode": "auto"
+    "defaultMode": "auto",
+    "blockReadsOutsideWorkingDirectories": false
   },
   "model": "claude-fable-5-1[1m]",
   "hooks": {
@@ -203,16 +204,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '{{ .chezmoi.homeDir }}/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
             "command": "sh '{{ .chezmoi.homeDir }}/.claude/hooks/herdr-claude-account.sh'",
             "timeout": 5
           }
@@ -232,6 +223,16 @@
           {
             "type": "command",
             "command": "if [ -x '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh' ]; then /bin/sh '{{ .chezmoi.homeDir }}/.orca/agent-hooks/claude-hook.sh'; else cat >/dev/null; printf '{}\\n'; fi",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '{{ .chezmoi.homeDir }}/.claude/hooks/herdr-agent-state.sh' session",
             "timeout": 10
           }
         ]
