@@ -77,8 +77,10 @@
 {{- /* Claude と Codex の OAuth は許可し、仕事用 Devin と従量課金の OpenAI / xAI API は無効にする。 */ -}}
 {{- $disabled := concat (without (get $config "disabledProviders" | default list) "openai-codex" "anthropic") (list "openai" "devin" "xai") | uniq -}}
 {{- $_ := set $config "disabledProviders" $disabled -}}
-{{- /* 通常プロファイルと同じ非モデル設定を強制する */ -}}
+{{- /* 判定モデルと通常プロファイル共通の表示・動作設定を強制する */ -}}
 {{- $enforced := dict
+      "modelRoles" (dict "judge" "typesafe/jev-latest")
+      "retry" (dict "fallbackChains" (dict "judge" (list "opencode-go/glm-5.3-flash")))
       "theme" (dict "dark" "dark-catppuccin" "light" "light-catppuccin")
       "symbolPreset" "nerd"
       "composer" (dict "shape" "claude" "tokenRate" true)

@@ -54,6 +54,8 @@
 {{- end -}}
 {{- /* chezmoi で強制する設定 */ -}}
 {{- $enforced := dict
+      "modelRoles" (dict "judge" "devin/swe-2")
+      "retry" (dict "fallbackChains" (dict "judge" (list "anthropic/claude-haiku-4-5")))
       "theme" (dict "dark" "dark-catppuccin" "light" "light-catppuccin")
       "symbolPreset" "nerd"
       "composer" (dict "shape" "claude" "tokenRate" true)
