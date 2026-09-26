@@ -22,6 +22,10 @@ Use `chezmoi diff --exclude=none` to inspect all pending scripts, including edit
 to always-run scripts. A regular `chezmoi diff` can be empty while those scripts
 are still scheduled to run.
 
+Lazygit 0.65.1 uses [`git.diffRenderers[].command`](https://github.com/jesseduffield/lazygit/blob/v0.65.1/docs/Custom_DiffRenderers.md)
+for Delta. Keep the managed configuration in that format rather than restoring
+the older `git.pagers[].pager` keys when resolving drift.
+
 References: [diff configuration](https://www.chezmoi.io/reference/configuration-file/variables/#diffexclude),
 [entry types](https://www.chezmoi.io/reference/command-line-flags/common/#available-entry-types),
 [configuration template](https://www.chezmoi.io/reference/special-files/chezmoi-format-tmpl/).
