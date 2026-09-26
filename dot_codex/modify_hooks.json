@@ -1,5 +1,5 @@
 {{- /* chezmoi:modify-template */ -}}
-{{- /* hooks.json is also written by herdr, moshi-hook, and orca, so only the
+{{- /* hooks.json is also written by herdr and orca, so only the
 herdr-codex-account.sh entries are updated in place; everything else passes
 through untouched. Codex owns the async SessionStart/Stop work and cancels it
 on exit; SessionEnd only clears metadata. Entries are appended (never inserted) because

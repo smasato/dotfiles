@@ -26,6 +26,27 @@ References: [diff configuration](https://www.chezmoi.io/reference/configuration-
 [entry types](https://www.chezmoi.io/reference/command-line-flags/common/#available-entry-types),
 [configuration template](https://www.chezmoi.io/reference/special-files/chezmoi-format-tmpl/).
 
+## Agent hooks
+
+Moshi's agent hooks are disabled. The `moshi-hook` package remains installed for
+the Moshi client and SSH/Mosh integration. To remove existing global hook
+registrations and extensions while preserving unrelated hooks, run:
+
+```bash
+moshi-hook uninstall
+```
+
+Claude's work account and all three Codex work accounts share their personal
+account's hook configuration, so this also disables Moshi for those accounts.
+Restart running agent sessions to unload extensions already in memory.
+`chezmoi apply` does not restore Moshi hooks. Running `moshi-hook install`
+explicitly enables them again.
+
+Claude's settings template preserves Superset's notification hooks and its
+`Artifact` guard. They run only when `SUPERSET_HOME_DIR` points to executable
+hook scripts. Orca uses the simplified macOS hook command, including for
+`SessionEnd`.
+
 ## Update fx
 
 fx is installed by mise from `github:vercel-labs/fx`. The initial install runs
