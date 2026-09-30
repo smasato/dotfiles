@@ -2,7 +2,8 @@
 {{- /* Kept byte-identical across dot_codex and dot_codex_work1/2/3:
 chezmoi modify-templates cannot include .chezmoitemplates, so each Codex home
 carries its own copy. Existing per-home values take precedence over defaults,
-except Probe is removed on work profiles and its cwd uses the personal home. */ -}}
+except Probe is removed on work profiles and its command and cwd use the
+personal home. */ -}}
 {{- $defaults := fromToml `
 model = "gpt-6-astra"
 model_reasoning_effort = "medium"
@@ -56,7 +57,6 @@ url = "https://developers.openai.com/mcp"
 
 [mcp_servers.probe]
 enabled = true
-command = "/opt/homebrew/bin/mise"
 args = ["exec", "--", "probe", "mcp"]
 
 [desktop]
@@ -75,6 +75,7 @@ ambient-suggestions-enabled = false
 {{- if .work -}}
 {{- $_ := unset $merged.mcp_servers "probe" -}}
 {{- else -}}
+{{- $_ := set $merged.mcp_servers.probe "command" (joinPath .chezmoi.homeDir ".local/bin/mise") -}}
 {{- $_ := set $merged.mcp_servers.probe "cwd" .chezmoi.homeDir -}}
 {{- end -}}
 {{- if deepEqual $cur $merged -}}

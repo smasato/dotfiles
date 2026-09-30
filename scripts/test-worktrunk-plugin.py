@@ -42,7 +42,7 @@ elif args[:2]==['plugin','install'] and mode!='missing-after-install': installed
                 claude.chmod(0o755)
                 # Only replace the production PATH boundary; keep the rendered body intact.
                 script = rendered.replace(
-                    'export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"',
+                    'export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"',
                     'export PATH=' + shlex.quote(f"{root}:{os.environ['PATH']}"))
                 result = subprocess.run(["/bin/bash"], input=script, text=True,
                                         env=dict(os.environ, HOME=str(root), MODE=mode,

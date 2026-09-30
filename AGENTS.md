@@ -51,7 +51,7 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 
 - **Dotfiles Manager**: chezmoi with templating support
 - **Shell**: Zsh with Antigen for plugins and Starship for the prompt
-- **Runtime/Tool Management**: mise for language runtimes (Ruby, Node, Bun, Python) and CLI tools, declared in `dot_config/mise/config.toml.tmpl`
+- **Runtime/Tool Management**: mise for language runtimes (Ruby, Node, Bun, Python) and CLI tools, declared in `dot_config/mise/config.toml.tmpl`. mise itself is not a Homebrew package; `run_onchange_after_01-mise-install` installs it to `~/.local/bin/mise` with the standalone installer
 - **Package Management**: Homebrew - packages declared in `.chezmoidata/packages.yaml` and installed by a `.chezmoiscripts` run script during `chezmoi apply`
 - **Git Hooks**: hk, configured in `hk.pkl`
 - **Editors**: Cursor and Neovim (`dot_config/nvim`)

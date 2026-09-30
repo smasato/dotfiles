@@ -6,7 +6,7 @@ set -eu
 # Register after tools and the personal host's daemon configuration are deployed.
 # pitchfork config: {{ include "dot_config/pitchfork/private_config.toml.tmpl" | sha256sum }}
 # mise tools: {{ includeTemplate "dot_config/mise/config.toml.tmpl" . | sha256sum }}
-export PATH="/opt/homebrew/bin:${PATH}"
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:${PATH}"
 cd "${HOME}"
 mise exec -- pitchfork boot enable
 {{- end }}

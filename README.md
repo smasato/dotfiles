@@ -51,6 +51,21 @@ Claude's settings template preserves Superset's notification hooks and its
 hook scripts. Orca uses the simplified macOS hook command, including for
 `SessionEnd`.
 
+## mise
+
+mise is not installed from Homebrew. When `~/.local/bin/mise` is missing,
+`run_onchange_after_01-mise-install` installs it with the official standalone
+installer, rebuilds the shims, and then installs the managed tools. Scripts and
+configs that call mise use this path. Update mise itself with `mise self-update`.
+
+Applying on a machine that has the old Homebrew formula also installs the
+standalone binary. `chezmoi apply` does not remove the formula. Remove it
+with:
+
+```bash
+brew uninstall mise
+```
+
 ## Update fx
 
 fx is installed by mise from `github:vercel-labs/fx`. The initial install runs

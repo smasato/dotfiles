@@ -62,7 +62,6 @@ packages:
         libyaml:
         libzip:
         little-cms2:
-        mise:
         mosh:
         moshi-hook:
         msgpack:

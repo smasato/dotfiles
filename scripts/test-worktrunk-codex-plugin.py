@@ -65,7 +65,7 @@ class CodexPluginTests(unittest.TestCase):
                 env = self.fixture(root, mode)
                 (root / ".codex_work2/config.toml").write_text(
                     '[plugins."worktrunk@worktrunk"]\nenabled = false\n')
-                script = rendered.replace('export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"',
+                script = rendered.replace('export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"',
                                           "export PATH=" + shlex.quote(env["PATH"]))
                 result = subprocess.run(["/bin/bash"], input=script, text=True, env=env, capture_output=True)
                 if mode != "fresh":

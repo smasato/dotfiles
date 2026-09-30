@@ -153,9 +153,9 @@ function y() {
 }
 {{- end }}
 
-{{- if lookPath "mise" }}
-eval "$(mise activate zsh)"
-{{- end }}
+# Check at runtime, not render time: the first apply renders this file before
+# run_onchange_after_01-mise-install installs mise.
+if [[ -x "$HOME/.local/bin/mise" ]]; then eval "$("$HOME/.local/bin/mise" activate zsh)"; fi
 
 {{- if lookPath "op" }}
 {{ output "op" "completion" "zsh" | trim }}

@@ -29,7 +29,7 @@ set -eu
 
 # Rebuild PATH from scratch: mise env prepends its tool bin dirs, and dropping
 # the inherited PATH keeps stale entries (e.g. Homebrew's node) from shadowing them.
-export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 cd "${HOME}"
 eval "$(mise env -s bash)"
 

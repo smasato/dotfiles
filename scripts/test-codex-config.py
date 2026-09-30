@@ -98,12 +98,14 @@ url = "https://mcp.linear.app/mcp"
         self.assertEqual(tomllib.loads(result), expected)
         self.assertEqual(render(result, work=True), result)
 
-    def test_personal_probe_uses_home_directory_and_preserves_opt_out(self):
+    def test_personal_probe_uses_home_paths_and_preserves_opt_out(self):
         config = tomllib.loads(render('''
 [mcp_servers.probe]
+command = "/opt/homebrew/bin/mise"
 cwd = "/custom/probe"
 enabled = false
 '''))
+        self.assertEqual(config["mcp_servers"]["probe"]["command"], str(Path.home() / ".local/bin/mise"))
         self.assertEqual(config["mcp_servers"]["probe"]["cwd"], str(Path.home()))
         self.assertFalse(config["mcp_servers"]["probe"]["enabled"])
 

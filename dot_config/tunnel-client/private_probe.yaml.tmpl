@@ -19,4 +19,4 @@ log:
 mcp:
   commands:
     - channel: main
-      command: '/opt/homebrew/bin/mise exec -- probe mcp'
+      command: '{{ .chezmoi.homeDir }}/.local/bin/mise exec -- probe mcp'

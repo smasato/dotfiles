@@ -12,16 +12,22 @@ set -eu
 # Probe repair hash: {{ include "dot_local/bin/executable_patch-probe.py" | sha256sum }}
 {{ end -}}
 
-export PATH="/opt/homebrew/bin:${PATH}"
-
-if ! command -v mise >/dev/null 2>&1; then
-  echo "mise not found on PATH; cannot install tools" >&2
-  exit 1
-fi
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:${PATH}"
 
 # Run from $HOME so only the global ~/.config/mise/config.toml applies —
 # a repo-local mise.toml (e.g. the chezmoi source dir's) must not leak in.
 cd "${HOME}"
+
+# mise comes from its standalone installer rather than Homebrew, so
+# `mise self-update` works. Other scripts and configs expect this path.
+if [ ! -x "$HOME/.local/bin/mise" ]; then
+  installer="$(mktemp)"
+  trap 'rm -f "$installer"' EXIT
+  curl -fsSL --retry 3 --connect-timeout 15 --max-time 120 https://mise.run -o "$installer"
+  MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh "$installer"
+  # Shims left by a Homebrew mise link to that binary; point them here instead.
+  mise reshim --force
+fi
 {{ if not .work -}}
 # Probe's pinned Git dependency is unsupported by the embedded npm installer.
 # Install its prerequisites before the scoped npm override and repair hook.

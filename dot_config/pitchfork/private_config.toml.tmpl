@@ -1,7 +1,7 @@
 #:schema https://pitchfork.jdx.dev/schema.json
 
 [settings.general]
-mise_bin = "/opt/homebrew/bin/mise"
+mise_bin = {{ joinPath .chezmoi.homeDir ".local/bin/mise" | quote }}
 
 # launchd owns the supervisor; read-only CLI use must not start a second owner.
 [settings.supervisor]
