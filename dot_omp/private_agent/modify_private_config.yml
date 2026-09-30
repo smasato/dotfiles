@@ -59,7 +59,7 @@
         "anthropic/claude-fable-5-1")
       "modelRoles" (dict "judge" "anthropic/claude-haiku-4-5")
       "retry" (dict "fallbackChains" (dict "judge" (list "devin/swe-2")))
-      "find" (dict "enabled" true)
+      "find" (dict "enabled" "on")
       "astGrep" (dict "enabled" true)
       "github" (dict "enabled" true)
       "checkpoint" (dict "enabled" true)
