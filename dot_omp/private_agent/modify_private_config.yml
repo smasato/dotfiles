@@ -14,24 +14,6 @@
         "review" "anthropic/claude-fable-5-1:high")
       "advisor" (dict "enabled" true)
       "cycleOrder" (list "default" "slow")
-      "enabledModels" (list
-        "openai-codex/gpt-5.6-sol"
-        "openai-codex/gpt-5.6-luna"
-        "openai-codex/gpt-5.6-terra"
-        "openai-codex/gpt-6-astra"
-        "openai-codex/gpt-6-luna"
-        "openai-codex/gpt-6-sol"
-        "devin/swe-2"
-        "devin/deepseek-v4-1-flash"
-        "devin/glm-5-3-flash-1m"
-        "devin/gemini-3-8-flash"
-        "devin/glm-5-3-1m"
-        "anthropic/claude-opus-5"
-        "anthropic/claude-opus-5-5"
-        "anthropic/claude-sonnet-5"
-        "anthropic/claude-haiku-4-5"
-        "anthropic/claude-fable-5"
-        "anthropic/claude-fable-5-1")
       "task" (dict
         "agentModelOverrides" (dict
           "sonic" "@smol"
@@ -57,6 +39,24 @@
 {{- end -}}
 {{- /* chezmoi で強制する設定 */ -}}
 {{- $enforced := dict
+      "enabledModels" (list
+        "openai-codex/gpt-5.6-sol"
+        "openai-codex/gpt-5.6-luna"
+        "openai-codex/gpt-5.6-terra"
+        "openai-codex/gpt-6-astra"
+        "openai-codex/gpt-6-luna"
+        "openai-codex/gpt-6.1-sol"
+        "devin/swe-2"
+        "devin/deepseek-v4-1-flash"
+        "devin/glm-5-3-flash-1m"
+        "devin/gemini-3-8-flash"
+        "devin/glm-5-3-1m"
+        "anthropic/claude-opus-5"
+        "anthropic/claude-opus-5-5"
+        "anthropic/claude-sonnet-5"
+        "anthropic/claude-haiku-4-5"
+        "anthropic/claude-fable-5"
+        "anthropic/claude-fable-5-1")
       "modelRoles" (dict "judge" "anthropic/claude-haiku-4-5")
       "retry" (dict "fallbackChains" (dict "judge" (list "devin/swe-2")))
       "find" (dict "enabled" true)
