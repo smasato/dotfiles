@@ -29,7 +29,6 @@
         "prewalk" false)
       "prewalk" (dict "enabled" false)
       "tier" (dict
-        "openai" "none"
         "anthropic" "none"
         "subagent" "none"
         "advisor" "none")
@@ -60,6 +59,7 @@
       "modelRoles" (dict "judge" "anthropic/claude-haiku-4-5")
       "advisor" (dict "reviewInterval" 3)
       "retry" (dict "fallbackChains" (dict "judge" (list "devin/swe-2")))
+      "tier" (dict "openai" "priority")
       "find" (dict "enabled" "on")
       "astGrep" (dict "enabled" true)
       "github" (dict "enabled" true)
