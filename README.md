@@ -77,11 +77,15 @@ affect resolution:
 (cd "$HOME" && mise upgrade github:vercel-labs/fx)
 ```
 
-## OMP advisor
+## OMP settings
 
 The default OMP profile enforces `advisor.reviewInterval: 3` on `chezmoi apply`.
 The advisor reviews every third eligible primary update, with skipped updates
 included in the next review.
+
+Both the default and experimental profiles enforce
+`telemetry.otlpExportEnabled: false` on `chezmoi apply`, disabling OTLP trace,
+log, and metric export even when `OTEL_*` endpoints are configured.
 
 ## Experimental OMP profile
 
