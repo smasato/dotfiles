@@ -87,6 +87,7 @@
         "showResolvedModelBadge" true
         "agentModelOverrides" (dict "scout" "@smol"))
       "dev" (dict "autoqa" false)
+      "gc" (dict "stale" true)
       "telemetry" (dict "otlpExportEnabled" false)
 -}}
 {{- $config = mergeOverwrite $config $enforced -}}
