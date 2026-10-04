@@ -128,19 +128,21 @@ Run `omp --profile security` for Devin-based implementation with Daybreak-capabl
 Codex review. On first apply, the profile starts from the default profile's current
 settings and managed defaults, then applies these model assignments:
 
-| Role              | Initial model                   |
-| ----------------- | ------------------------------- |
-| `default`, `task` | `devin/glm-5-3-1m:high`         |
-| `slow`, `plan`    | `devin/glm-5-3-1m:max`          |
-| `smol`            | `devin/glm-5-3-flash-1m:high`   |
-| `vision`, `judge` | `devin/glm-5-3-flash-1m:medium` |
-| `tiny`            | `devin/glm-5-3-flash-1m:low`    |
-| `review`          | `openai-codex/gpt-6-sol:high`   |
-| `advisor`         | `@review`                       |
+| Role              | Initial model                    |
+| ----------------- | -------------------------------- |
+| `default`, `task` | `devin/glm-5-3-1m:high`          |
+| `slow`, `plan`    | `devin/glm-5-3-1m:max`           |
+| `smol`, `vision`  | `openai-codex/gpt-6-luna:medium` |
+| `judge`           | `openai-codex/gpt-6-luna`        |
+| `tiny`            | `openai-codex/gpt-6-luna:low`    |
+| `review`          | `openai-codex/gpt-6-sol:high`    |
+| `advisor`         | `openai-codex/gpt-6-luna:high`   |
 
 The advisor remains enabled and reviews every third eligible primary update.
 `devin/deepseek-v4-pro` and `openai-codex/gpt-6-luna` remain available for manual
-selection. Judge fallback uses `devin/glm-5-3-1m:high`.
+selection. Judge fallback uses `openai-codex/gpt-6-sol`. Unlike chat roles,
+`judge` does not use a thinking suffix; `chezmoi apply` removes these suffixes
+from existing judge selectors and their fallback entries without changing models.
 
 The profile has its own config, sessions, and model cache. It shares the default
 profile's `AGENTS.md`, custom agent definitions, and `agent.db` through symlinks.

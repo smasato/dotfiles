@@ -19,18 +19,26 @@
         "task" "devin/glm-5-3-1m:high"
         "slow" "devin/glm-5-3-1m:max"
         "plan" "devin/glm-5-3-1m:max"
-        "smol" "devin/glm-5-3-flash-1m:high"
-        "vision" "devin/glm-5-3-flash-1m:medium"
+        "smol" "openai-codex/gpt-6-luna:medium"
+        "vision" "openai-codex/gpt-6-luna:medium"
         "review" "openai-codex/gpt-6-sol:high"
-        "advisor" "@review"
-        "judge" "devin/glm-5-3-flash-1m:medium"
-        "tiny" "devin/glm-5-3-flash-1m:low")
-      "retry" (dict "fallbackChains" (dict "judge" (list "devin/glm-5-3-1m:high")))
+        "advisor" "openai-codex/gpt-6-luna:high"
+        "judge" "openai-codex/gpt-6-luna"
+        "tiny" "openai-codex/gpt-6-luna:low")
+      "retry" (dict "fallbackChains" (dict "judge" (list "openai-codex/gpt-6-sol")))
 -}}
 {{- $config = mergeOverwrite $config $defaults -}}
 {{- if .chezmoi.stdin -}}
 {{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}
 {{- end -}}
+{{- /* judge は model-kind ロール。既存設定を含め、チャット用の推論レベル指定を除去する。 */ -}}
+{{- $thinkingSuffix := ":(off|minimal|low|medium|high|xhigh|max|auto|inherit)(\\s*(,|$))" -}}
+{{- $_ := set $config.modelRoles "judge" (regexReplaceAll $thinkingSuffix $config.modelRoles.judge "${2}") -}}
+{{- $judgeFallbacks := list -}}
+{{- range $candidate := $config.retry.fallbackChains.judge -}}
+{{-   $judgeFallbacks = append $judgeFallbacks (regexReplaceAll $thinkingSuffix $candidate "${2}") -}}
+{{- end -}}
+{{- $_ = set $config.retry.fallbackChains "judge" $judgeFallbacks -}}
 {{- /* 初期モデルと Daybreak Blue 対応モデルを、既存の追加モデルを消さずに維持する。 */ -}}
 {{- $_ = set $config "enabledModels" (concat (get $config "enabledModels" | default list) (get $defaults "enabledModels") | uniq) -}}
 {{- $config = mergeOverwrite $config (dict
