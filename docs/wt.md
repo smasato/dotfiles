@@ -5,22 +5,23 @@ Worktrunk（`wt` CLI）による git worktree 管理の構成メモ。
 
 ## 構成要素
 
-| ファイル                                                        | 役割                                                                 |
-| --------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `dot_config/mise/config.toml.tmpl`                              | mise で `worktrunk = "latest"` をインストール                        |
-| `dot_zshrc.tmpl`                                                | シェル統合（`wt config shell init zsh` を eval）                     |
-| `dot_config/worktrunk/config.toml`                              | ユーザー設定。ライフサイクル hook を定義                             |
-| `dot_config/herdr/scripts/executable_worktree-open.sh`          | post-switch hook から呼ばれ、worktree を Herdr で開く                |
-| `dot_config/herdr/scripts/executable_worktree-close.sh`         | pre/post-remove hook から呼ばれ、削除前の ID を保存して close を予約 |
-| `dot_config/herdr/scripts/worktree.py`                          | レイアウトの再開・排他制御と削除前後の ID 照合を共通実装             |
-| `.chezmoiscripts/run_onchange_after_herdr-plugins.sh.tmpl`      | Herdr の `herdr-worktrunk` プラグインをインストール                  |
-| `.chezmoiscripts/run_after_04-claude-worktrunk.sh.tmpl`         | 毎回の apply 後に Claude の Worktrunk プラグインを更新               |
-| `.chezmoiscripts/run_onchange_after_05-codex-worktrunk.sh.tmpl` | Codex の各 home に Worktrunk plugin を導入し、CLI で有効化を確認     |
-| `dot_claude/settings.json.tmpl`                                 | Claude Code の worktrunk プラグイン有効化と worktree 権限            |
+| ファイル                                                        | 役割                                                                  |
+| --------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `dot_config/mise/config.toml.tmpl`                              | mise の github backend（`github:max-sixty/worktrunk`）でインストール  |
+| `dot_zshrc.tmpl`                                                | シェル統合（`wt config shell init zsh` を eval）                      |
+| `dot_config/worktrunk/config.toml`                              | ユーザー設定。ライフサイクル hook を定義                              |
+| `dot_config/herdr/scripts/executable_worktree-open.sh`          | post-switch hook から呼ばれ、worktree を Herdr で開く                 |
+| `dot_config/herdr/scripts/executable_worktree-close.sh`         | pre/post-remove hook から呼ばれ、削除前の ID を保存して close を予約  |
+| `dot_config/herdr/scripts/worktree.py`                          | レイアウトの再開・排他制御と削除前後の ID 照合を共通実装              |
+| `.chezmoiscripts/run_onchange_after_herdr-plugins.sh.tmpl`      | Herdr の `herdr-worktrunk` プラグインをインストール                   |
+| `.chezmoiscripts/run_after_04-claude-worktrunk.sh.tmpl`         | 毎回の apply 後に Claude の Worktrunk プラグインを更新                |
+| `.chezmoiscripts/run_onchange_after_05-codex-worktrunk.sh.tmpl` | Codex の各 home に Worktrunk plugin を導入し、CLI で有効化を確認      |
+| `.chezmoiscripts/run_onchange_after_08-omp-worktrunk.sh.tmpl`   | oh-my-pi に Worktrunk の activity hook を導入し、`config show` で確認 |
+| `dot_claude/settings.json.tmpl`                                 | Claude Code の worktrunk プラグイン有効化と worktree 権限             |
 
 ## インストールとシェル統合
 
-- 本体は mise 管理（`dot_config/mise/config.toml.tmpl` の `worktrunk = "latest"`）。
+- 本体は mise 管理（`dot_config/mise/config.toml.tmpl` の `"github:max-sixty/worktrunk" = "latest"`）。
 - `.zshrc` で `wt` が存在すれば `eval "$(command wt config shell init zsh)"` を実行。
   これで `wt switch` 後にシェルの cwd が worktree へ移動する（シェル統合なしでは cd できない）。
 
@@ -284,7 +285,16 @@ mise run check-worktrunk-plugins
 標準・仕事用 home それぞれで管理 CLI の JSON 一覧を読み、登録・有効状態を検証する。
 存在しない home は `absent (not checked)` と表示して作成しない。
 不足・無効・取得失敗は終了コード 1。意図して無効化している home もこの確認では報告対象になる。
-v0.77.0 の `wt config show` は plugin 存在判定に限界があるため、設定診断とこの確認を使い分ける。
+v0.78 以降の `wt config show` は plugin の状態を各 CLI に問い合わせて判定する。
+
+## oh-my-pi 連携
+
+`run_onchange_after_08-omp-worktrunk.sh.tmpl` が `wt config plugins omp install --yes` を実行し、
+`~/.omp/agent/hooks/pre/worktrunk.ts` に activity hook を書く。`wt list` に 🤖 / 💬 が出る。
+スクリプトには `wt --version` を埋め込んでおり、wt 更新後の apply で再実行され、古い hook を書き直す。
+成功判定は終了コードではなく、`wt config show` の `OH-MY-PI` 節が `✓ Plugin installed` であること。
+OMP のプロファイル（`OMP_PROFILE`）は使っていないため、既定の agent ディレクトリだけを対象にする。
+導入後は omp を再起動する。
 
 ## 状態確認と片付け候補
 

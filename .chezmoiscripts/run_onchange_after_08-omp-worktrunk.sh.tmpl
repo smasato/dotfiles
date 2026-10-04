@@ -1,0 +1,23 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+set -euo pipefail
+
+# Install Worktrunk's oh-my-pi activity hook (hooks/pre/worktrunk.ts) and verify
+# it through Worktrunk's own diagnostics. Reruns when wt changes so an outdated
+# hook is rewritten after upgrades.
+# wt: {{ if lookPath "wt" }}{{ output "wt" "--version" | trim }}{{ else }}not installed{{ end }}
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+cd "${HOME}"
+eval "$(mise env -s bash)"
+
+if ! command -v wt >/dev/null 2>&1; then
+  echo "wt not found on PATH; run 'mise install' first" >&2
+  exit 1
+fi
+
+wt config plugins omp install --yes
+# A zero exit is not proof; require config show to report it installed and current.
+wt config show 2>&1 | awk '/^OH-MY-PI$/ { section = 1; next } section && NF { print; exit }' |
+  grep -qx '✓ Plugin installed'
+echo "Worktrunk oh-my-pi hook installed"
+{{- end }}
