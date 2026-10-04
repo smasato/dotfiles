@@ -78,7 +78,8 @@
       "display" (dict
         "cacheMissMarker" true
         "showTokenUsage" true
-        "showTurnTime" true)
+        "showTurnTime" true
+        "subagentLivePreview" true)
       "task" (dict
         "enableLsp" true
         "enableEffort" true
