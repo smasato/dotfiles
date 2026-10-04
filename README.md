@@ -79,11 +79,11 @@ affect resolution:
 
 ## OMP settings
 
-The default OMP profile enforces `advisor.reviewInterval: 3` on `chezmoi apply`.
+The default and security OMP profiles enforce `advisor.reviewInterval: 3` on `chezmoi apply`.
 The advisor reviews every third eligible primary update, with skipped updates
 included in the next review.
 
-Both the default and experimental profiles enforce
+The default, experimental, and security profiles enforce
 `telemetry.otlpExportEnabled: false` on `chezmoi apply`, disabling OTLP trace,
 log, and metric export even when `OTEL_*` endpoints are configured.
 
@@ -121,6 +121,51 @@ Model assignments are initial defaults; changes made inside OMP survive
 in the OpenCode console permits Go overages to consume Zen credits. SuperGrok
 OAuth model access depends on the subscription; catalog presence alone does not
 prove account access.
+
+## Security OMP profile
+
+Run `omp --profile security` for Devin-based implementation with Daybreak-capable
+Codex review. On first apply, the profile starts from the default profile's current
+settings and managed defaults, then applies these model assignments:
+
+| Role              | Initial model                   |
+| ----------------- | ------------------------------- |
+| `default`, `task` | `devin/glm-5-3-1m:high`         |
+| `slow`, `plan`    | `devin/glm-5-3-1m:max`          |
+| `smol`            | `devin/glm-5-3-flash-1m:high`   |
+| `vision`, `judge` | `devin/glm-5-3-flash-1m:medium` |
+| `tiny`            | `devin/glm-5-3-flash-1m:low`    |
+| `review`          | `openai-codex/gpt-6-sol:high`   |
+| `advisor`         | `@review`                       |
+
+The advisor remains enabled and reviews every third eligible primary update.
+`devin/deepseek-v4-pro` and `openai-codex/gpt-6-luna` remain available for manual
+selection. Judge fallback uses `devin/glm-5-3-1m:high`.
+
+The profile has its own config, sessions, and model cache. It shares the default
+profile's `AGENTS.md`, custom agent definitions, and `agent.db` through symlinks.
+Existing logins work without copying tokens into this repository; login, logout,
+and credential refresh affect the shared store.
+
+Account preferences belong in the profile's local `auth.accountPolicies`, using
+an `accountId` obtained from the authenticated account. The repository does not
+specify an email address or account ID. Existing local policies survive
+`chezmoi apply`. Select an account with confirmed Daybreak access; a Pro plan alone
+does not establish eligibility.
+
+OMP requests Daybreak Blue when the selected account's model catalog advertises
+it for Sol or Luna. Account priority is not exclusive routing: another account
+may serve requests after rotation. Daybreak approval does not apply to Devin
+models. Project settings and explicit CLI overrides still take precedence.
+
+Changes made inside the security profile survive `chezmoi apply`; its settings do
+not continuously mirror changes to the default profile. Inspect or select a role:
+
+```sh
+omp --profile security config get modelRoles --json
+omp --profile security --model @review
+omp --profile security --model devin/deepseek-v4-pro
+```
 
 # Configure hk
 

@@ -1,0 +1,39 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* 初回は通常プロファイルの設定を基に作成し、以後の OMP 内での変更は維持する。 */ -}}
+{{- $context := deepCopy . -}}
+{{- $basePath := joinPath .chezmoi.homeDir ".omp/agent/config.yml" -}}
+{{- $_ := set $context.chezmoi "stdin" "" -}}
+{{- if stat $basePath -}}
+{{-   $_ = set $context.chezmoi "stdin" (include $basePath) -}}
+{{- end -}}
+{{- $config := fromYaml (includeTemplate "dot_omp/private_agent/modify_private_config.yml" $context) -}}
+{{- $defaults := dict
+      "enabledModels" (list
+        "devin/glm-5-3-1m"
+        "devin/glm-5-3-flash-1m"
+        "devin/deepseek-v4-pro"
+        "openai-codex/gpt-6-sol"
+        "openai-codex/gpt-6-luna")
+      "modelRoles" (dict
+        "default" "devin/glm-5-3-1m:high"
+        "task" "devin/glm-5-3-1m:high"
+        "slow" "devin/glm-5-3-1m:max"
+        "plan" "devin/glm-5-3-1m:max"
+        "smol" "devin/glm-5-3-flash-1m:high"
+        "vision" "devin/glm-5-3-flash-1m:medium"
+        "review" "openai-codex/gpt-6-sol:high"
+        "advisor" "@review"
+        "judge" "devin/glm-5-3-flash-1m:medium"
+        "tiny" "devin/glm-5-3-flash-1m:low")
+      "retry" (dict "fallbackChains" (dict "judge" (list "devin/glm-5-3-1m:high")))
+-}}
+{{- $config = mergeOverwrite $config $defaults -}}
+{{- if .chezmoi.stdin -}}
+{{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}
+{{- end -}}
+{{- /* 初期モデルと Daybreak Blue 対応モデルを、既存の追加モデルを消さずに維持する。 */ -}}
+{{- $_ = set $config "enabledModels" (concat (get $config "enabledModels" | default list) (get $defaults "enabledModels") | uniq) -}}
+{{- $config = mergeOverwrite $config (dict
+      "advisor" (dict "reviewInterval" 3)
+      "telemetry" (dict "otlpExportEnabled" false)) -}}
+{{- toYaml $config | trim -}}
