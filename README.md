@@ -77,6 +77,12 @@ affect resolution:
 (cd "$HOME" && mise upgrade github:vercel-labs/fx)
 ```
 
+## OMP advisor
+
+The default OMP profile enforces `advisor.reviewInterval: 3` on `chezmoi apply`.
+The advisor reviews every third eligible primary update, with skipped updates
+included in the next review.
+
 ## Experimental OMP profile
 
 Run `omp --profile experimental` for personal Claude, Codex, OpenCode Go / Zen,

@@ -58,6 +58,7 @@
         "anthropic/claude-fable-5"
         "anthropic/claude-fable-5-1")
       "modelRoles" (dict "judge" "anthropic/claude-haiku-4-5")
+      "advisor" (dict "reviewInterval" 3)
       "retry" (dict "fallbackChains" (dict "judge" (list "devin/swe-2")))
       "find" (dict "enabled" "on")
       "astGrep" (dict "enabled" true)
