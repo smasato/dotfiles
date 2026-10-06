@@ -144,10 +144,18 @@ selection. Judge fallback uses `openai-codex/gpt-6-sol`. Unlike chat roles,
 `judge` does not use a thinking suffix; `chezmoi apply` removes these suffixes
 from existing judge selectors and their fallback entries without changing models.
 
-The profile has its own config, sessions, and model cache. It shares the default
-profile's `AGENTS.md`, custom agent definitions, and `agent.db` through symlinks.
-Existing logins work without copying tokens into this repository; login, logout,
-and credential refresh affect the shared store.
+The profile has its own config, sessions, model cache, and credential store
+(`agent.db`). It shares only the default profile's `AGENTS.md` and custom agent
+definitions through symlinks. OMP rotates across every stored account of a
+provider, so keep accounts meant only for security reviews, such as a personal
+Daybreak account, in this store. Accounts logged in here are not used by the
+default profile, and login, logout, and credential refresh affect only this
+profile. Log in to each provider the roles use:
+
+```sh
+omp --profile security login devin
+omp --profile security login openai-codex
+```
 
 Account preferences belong in the profile's local `auth.accountPolicies`, using
 an `accountId` obtained from the authenticated account. The repository does not
