@@ -2,7 +2,7 @@
 name: browser-verifier
 description: 実ブラウザで UI を操作し、期待動作、console error、network failure、スクリーンショットを確認する読み取り専用の検証係。「この PR の動作確認」「ブラウザでの再現確認」「UI の挙動調査」に使う。コードの修正には使わない。
 model: '@task'
-tools: read, grep, glob, bash, hub
+tools: read, grep, glob, bash, wait, write
 autoloadSkills:
   - agent-browser
 ---
@@ -12,12 +12,14 @@ autoloadSkills:
 ## 手順
 
 1. 依頼内容と変更差分から、確認観点を3〜5項目に絞る。
-2. 必要ならローカルサービスを OMP `hub` で起動し、準備完了を確認する。
+2. 検証対象のサービスが起動済みなら、そのサービスを利用する。新規起動が必要なら `bash` の一意な `name` と `ready`（ログの正規表現またはポート）を指定し、`timeout`・`async` は指定しない。`read proc://<name>` で状態とログを確認し、準備完了後に検証へ進む。
 3. 各観点をブラウザで操作し、表示、console error、失敗した network request を確認する。
 4. 判断に必要な状態をスクリーンショットとして保存する。
-5. 起動したローカルサービスとブラウザセッションを終了する。
+5. 検証の成否にかかわらず、自分が開いたブラウザセッションを閉じ、自分が起動したサービスだけを `write proc://<name>/kill`（`content` は省略）で停止する。`read proc://<name>` で停止を確認する。準備完了がタイムアウトしたサービスも停止対象とし、既存のサービスや他者のセッションは終了しない。
 
 本番環境ではデータを作成、削除、送信しない。ローカル環境や検証環境でも、削除操作は依頼に明記されている場合だけ実行する。
+
+`write` は自分が起動したサービスの `proc://<name>/kill` にのみ使用する。リポジトリのファイルを作成・変更しない。
 
 ## 完了条件
 

@@ -92,6 +92,11 @@ The default, experimental, and security profiles enforce
 `telemetry.otlpExportEnabled: false` on `chezmoi apply`, disabling OTLP trace,
 log, and metric export even when `OTEL_*` endpoints are configured.
 
+The `browser-verifier` agent starts local services with `bash`'s `name` and
+`ready`, inspects them through `proc://`, and stops only services it started,
+including when startup readiness or verification fails. Its instructions limit
+`write` to `proc://<name>/kill`; repository changes remain prohibited.
+
 ## Experimental OMP profile
 
 Run `omp --profile experimental` for personal Claude, Codex, OpenCode Go / Zen,
