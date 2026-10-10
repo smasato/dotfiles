@@ -15,7 +15,6 @@ set -eu
 #   no grill-me / grill-with-docs: aliases for grilling; no setup-pre-commit: Husky, this
 #   environment standardizes on hk)
 # skills: shadcn/improve:improve
-# skills: shadcn/ui:shadcn (no migrate-radix-to-base: no Radix project to migrate)
 # skills: vercel-labs/agent-browser:agent-browser
 # skills: vercel-labs/skills:find-skills
 # herdr skills are written by run_onchange_after_herdr-plugins.sh from the
@@ -82,9 +81,6 @@ skills add mattpocock/skills \
 
 echo "Adding skills: shadcn/improve (improve)"
 skills add shadcn/improve --skill improve --agent universal -g -y
-
-echo "Adding skills: shadcn/ui (shadcn)"
-skills add shadcn/ui --skill shadcn --agent universal -g -y
 
 echo "Adding skills: vercel-labs/agent-browser (agent-browser)"
 skills add vercel-labs/agent-browser --skill agent-browser --agent universal -g -y
