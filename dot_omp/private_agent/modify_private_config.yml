@@ -13,7 +13,6 @@
         "slow" "openai-codex/gpt-6-astra:xhigh"
         "review" "anthropic/claude-fable-5-1:high")
       "advisor" (dict "enabled" true)
-      "cycleOrder" (list "default" "slow")
       "task" (dict
         "agentModelOverrides" (dict
           "sonic" "@smol"
@@ -57,6 +56,7 @@
         "anthropic/claude-fable-5"
         "anthropic/claude-fable-5-1")
       "modelRoles" (dict "judge" "anthropic/claude-haiku-4-5")
+      "cycleOrder" (list "smol" "default" "slow")
       "advisor" (dict "reviewInterval" 3)
       "retry" (dict "fallbackChains" (dict "judge" (list "devin/swe-2")))
       "tier" (dict "openai" "priority")
@@ -73,14 +73,20 @@
       "startup" (dict "quiet" true)
       "showHardwareCursor" true
       "tui" (dict "imeSafeCursor" true)
-      "statusLine" (dict "transparent" true)
+      "statusLine" (dict
+        "preset" "custom"
+        "leftSegments" (list "model" "mode" "path" "git" "pr")
+        "rightSegments" (list "context_pct" "cost" "session_name")
+        "transparent" true)
       "terminal" (dict "showProgress" true)
       "display" (dict
         "cacheMissMarker" true
         "showTokenUsage" true
         "showTurnTime" true
+        "pinnedAgents" "full"
         "subagentLivePreview" true)
       "task" (dict
+        "maxConcurrency" 8
         "enableLsp" true
         "enableEffort" true
         "maxRuntimeMs" 0

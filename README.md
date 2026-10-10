@@ -83,6 +83,11 @@ The default and security OMP profiles enforce `advisor.reviewInterval: 3` on `ch
 The advisor reviews every third eligible primary update, with skipped updates
 included in the next review.
 
+The default profile uses a custom status line, a full subagent list, and
+`task.maxConcurrency: 8`. Its `Ctrl+P` cycle is `smol`, `default`, `slow`.
+The security profile inherits unset display and concurrency settings while
+preserving existing overrides and its model cycle.
+
 The default, experimental, and security profiles enforce
 `telemetry.otlpExportEnabled: false` on `chezmoi apply`, disabling OTLP trace,
 log, and metric export even when `OTEL_*` endpoints are configured.
