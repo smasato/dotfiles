@@ -11,3 +11,4 @@
 - Use `ugrep` only when OMP's `grep` cannot handle the input, such as compressed files, archives, fuzzy matching, or binary searches.
 - macOS provides BSD `sed`, `awk`, and `date`; use `gdate` or `gawk` when GNU behavior is required.
 - Do not bypass commit hooks with `--no-verify`. Use Conventional Commits.
+- Do not edit `README.md`, `docs/`, or changelogs unless I ask. This overrides the default rule to update docs/changelog after fixes and features.
