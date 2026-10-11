@@ -13,7 +13,8 @@
         "devin/glm-5-3-flash-1m"
         "devin/deepseek-v4-pro"
         "openai-codex/gpt-6-sol"
-        "openai-codex/gpt-6-luna")
+        "openai-codex/gpt-6-luna"
+        "openai-codex/gpt-daybreak-blue-latest")
       "modelRoles" (dict
         "default" "devin/glm-5-3-1m:high"
         "task" "devin/glm-5-3-1m:high"
