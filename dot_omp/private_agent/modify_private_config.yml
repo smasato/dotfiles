@@ -50,13 +50,11 @@
         "devin/glm-5-3-flash-1m"
         "devin/gemini-3-8-flash"
         "devin/glm-5-3-1m"
-        "anthropic/claude-opus-5"
         "anthropic/claude-opus-5-5"
         "anthropic/claude-sonnet-5-5"
-        "anthropic/claude-haiku-4-5"
-        "anthropic/claude-fable-5"
+        "anthropic/claude-haiku-5-5"
         "anthropic/claude-fable-5-1")
-      "modelRoles" (dict "judge" "anthropic/claude-haiku-4-5")
+      "modelRoles" (dict "judge" "anthropic/claude-haiku-5-5")
       "cycleOrder" (list "smol" "default" "slow")
       "advisor" (dict "reviewInterval" 3)
       "retry" (dict "fallbackChains" (dict "judge" (list "devin/swe-2")))
