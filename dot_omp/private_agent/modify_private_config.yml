@@ -49,6 +49,7 @@
         "devin/deepseek-v4-1-flash"
         "devin/glm-5-3-flash-1m"
         "devin/gemini-3-8-flash"
+        "devin/gemini-4-argon"
         "devin/glm-5-3-1m"
         "anthropic/claude-opus-5-5"
         "anthropic/claude-sonnet-5-5"
