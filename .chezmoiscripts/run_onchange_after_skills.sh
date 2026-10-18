@@ -9,11 +9,13 @@ set -eu
 #   skills only; the remaining Caveman Cloud skills need a gateway account this
 #   environment does not have)
 # pstack and control-cli/control-ui/deslop are maintained in dot_agents/skills.
-# skills: emilkowalski/skill:explicit list (no write-swift / animate-expo: no Swift or Expo work here)
+# skills: emilkowalski/skill:explicit list (no write-swift / animate-expo: no Swift or Expo work here;
+#   no ask-sonner: Sonner is not used here)
 # skills: github/gh-stack:gh-stack
 # skills: mattpocock/skills:explicit list (tdd/teach are locally maintained pstack ports;
 #   no grill-me / grill-with-docs: aliases for grilling; no setup-pre-commit: Husky, this
-#   environment standardizes on hk)
+#   environment standardizes on hk; no migrate-to-shoehorn / scaffold-exercises: shoehorn
+#   and course exercises are not used here)
 # skills: shadcn/improve:improve
 # skills: vercel-labs/agent-browser:agent-browser
 # skills: vercel-labs/skills:find-skills
@@ -54,7 +56,7 @@ skills add JuliusBrussee/caveman \
 
 echo "Adding skills: emilkowalski/skill (web design skills only)"
 skills add emilkowalski/skill \
-  --skill animate --skill animation-vocabulary --skill apple-design --skill ask-sonner \
+  --skill animate --skill animation-vocabulary --skill apple-design \
   --skill emil-design-eng --skill find-animation-opportunities --skill improve-animations \
   --skill pick-ui-library --skill review-animations \
   --agent universal -g -y
@@ -72,8 +74,8 @@ skills add mattpocock/skills \
   --skill to-spec --skill to-tickets --skill triage --skill wayfinder --skill wizard \
   --skill claude-handoff --skill implement-spec --skill loop-me --skill retro \
   --skill setup-ts-deep-modules --skill writing-beats --skill writing-fragments \
-  --skill writing-shape --skill git-guardrails-claude-code --skill migrate-to-shoehorn \
-  --skill scaffold-exercises --skill grilling \
+  --skill writing-shape --skill git-guardrails-claude-code \
+  --skill grilling \
   --skill handoff --skill to-questionnaire --skill wait-what --skill writing-for-agents \
   --agent universal -g -y
 
