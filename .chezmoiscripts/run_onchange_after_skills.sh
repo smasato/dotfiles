@@ -13,7 +13,8 @@ set -eu
 #   no ask-sonner: Sonner is not used here)
 # skills: github/gh-stack:gh-stack
 # skills: mattpocock/skills:explicit list (tdd/teach are locally maintained pstack ports;
-#   no grill-me / grill-with-docs: aliases for grilling; no setup-pre-commit: Husky, this
+#   no grill-me: alias for grilling; grill-with-docs is kept as the user-invoked entry
+#   point that chains grilling and domain-modeling; no setup-pre-commit: Husky, this
 #   environment standardizes on hk; no migrate-to-shoehorn / scaffold-exercises: shoehorn
 #   and course exercises are not used here)
 # skills: shadcn/improve:improve
@@ -75,7 +76,7 @@ skills add mattpocock/skills \
   --skill claude-handoff --skill implement-spec --skill loop-me --skill retro \
   --skill setup-ts-deep-modules --skill writing-beats --skill writing-fragments \
   --skill writing-shape --skill git-guardrails-claude-code \
-  --skill grilling \
+  --skill grilling --skill grill-with-docs \
   --skill handoff --skill to-questionnaire --skill wait-what --skill writing-for-agents \
   --agent universal -g -y
 
