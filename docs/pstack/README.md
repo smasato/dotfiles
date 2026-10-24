@@ -4,6 +4,8 @@ Cursor 由来の 46 スキルと付属リソースを `dot_agents/skills/` で�
 上流の手順を一律に適用せず、必要な原則を既存の作業フローへ取り込む。
 互換性のため `poteto-mode` と `pstack-runtime` の名前と配置は維持する。
 
+OMP からの呼び出し方、モデル設定、トラブル対処は [OMP で pstack を使う](omp.md) を参照する。
+
 ## 構成
 
 - `poteto-mode` は明示起動の軽量な作業モード。範囲の確認、調査、実装、検証を基本とし、
@@ -14,14 +16,16 @@ Cursor 由来の 46 スキルと付属リソースを `dot_agents/skills/` で�
   同じ作業ツリーの Git 操作や共有ブラウザは担当者を限定する。フックの副作用も考慮する。
 - `references/history.md` と `references/monitoring.md` は対象を絞った履歴分析、停止、
   引き継ぎを扱う。履歴の要約と実行の証拠を区別し、再開時は現在の状態を確認する。
-- Claude と Codex の参照文書は任意のアダプター。実行環境に公開された API とモデルを使い、
+- OMP、Claude Code、Codex の参照文書は任意のアダプター。実行環境に公開された API とモデルを使い、
   未対応の環境でも共通契約に従って処理する。独立レビューができなければ、その制約を報告する。
 - 既存の playbook と原則スキルは専門作業向けの参照として残す。共通契約の権限境界が適用され、
   呼び出すだけで編集・公開・マージが許可されるわけではない。個別手順の統合・削除は別途行う。
 
 ## ローカルの連携
 
-claude と wclaude は既存の skills シンボリックリンクから、Codex は共有ストアから読む。
+OMP と Codex は共有ストアから、claude と wclaude は既存の skills シンボリックリンクから読む。
+OMP の `interrogate` は `pstack-review-openai` と `pstack-review-anthropic` を使う。
+モデルは OMP の `review_openai` と `review_anthropic` ロールで管理し、通常の `reviewer` とは分ける。
 Claude の `pstack-worker` はモデル継承用、`comment-sicko` は明示的なコメント監査用とする。
 配置やコマンドの前提は `pstack-runtime/references/workspace.md` にまとめる。
 
@@ -56,6 +60,8 @@ Claude の `pstack-worker` はモデル継承用、`comment-sicko` は明示的�
 上流更新は自動追従しない。元の取得元とディレクトリハッシュは
 `dot_agents/skills/pstack-runtime/references/upstream.json` に記録している。
 これは配置されていたスナップショットの一覧であり、単一コミットの checkout ではない。
+選択的に取り込んだ更新は同ファイルの `selectiveUpdates` に、採用元コミットと変更内容を記録する。
+記録されたバージョンの全機能を取り込んだという意味ではない。
 更新時は upstream と比較して必要な変更を移植し、下記のチェックを通す。
 元のライセンスはこのディレクトリの `pstack-LICENSE` と `cursor-team-kit-LICENSE` に同梱する。
 
