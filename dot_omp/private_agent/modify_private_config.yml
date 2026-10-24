@@ -11,7 +11,9 @@
         "task" "devin/swe-2:medium"
         "plan" "openai-codex/gpt-6-astra:xhigh"
         "slow" "openai-codex/gpt-6-astra:xhigh"
-        "review" "anthropic/claude-fable-5-1:high")
+        "review" "anthropic/claude-fable-5-1:high"
+        "review_openai" "openai-codex/gpt-6-astra:high"
+        "review_anthropic" "anthropic/claude-opus-5-5:high")
       "advisor" (dict "enabled" true)
       "task" (dict
         "agentModelOverrides" (dict

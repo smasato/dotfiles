@@ -27,7 +27,7 @@ The N candidates will receive the same prompt, so the prompt is the contract. Ge
 
 1. State the artifact each candidate is producing.
 2. Derive the rubric. State what success looks like for _this_ task, then turn it into 3-6 concrete gradeable criteria. Concrete: `Adds a --dry-run flag that skips writes`. Vague: `code is correct`. The rubric is the picker's tool in Phase D; candidates only see the task.
-3. Pick the runners from the native runtime's review-panel. Require distinct candidate approaches. Name actual models, and disclose when the host only permits independent passes on one model.
+3. Pick the runners from the native runtime's available implementation agents. Prefer different model families for judgment-sensitive comparisons; repeated runs on one model are suitable for generation-bound work. Require distinct candidate approaches. Name actual models, and disclose any model-diversity limitation.
 4. Assign output paths. Each candidate writes to its own location (a git worktree where possible, otherwise `/tmp/arena-<slug>/candidate-<n>/`). N candidates writing to the same path is shared mutable state and fails the the **separate-before-serializing-shared-state** principle skill test.
 
 ## Phase B: Fan out
@@ -40,7 +40,7 @@ If a candidate fails to produce output, proceed with N-1 and note the dropout in
 
 ## Phase C: Cross-judge
 
-After all Phase B candidates complete, spawn a read-only judgment-role worker using the native runtime. Give it the rubric and candidates by path label. Prefer a different available model from the author; disclose when that is unavailable. It scores each criterion and recommends a base. Run this alongside the parent's reading in Phase D.
+After all Phase B candidates finish writing, freeze their outputs and spawn one read-only judgment-role worker using the native runtime. Give it the rubric and candidates by path label. Prefer a different model family from the parent's; disclose when that is unavailable. It scores each criterion and recommends a base with rationale. Run this alongside the parent's reading in Phase D.
 
 ## Phase D: Pick a base
 
@@ -70,4 +70,4 @@ If verification surfaces a problem the arena did not catch, either Phase A was w
 
 ## Outputs
 
-One synthesized artifact. One short synthesis note alongside, naming the base, the grafts (with source candidate), the rejections, the dropouts if any, and the verification result.
+One synthesized artifact. One short synthesis note alongside, naming the base and why, the cross-judge's verdict, the grafts (with source candidate), the rejections, the dropouts if any, and the verification result.

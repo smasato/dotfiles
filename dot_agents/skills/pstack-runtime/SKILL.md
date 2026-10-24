@@ -28,4 +28,4 @@ Before/after comparisons must preserve the exact pre-test state, including uncom
 - Waiting, pausing, or handing off work: [monitoring and continuation](references/monitoring.md).
 - Installing or editing shared skills, creating worktrees, or operating stacks: [local workspace conventions](references/workspace.md).
 
-Use [Claude execution](references/claude.md) or [Codex execution](references/codex.md) only for that host's tool mapping or history format. Follow the actual tool schema if it differs from an example.
+For host-specific delegation, model selection, or history, read the matching adapter: [OMP](references/omp.md), [Claude Code](references/claude.md), or [Codex](references/codex.md). Follow the actual tool schema if it differs from an example.

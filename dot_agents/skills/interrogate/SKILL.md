@@ -35,7 +35,7 @@ Write one clear paragraph. Reviewers challenge whether the work achieves the int
 
 ## Step 3, Spawn Reviewers
 
-Resolve the native runtime's review-panel into actual available models before spawning. Use one read-only reviewer per distinct model, in waves within the host limit. When only one model is available, use independent fresh passes and report the loss of model diversity. The role labels are not API model IDs.
+Resolve the native runtime's review-panel into actual available models before spawning. In OMP, follow the [OMP adapter](../pstack-runtime/references/omp.md) for the configured review agents. Use one read-only reviewer per distinct model, preferring different model families. Report the concrete selections before dispatch. When only one model is available, use independent fresh passes and report the loss of model diversity. The role labels are not API model IDs.
 
 If a requested model is rejected, use a supported alternative only within the user's constraints and state the change. If no valid alternative satisfies the request, report that limitation. Fixing configuration or opening a PR is a separate action requiring task scope.
 
@@ -46,9 +46,9 @@ Read `references/reviewer-prompt.md` and fill in the template with:
 3. The review rubric from `references/rubric.md`
 4. The code-quality lens from `references/code-quality-review.md`
 
-The same filled template goes to all reviewers, so every model applies the code-quality lens.
+The same filled template goes to all reviewers, so every model applies the code-quality lens. Label reviewers A, B, and so on, and launch them in one batch within the host's concurrency limit. Keep their findings independent until collection.
 
-Each reviewer produces structured findings as described in the prompt template.
+Each reviewer produces structured findings as described in the prompt template. Record the model that actually ran, including any fallback, rather than counting configured seats as independent models.
 
 ## Step 4, Synthesize
 

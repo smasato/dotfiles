@@ -15,6 +15,8 @@
         "slow" "xai-oauth/grok-4.6:xhigh"
         "advisor" "xai-oauth/grok-4.6:high"
         "review" "opencode-go/glm-5.3:max"
+        "review_openai" "openai-codex/gpt-6-astra:high"
+        "review_anthropic" "anthropic/claude-opus-5-5:high"
         "vision" "xai-oauth/grok-4.6:medium"
         "commit" "opencode-go/glm-5.3-flash:low"
         "zen" "opencode-zen/big-pickle:high")
@@ -67,6 +69,7 @@
       "openai-codex/gpt-5.6-terra"
       "openai-codex/gpt-6-astra"
       "anthropic/claude-opus-5"
+      "anthropic/claude-opus-5-5"
       "anthropic/claude-sonnet-5"
       "anthropic/claude-haiku-4-5"
       "anthropic/claude-fable-5"

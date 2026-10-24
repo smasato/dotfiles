@@ -1,6 +1,22 @@
 {
   "repository": "https://github.com/cursor/plugins",
   "snapshot": "Installed skill snapshots captured 2026-09-05; hashes are per-directory, not a single repository revision.",
+  "selectiveUpdates": [
+    {
+      "revision": "e73df471cd4bd918367e99f3dd9c51bd53ddf5f0",
+      "version": "0.15.32",
+      "sources": [
+        "pstack/skills/interrogate/SKILL.md",
+        "pstack/skills/arena/SKILL.md"
+      ],
+      "changes": [
+        "Batch reviewer dispatch with stable labels and the same review prompt.",
+        "Distinguish generation-bound candidates from model-diverse comparisons.",
+        "Cross-judge completed candidate outputs on a different model family from the parent and report the verdict."
+      ],
+      "adaptation": "Use native runtime agents and model roles. Preserve local scope boundaries, explicit invocation, and failure reporting; omit upstream host-specific model slugs and automatic configuration PRs."
+    }
+  ],
   "skills": [
     {
       "name": "tdd",

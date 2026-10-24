@@ -16,6 +16,8 @@ Each brief includes the goal, working directory, base revision, writable files o
 
 `fast`, `code`, `judgment`, and `review-panel` describe work, not model IDs. Use an available lower-cost model for mechanical work, a capable coding model for implementation, and stronger reasoning for ambiguous diagnosis or design. Resolve actual models from the host's current configuration. Do not assume fixed model families or unlimited concurrency.
 
+In OMP, read the [OMP adapter](omp.md) before resolving these roles or dispatching a review panel.
+
 Use distinct models or fresh reviewers when independent judgment is part of the task. If delegation is unavailable, perform sequential passes and label them self-review. If independent review or a model race is required, report the limitation rather than claiming an equivalent result.
 
 ## Collect and verify
