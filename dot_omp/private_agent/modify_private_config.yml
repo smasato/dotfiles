@@ -72,7 +72,7 @@
       "personality" "pragmatic"
       "startup" (dict "quiet" true)
       "showHardwareCursor" true
-      "tui" (dict "imeSafeCursor" true)
+      "tui" (dict "imeSafeCursor" true "completeScrollback" true)
       "statusLine" (dict
         "preset" "custom"
         "leftSegments" (list "model" "mode" "path" "git" "pr")
