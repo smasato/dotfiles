@@ -73,7 +73,6 @@ packages:
         pango:
         pkg-config:
         poppler:
-        procs:
         pueue:
           start_service: true
         re2c:
