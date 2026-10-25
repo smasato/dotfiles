@@ -29,33 +29,21 @@ Use a repeatable local harness to exercise an interactive CLI instead of poking 
 ## Harness Options
 
 - Repo-native harness: prefer checked-in scripts because they know the app's startup, env, and prompts.
-- `tmux`: managed sessions, `capture-pane`, `send-keys`, attach/detach.
-- PTY probe: use a short Python, Node, or Expect script when tmux is unavailable.
+- PTY probe: use a short Python, Node, or Expect script when no repo-native harness exists.
 - Runtime inspector: use Node or Bun inspector for CPU profiles, heap snapshots, and live evaluation.
 - Terminal recorder: use repo-local demo tools or asciinema-compatible tools when the user asks for a demo.
-
-## Minimal tmux Harness
-
-```bash
-SESSION="cli-harness-$(date +%s)"
-tmux new-session -d -s "$SESSION" -- <command-under-test>
-tmux capture-pane -pt "$SESSION"
-tmux send-keys -t "$SESSION" "help" Enter
-tmux capture-pane -pt "$SESSION"
-tmux kill-session -t "$SESSION"
-```
 
 For Node CLIs:
 
 ```bash
-NODE_OPTIONS="--inspect=127.0.0.1:0" tmux new-session -d -s "$SESSION" -- <node-cli-command>
+NODE_OPTIONS="--inspect=127.0.0.1:0" <node-cli-command>
 ```
 
 Read the terminal output to find the inspector URL, then use Chrome DevTools-compatible tooling if profiling is needed.
 
 ## Minimal PTY Harness
 
-Use a PTY script when you need deterministic waits in a repo that does not have tmux or a demo harness. Keep it temporary unless the user asks to add a reusable test.
+Use a PTY script when you need deterministic waits in a repo without a demo harness. Keep it temporary unless the user asks to add a reusable test.
 
 ```python
 import os
@@ -106,4 +94,4 @@ If the CLI needs richer terminal control, use `pty.fork()` or an existing PTY li
 - Do not send credentials or destructive commands into a controlled session.
 - Keep the harness in `/tmp` unless the repo already has a testing/demo harness.
 - Do not hard-code paths from another repository. Adapt commands to the current repo's scripts and runtime.
-- Clean up tmux sessions, temp dirs, inspector processes, and demo artifacts unless the user asks to keep them.
+- Clean up terminal sessions, temp dirs, inspector processes, and demo artifacts unless the user asks to keep them.

@@ -44,7 +44,7 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - `/dot_agents/`: Deployed to `~/.agents` - canonical agent skills store (e.g. create-pr), shared across agents
 - `/.chezmoidata/`: Data files for templates - `packages.yaml` (Homebrew packages)
 - `/.chezmoiscripts/`: Install/setup scripts run by chezmoi (Homebrew packages, macOS defaults, agent skills, etc.)
-- `/.chezmoiexternal.toml`: Externally fetched files (antigen.zsh, catppuccin themes, gitalias, tmux tpm)
+- `/.chezmoiexternal.toml`: Externally fetched files (antigen.zsh, catppuccin themes, gitalias)
 - `/.github/PULL_REQUEST_TEMPLATE.md`: Pull request template
 
 ### Key Technologies
@@ -55,7 +55,7 @@ This is a chezmoi-managed dotfiles repository for a macOS development environmen
 - **Package Management**: Homebrew - packages declared in `.chezmoidata/packages.yaml` and installed by a `.chezmoiscripts` run script during `chezmoi apply`
 - **Git Hooks**: hk, configured in `hk.pkl`
 - **Editors**: Cursor and Neovim (`dot_config/nvim`)
-- **Terminal**: Ghostty, tmux, and Herdr; Atuin for shell history
+- **Terminal**: Ghostty and Herdr; Atuin for shell history
 - **Secrets**: 1Password CLI integration for sensitive values (e.g. `onepasswordDetailsFields` in templates)
 
 ### Template Variables
