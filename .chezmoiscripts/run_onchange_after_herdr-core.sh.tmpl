@@ -1,0 +1,54 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+set -eu
+
+# Install herdr-core (hc), the runtime behind the Herdr app, and refresh the
+# agent skills printed by hc and the app.
+# hc comes from its standalone installer, like mise: the Herdr app and
+# `hc update` replace it in place so running terminals survive, which a
+# mise/aqua pin would fight. The app itself is installed manually from its
+# .dmg and updates itself.
+# Reruns when either version changes, so the skills match the binaries.
+# hc: {{ if lookPath "hc" }}{{ output "hc" "--version" | trim }}{{ else }}not installed{{ end }}
+# herdr-app: {{ if lookPath "herdr-app" }}{{ output "herdr-app" "--version" | trim }}{{ else }}not installed{{ end }}
+
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+if [ ! -x "$HOME/.local/bin/herdr-core" ]; then
+  installer="$(mktemp)"
+  trap 'rm -f "$installer"' EXIT
+  curl -fsSL --retry 3 --connect-timeout 15 --max-time 120 \
+    https://releases.herdr.dev/core/install.sh -o "$installer"
+  HC_INSTALL_DIR="$HOME/.local/bin" sh "$installer"
+fi
+
+# hc and herdr-app print their agent guides without skill frontmatter, so
+# wrap them with a name and a trigger description.
+write_skill() {
+  local name="$1" description="$2" body="$3"
+  if [ -z "${body//[[:space:]]/}" ]; then
+    echo "Refusing to replace the ${name} skill with empty output" >&2
+    return 1
+  fi
+  local directory="$HOME/.agents/skills/${name}"
+  mkdir -p "$directory"
+  printf -- '---\nname: %s\ndescription: "%s"\n---\n\n%s\n' \
+    "$name" "$description" "$body" >"$directory/.SKILL.md.update"
+  mv -f "$directory/.SKILL.md.update" "$directory/SKILL.md"
+}
+
+echo "Writing skill: herdr-core"
+write_skill herdr-core \
+  "Run, delegate to, message, wait on, and clean up programs and coding agents in herdr-core (hc) terminals. Use when the user mentions hc, herdr-core, or the Herdr app, or when \$HC_TERMINAL_ID is set and a task delegates to another agent. Herdr TUI (the herdr command) uses the herdr skill." \
+  "$(hc --skill)"
+
+if command -v herdr-app >/dev/null 2>&1; then
+  echo "Writing skill: herdr-app"
+  write_skill herdr-app \
+    "Change what the Herdr app window shows: spaces, tabs, panes, layouts, mods, themes, and settings in ~/.config/herdr-app. Use when the user asks to change the Herdr app's window or UI. Running and messaging agents uses the herdr-core skill." \
+    "$(herdr-app --skill)"
+else
+  echo "herdr-app not found; skipping its skill (install Herdr.dmg from herdr.dev)" >&2
+fi
+{{- end }}

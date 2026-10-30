@@ -21,7 +21,8 @@ set -eu
 # skills: vercel-labs/agent-browser:agent-browser
 # skills: vercel-labs/skills:find-skills
 # herdr skills are written by run_onchange_after_herdr-plugins.sh from the
-# installed herdr binary and plugin checkouts, not from this list.
+# installed herdr binary and plugin checkouts, and the herdr-core / herdr-app
+# skills by run_onchange_after_herdr-core.sh, not from this list.
 #
 # Target only the universal store: skills land in the canonical
 # ~/.agents/skills, and ~/.claude/skills is a chezmoi-managed symlink to that
