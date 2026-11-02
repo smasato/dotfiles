@@ -64,6 +64,7 @@ access and keep work repositories out of personal experiments.
 - [Herdr](docs/herdr.md)
 - [Worktrunk](docs/wt.md)
 - [Claude accounts](docs/claude-accounts.md)
+- [OMP MCP](docs/omp-mcp.md)
 - [Plannotator](docs/plannotator.md)
 - [pstack](docs/pstack/README.md)
 

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/src/config/mcp-schema.json",
+  "mcpServers": {
+    "devin": {
+      "type": "http",
+      "url": "https://mcp.devin.ai/mcp",
+      "headers": {
+        "Authorization": "!k=$(security find-generic-password -s devin-mcp -w) && printf 'Bearer %s' \"$k\"",
+        "X-Org-Id": "!security find-generic-password -s devin-mcp-org-id -w 2>/dev/null"
+      }
+    },
+{{- if .work }}
+    "datadog": {
+      "type": "http",
+      "url": "https://mcp.ap1.datadoghq.com/v1/mcp?toolsets=all"
+    },
+{{- end }}
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp"
+    }
+  }
+}
