@@ -55,7 +55,7 @@
     "defaultMode": "auto",
     "blockReadsOutsideWorkingDirectories": false
   },
-  "model": "claude-fable-5-1[1m]",
+  "model": "opus",
   "hooks": {
     "PermissionRequest": [
       {
@@ -327,6 +327,7 @@
       }
     ]
   },
+  "disableRemoteControl": true,
   "statusLine": {
     "type": "command",
     "command": "wt list statusline --format=claude-code"
@@ -414,14 +415,13 @@
   "effortLevel": "high",
   "advisorModel": "fable",
   "tui": "fullscreen",
-  "disableRemoteControl": true,
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "custom:catppuccin:catppuccin-{{ if eq (get . "machineRole") "worker" }}frappe{{ else }}latte{{ end }}",
   "editorMode": "normal",
   "autoCompactEnabled": true,
-  "agentPushNotifEnabled": true,
   "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
   "autoMode": {
     "environment": [
       "$defaults",
