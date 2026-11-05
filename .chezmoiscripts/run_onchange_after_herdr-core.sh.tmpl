@@ -27,7 +27,7 @@ fi
 # wrap them with a name and a trigger description.
 write_skill() {
   local name="$1" description="$2" body="$3"
-  if [ -z "${body//[[:space:]]/}" ]; then
+  if [[ ! $body =~ [^[:space:]] ]]; then
     echo "Refusing to replace the ${name} skill with empty output" >&2
     return 1
   fi
