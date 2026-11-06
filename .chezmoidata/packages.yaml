@@ -114,7 +114,6 @@ packages:
         - 1password-cli
         - arc
         - atok
-        - cursor
         - devin-cli
         - fantastical
         - firefox@developer-edition
