@@ -61,7 +61,12 @@
       "modelRoles" (dict "judge" "anthropic/claude-haiku-5-5")
       "cycleOrder" (list "smol" "default" "slow")
       "advisor" (dict "reviewInterval" 3)
-      "retry" (dict "fallbackChains" (dict "judge" (list "devin/swe-2")))
+      "retry" (dict
+        "usageAwareFallback" true
+        "usageReservePct" 10
+        "usageReservePolicy" "fail-closed"
+        "fallbackChains" (dict "judge" (list "devin/swe-2")))
+      "codexResets" (dict "autoRedeem" "no")
       "tier" (dict "openai" "priority")
       "find" (dict "enabled" "on")
       "astGrep" (dict "enabled" true)

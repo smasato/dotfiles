@@ -83,7 +83,12 @@
 {{- /* 判定モデルと通常プロファイル共通の表示・動作設定を強制する */ -}}
 {{- $enforced := dict
       "modelRoles" (dict "judge" "typesafe/jev-latest")
-      "retry" (dict "fallbackChains" (dict "judge" (list "opencode-go/glm-5.3-flash")))
+      "retry" (dict
+        "usageAwareFallback" true
+        "usageReservePct" 10
+        "usageReservePolicy" "fail-closed"
+        "fallbackChains" (dict "judge" (list "opencode-go/glm-5.3-flash")))
+      "codexResets" (dict "autoRedeem" "no")
       "find" (dict "enabled" "on")
       "astGrep" (dict "enabled" true)
       "github" (dict "enabled" true)

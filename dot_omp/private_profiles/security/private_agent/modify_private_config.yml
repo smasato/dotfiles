@@ -46,5 +46,10 @@
 {{- $_ = set $config "enabledModels" (concat (get $config "enabledModels" | default list) (get $defaults "enabledModels") | uniq) -}}
 {{- $config = mergeOverwrite $config (dict
       "advisor" (dict "reviewInterval" 3)
+      "retry" (dict
+        "usageAwareFallback" true
+        "usageReservePct" 10
+        "usageReservePolicy" "fail-closed")
+      "codexResets" (dict "autoRedeem" "no")
       "telemetry" (dict "otlpExportEnabled" false)) -}}
 {{- toYaml $config | trim -}}
