@@ -1,0 +1,12 @@
+{
+  "theme": "Dark",
+  "copy_on_select": true,
+  "link_target": "Browser",
+  "layout": "Rail",
+  "status_bar": true,
+  "tmux_status": false,
+  "material": "Glass",
+  "opacity": 35,
+  "blur": 24,
+  "keep_composer_open": true
+}
