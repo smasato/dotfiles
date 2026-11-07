@@ -58,9 +58,10 @@ skills add JuliusBrussee/caveman \
 
 echo "Adding skills: emilkowalski/skill (web design skills only)"
 skills add emilkowalski/skill \
-  --skill animate --skill animation-vocabulary --skill apple-design \
+  --skill animate --skill animation-performance --skill animation-vocabulary --skill apple-design \
+  --skill break-ui --skill choreograph \
   --skill emil-design-eng --skill find-animation-opportunities --skill improve-animations \
-  --skill pick-ui-library --skill review-animations \
+  --skill mobile-native --skill pick-ui-library --skill remove-animations --skill review-animations \
   --agent universal -g -y
 
 echo "Adding skills: github/gh-stack (gh-stack)"
