@@ -29,10 +29,7 @@
           "security-reviewer" "off")
         "prewalk" false)
       "prewalk" (dict "enabled" false)
-      "tier" (dict
-        "anthropic" "none"
-        "subagent" "none"
-        "advisor" "none")
+      "tier" (dict "anthropic" "none")
 -}}
 {{- if .chezmoi.stdin -}}
 {{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}
@@ -73,7 +70,10 @@
           "review" (list "anthropic/claude-opus-5-5:high")
           "slow" (list "anthropic/claude-fable-5-2:high")))
       "codexResets" (dict "autoRedeem" "no")
-      "tier" (dict "openai" "priority")
+      "tier" (dict
+        "openai" "ultrafast"
+        "subagent" "ultrafast"
+        "advisor" "ultrafast")
       "find" (dict "enabled" "on")
       "astGrep" (dict "enabled" true)
       "github" (dict "enabled" true)
