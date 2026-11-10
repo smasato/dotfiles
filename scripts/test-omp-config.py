@@ -13,6 +13,8 @@ TEMPLATES = {
     "experimental": "dot_omp/private_profiles/experimental/private_agent/modify_private_config.yml",
     "security": "dot_omp/private_profiles/security/private_agent/modify_private_config.yml",
 }
+# The default profile enforces its fallback chains; the others keep existing ones.
+ENFORCED_DEFAULT_CHAIN = {"default": ["anthropic/claude-opus-5-5:high"]}
 
 
 def render(template, current, home):
@@ -75,7 +77,9 @@ class OmpQuotaPolicyTests(unittest.TestCase):
                     self.assertEqual(config["retry"][key], self.current["retry"][key])
                 self.assertEqual(
                     config["retry"]["fallbackChains"]["default"],
-                    self.current["retry"]["fallbackChains"]["default"],
+                    ENFORCED_DEFAULT_CHAIN.get(
+                        profile, self.current["retry"]["fallbackChains"]["default"]
+                    ),
                 )
                 self.assertEqual(config["codexResets"]["keepCredits"], 2)
                 self.assertEqual(render(template, config, self.home), config)

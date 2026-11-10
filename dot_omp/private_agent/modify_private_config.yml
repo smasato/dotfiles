@@ -4,16 +4,16 @@
       "providers" dict
       "setupVersion" 2
       "modelRoles" (dict
-        "default" "openai-codex/gpt-6-astra:low"
-        "advisor" "anthropic/claude-fable-5-2:medium"
-        "smol" "devin/glm-5-3-flash-1m:low"
-        "tiny" "openai-codex/gpt-5.6-luna:low"
-        "task" "devin/swe-2:medium"
-        "plan" "openai-codex/gpt-6-astra:xhigh"
+        "default" "anthropic/claude-fable-5-2:medium"
+        "advisor" "openai-codex/gpt-6-astra:high"
+        "smol" "anthropic/claude-opus-5-5:medium"
+        "tiny" "anthropic/claude-haiku-5-5:auto"
+        "task" "anthropic/claude-fable-5-2:medium"
+        "plan" "anthropic/claude-fable-5-2:high"
         "slow" "openai-codex/gpt-6-astra:xhigh"
-        "review" "anthropic/claude-fable-5-2:high"
+        "review" "openai-codex/gpt-6-astra:high"
         "review_openai" "openai-codex/gpt-6-astra:high"
-        "review_anthropic" "anthropic/claude-opus-5-5:high")
+        "review_anthropic" "anthropic/claude-fable-5-2:high")
       "advisor" (dict "enabled" true)
       "task" (dict
         "agentModelOverrides" (dict
@@ -40,12 +40,10 @@
 {{- /* chezmoi で強制する設定 */ -}}
 {{- $enforced := dict
       "enabledModels" (list
-        "openai-codex/gpt-5.6-sol"
-        "openai-codex/gpt-5.6-luna"
-        "openai-codex/gpt-5.6-terra"
         "openai-codex/gpt-6-astra"
         "openai-codex/gpt-6-luna"
         "openai-codex/gpt-6.1-sol"
+        "openai-codex/gpt-6.1-terra"
         "openai-codex/gpt-daybreak-blue-latest"
         "devin/swe-2"
         "devin/deepseek-v4-1-flash"
@@ -59,14 +57,21 @@
         "anthropic/claude-fable-5-2"
         "anthropic/claude-mythos-5-2"
         "amazon-bedrock/*")
-      "modelRoles" (dict "judge" "anthropic/claude-haiku-5-5")
+      "modelRoles" (dict "judge" "typesafe/jev-1.14.0")
       "cycleOrder" (list "smol" "default" "slow")
-      "advisor" (dict "reviewInterval" 3)
+      "advisor" (dict "reviewInterval" 1)
       "retry" (dict
         "usageAwareFallback" true
         "usageReservePct" 10
         "usageReservePolicy" "fail-closed"
-        "fallbackChains" (dict "judge" (list "devin/swe-2")))
+        "fallbackChains" (dict
+          "judge" (list "anthropic/claude-haiku-5-5")
+          "default" (list "anthropic/claude-opus-5-5:high")
+          "plan" (list "anthropic/claude-opus-5-5:high")
+          "task" (list "anthropic/claude-opus-5-5:high")
+          "advisor" (list "anthropic/claude-opus-5-5:medium")
+          "review" (list "anthropic/claude-opus-5-5:high")
+          "slow" (list "anthropic/claude-fable-5-2:high")))
       "codexResets" (dict "autoRedeem" "no")
       "tier" (dict "openai" "priority")
       "find" (dict "enabled" "on")

@@ -30,6 +30,8 @@
         "tiny" "openai-codex/gpt-6-luna:low")
       "retry" (dict "fallbackChains" (dict "judge" (list "openai-codex/gpt-6-sol")))
 -}}
+{{- /* 通常プロファイルのフォールバックは引き継がない(このプロファイルのモデル構成と合わないため)。 */ -}}
+{{- $_ = set $config.retry "fallbackChains" dict -}}
 {{- $config = mergeOverwrite $config $defaults -}}
 {{- if .chezmoi.stdin -}}
 {{-   $config = mergeOverwrite $config (fromYaml .chezmoi.stdin) -}}

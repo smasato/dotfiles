@@ -78,10 +78,10 @@ omp config get modelRoles
 
 この dotfiles の初期値では、レビュー用の2席を次のように分けています。
 
-| エージェント              | ロール             | 初期モデル                       |
-| ------------------------- | ------------------ | -------------------------------- |
-| `pstack-review-openai`    | `review_openai`    | `openai-codex/gpt-6-astra:high`  |
-| `pstack-review-anthropic` | `review_anthropic` | `anthropic/claude-opus-5-5:high` |
+| エージェント              | ロール             | 初期モデル                        |
+| ------------------------- | ------------------ | --------------------------------- |
+| `pstack-review-openai`    | `review_openai`    | `openai-codex/gpt-6-astra:high`   |
+| `pstack-review-anthropic` | `review_anthropic` | `anthropic/claude-fable-5-2:high` |
 
 1. OMP で `/model` を開き、**Roles** から変更するロールを選びます。
 2. そのプロファイルで利用できるモデルを割り当てます。異モデルレビューを続ける場合は、2席を別のモデル系列にします。
