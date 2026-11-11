@@ -105,6 +105,14 @@
         "enableEffort" true
         "maxRuntimeMs" 0
         "showResolvedModelBadge" true
+        "perCallModel" "on"
+        "perCallModelAllow" (list
+          "anthropic/claude-sonnet-5-5"
+          "anthropic/claude-haiku-5-5"
+          "openai-codex/gpt-6-astra"
+          "openai-codex/gpt-6-luna"
+          "openai-codex/gpt-6.1-sol"
+          "openai-codex/gpt-6.1-terra")
         "agentModelOverrides" (dict "scout" "@smol"))
       "dev" (dict "autoqa" false)
       "gc" (dict "stale" true)
