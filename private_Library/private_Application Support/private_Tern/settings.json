@@ -6,7 +6,10 @@
   "status_bar": true,
   "tmux_status": false,
   "material": "Glass",
-  "opacity": 35,
+  "opacity": 65,
   "blur": 24,
-  "keep_composer_open": true
+  "keep_composer_open": true,
+  "file_tree": {
+    "open": true
+  }
 }
