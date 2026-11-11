@@ -22,11 +22,12 @@ prefer the wt equivalent.
 
 ## Inspecting worktrees
 
-| Task                                   | Command                                      |
-| -------------------------------------- | -------------------------------------------- |
-| Check every worktree's working changes | `wt step for-each -- git status --short`     |
-| Resolve the primary worktree path      | `wt step eval '{{ primary_worktree_path }}'` |
-| Preview integrated cleanup candidates  | `wt step prune --dry-run --min-age=2d`       |
+| Task                                   | Command                                                                                        |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Check every worktree's working changes | `wt step for-each -- git status --short`                                                       |
+| Resolve the primary worktree path      | `wt step eval '{{ primary_worktree_path }}'`                                                   |
+| Preview integrated cleanup candidates  | `wt step prune --dry-run --min-age=2d`                                                         |
+| Resolve a branch's worktree path       | `wt list --format=json \| jq -r '.items[] \| select(.branch == "<branch>") \| .worktree.path'` |
 
 `for-each` executes argv directly and sequentially. Use `sh -c` explicitly for
 pipes or redirects. Command failures are collected and execution continues;
@@ -38,6 +39,15 @@ has finished or that ignored files are disposable. Keep checking active chats,
 PRs, and uncommitted files, then use `wt remove <path>` for confirmed targets.
 The JSON preview is an array with `path` and a predicted `branch_deleted`,
 not the `wt list` envelope. Branch-only candidates have a null path.
+
+`wt list --format=json` returns an envelope object (`schema`, `repo`,
+`collected`, `items`), not an array: the user config pins `json-schema = 2`.
+Iterate `.items[]`; the path is `.worktree.path`, not `.path`. `.[]` also
+yields the number in `schema` and fails with `cannot index 2 with "branch"`.
+
+Run that query as its own command, not chained after `wt switch`. A failure
+chained on the same line prints right after the last hook line and reads as a
+hook failure. `wt switch --create` already prints the new worktree path.
 
 ## Existing remote branches
 
