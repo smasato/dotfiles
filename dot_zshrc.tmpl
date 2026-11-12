@@ -117,6 +117,17 @@ codex() {
   }
   return $rc
 }
+# SSH sessions cannot read login keychain secrets, so the devin MCP header
+# commands in ~/.omp/agent/mcp.json fail. Unlock when the item exists but its
+# secret is unreadable.
+omp() {
+  if [[ -t 0 ]] &&
+    security find-generic-password -s devin-mcp >/dev/null 2>&1 &&
+    ! security find-generic-password -s devin-mcp -w >/dev/null 2>&1; then
+    security unlock-keychain "$HOME/Library/Keychains/login.keychain-db"
+  fi
+  command omp "$@"
+}
 {{- if .work }}
 # Work Claude account; ~/.claude (plain `claude`) is the personal account.
 alias wclaude='CLAUDE_CONFIG_DIR="$HOME/.claude_work" claude'
